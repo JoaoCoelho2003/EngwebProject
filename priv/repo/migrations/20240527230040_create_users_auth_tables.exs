@@ -8,6 +8,9 @@ defmodule Engweb.Repo.Migrations.CreateUsersAuthTables do
       add :email, :citext, null: false
       add :hashed_password, :string, null: false
       add :confirmed_at, :naive_datetime
+      add :name, :string, null: false
+      add :filiation, :string, null: false, default: "student"
+      add :role, :string, null: false, default: "user"
       timestamps(type: :utc_datetime)
     end
 

@@ -24,6 +24,9 @@ defmodule Engweb.Repo.Seeds.Accounts do
       user = %{
         "email" => email,
         "password" => "password1234",
+        "name" => character,
+        "filiation" => "student",
+        "role" => "user"
       }
 
       case Accounts.register_user(user) do
