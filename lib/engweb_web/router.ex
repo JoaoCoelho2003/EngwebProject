@@ -82,4 +82,15 @@ defmodule EngwebWeb.Router do
       live "/users/confirm", UserConfirmationInstructionsLive, :new
     end
   end
+
+  scope "/", EngwebWeb do
+    pipe_through [:browser]
+    live_session :roads do
+      live "/roads", RoadLive.Index, :index
+      live "/roads/new", RoadLive.Index, :new
+      live "/roads/:id/edit", RoadLive.Index, :edit
+      live "/roads/:id", RoadLive.Show, :show
+      live "/roads/:id/show/edit", RoadLive.Show, :edit
+    end
+  end
 end
