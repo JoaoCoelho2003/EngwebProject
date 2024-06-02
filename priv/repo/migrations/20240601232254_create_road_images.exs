@@ -4,6 +4,7 @@ defmodule Engweb.Repo.Migrations.CreateRoadImages do
   def change do
     create table(:road_images) do
       add :image, :string
+      add :legenda, :string
       add :road_id, references(:roads, on_delete: :nothing)
 
       timestamps(type: :utc_datetime)

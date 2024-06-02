@@ -4,6 +4,7 @@ defmodule Engweb.Roads.Images do
 
   schema "road_images" do
     field :image, :string
+    field :legenda, :string
     field :road_id, :id
 
     timestamps(type: :utc_datetime)
