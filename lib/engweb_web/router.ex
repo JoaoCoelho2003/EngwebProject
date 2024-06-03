@@ -20,7 +20,7 @@ defmodule EngwebWeb.Router do
   scope "/", EngwebWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", RoadLive.Index, :index
   end
 
   # Other scopes may use custom stacks.
