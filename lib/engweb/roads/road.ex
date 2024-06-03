@@ -5,7 +5,7 @@ defmodule Engweb.Roads.Road do
   schema "roads" do
     field :name, :string
     field :num, :integer
-    field :description, :text
+    field :description, :string
 
     timestamps(type: :utc_datetime)
   end

@@ -6,7 +6,7 @@ defmodule Engweb.Roads.Houses do
     field :num, :string
     field :enfiteuta, :string
     field :foro, :string
-    field :description, :text
+    field :description, :string
     field :road_id, :id
 
     timestamps(type: :utc_datetime)

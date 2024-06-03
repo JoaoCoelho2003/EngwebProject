@@ -23,50 +23,26 @@ defmodule Engweb.Repo.Seeds.Roads do
         num: road["numero"],
         name: road["nome"],
         description: road["descricao"]
-      }
-
-      case Roads.create_road(road_entry) do
-        {:ok, changeset} ->
-          Repo.update!(changeset)
-
-        {:error, changeset} ->
-          Mix.shell().error(Kernel.inspect(changeset.errors))
-      end
+      } |> Roads.create_road()
 
       id_road = Roads.get_road_by_num(road["numero"]).id
 
-      road_entry["figuras"] |> Enum.each(fn fig ->
-        fig = %{
+      road["figuras"] |> Enum.each(fn fig ->
+        Roads.create_image(%{
           image: fig["imagem"],
           legenda: fig["legenda"],
           road_id: id_road
-        }
-
-        case Roads.create_image(fig) do
-          {:ok, changeset} ->
-            Repo.update!(changeset)
-
-          {:error, changeset} ->
-            Mix.shell().error(Kernel.inspect(changeset.errors))
-        end
+        })
       end)
 
-      road_entry["casas"] |> Enum.each(fn house ->
-        house = %{
+      road["casas"] |> Enum.each(fn house ->
+        Roads.create_house(%{
           num: house["numero"],
           enfiteuta: house["enfiteuta"],
           foro: house["foro"],
           description: house["descricao"],
           road_id: id_road
-        }
-
-        case Roads.create_house(house) do
-          {:ok, changeset} ->
-            Repo.update!(changeset)
-
-          {:error, changeset} ->
-            Mix.shell().error(Kernel.inspect(changeset.errors))
-        end
+        })
       end)
     end)
   end
