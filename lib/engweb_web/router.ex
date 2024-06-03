@@ -20,7 +20,7 @@ defmodule EngwebWeb.Router do
   scope "/", EngwebWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", RoadLive.Index, :index
   end
 
   # Other scopes may use custom stacks.
@@ -68,6 +68,7 @@ defmodule EngwebWeb.Router do
       on_mount: [{EngwebWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+      live "/users/profile", UserProfileLive, :edit
     end
   end
 
@@ -86,7 +87,6 @@ defmodule EngwebWeb.Router do
   scope "/", EngwebWeb do
     pipe_through [:browser]
     live_session :roads do
-      live "/roads", RoadLive.Index, :index
       live "/roads/new", RoadLive.Index, :new
       live "/roads/:id/edit", RoadLive.Index, :edit
       live "/roads/:id", RoadLive.Show, :show
