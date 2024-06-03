@@ -1,5 +1,5 @@
 <.header>
-  Listing Roads
+  Ruas de Braga
   <:actions>
     <.link patch={~p"/roads/new"}>
       <.button>New Road</.button>
@@ -12,7 +12,7 @@
   rows={@streams.roads}
   row_click={fn {_id, road} -> JS.navigate(~p"/roads/#{road}") end}
 >
-  <:col :let={{_id, road}} label="Num"><%= road.num %></:col>
+  <:col :let={{_id, road}} label="Number"><%= road.num %></:col>
   <:col :let={{_id, road}} label="Name"><%= road.name %></:col>
   <:col :let={{_id, road}} label="Description"><%= road.description %></:col>
   <:action :let={{_id, road}}>
@@ -31,13 +31,13 @@
   </:action>
 </.table>
 
-<.modal :if={@live_action in [:new, :edit]} id="road-modal" show on_cancel={JS.patch(~p"/roads")}>
+<.modal :if={@live_action in [:new, :edit]} id="road-modal" show on_cancel={JS.patch(~p"/")}>
   <.live_component
     module={EngwebWeb.RoadLive.FormComponent}
     id={@road.id || :new}
     title={@page_title}
     action={@live_action}
     road={@road}
-    patch={~p"/roads"}
+    patch={~p"/"}
   />
 </.modal>
