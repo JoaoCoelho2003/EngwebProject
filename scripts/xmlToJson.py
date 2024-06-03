@@ -13,7 +13,7 @@ def get_figura(figuras):
     for child in figuras:
         if child.tag == "imagem":
             grupos = re.search(r'\.\.\/imagem\/(.*)', child.attrib["path"])
-            imagem ="priv/static/images/" + grupos.group(1)
+            imagem ="MapaRuas-materialBase/imagens/" + grupos.group(1)
         elif child.tag == "legenda":
             legenda = child.text
 
