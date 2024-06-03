@@ -5,7 +5,7 @@ defmodule Engweb.Repo.Migrations.CreateRoads do
     create table(:roads) do
       add :num, :integer
       add :name, :string
-      add :description, :string
+      add :description, :text
 
       timestamps(type: :utc_datetime)
     end

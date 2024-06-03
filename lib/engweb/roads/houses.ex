@@ -3,10 +3,10 @@ defmodule Engweb.Roads.Houses do
   import Ecto.Changeset
 
   schema "road_houses" do
-    field :description, :string
-    field :num, :integer
+    field :num, :string
     field :enfiteuta, :string
     field :foro, :string
+    field :description, :text
     field :road_id, :id
 
     timestamps(type: :utc_datetime)
