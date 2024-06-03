@@ -3,10 +3,10 @@ defmodule Engweb.Repo.Migrations.CreateRoadHouses do
 
   def change do
     create table(:road_houses) do
-      add :num, :integer
+      add :num, :string
       add :enfiteuta, :string
       add :foro, :string
-      add :description, :string
+      add :description, :text
       add :road_id, references(:roads, on_delete: :nothing)
 
       timestamps(type: :utc_datetime)
