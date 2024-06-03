@@ -108,9 +108,9 @@ def parse_file(filename):
 
 if __name__ == "__main__":
     ruas = []
-    for filename in os.listdir("../MapaRuas-materialBase/texto"):
+    for filename in os.listdir("MapaRuas-materialBase/texto"):
         if filename.endswith(".xml"):
-            rua = parse_file("../MapaRuas-materialBase/texto/" + filename)
+            rua = parse_file("MapaRuas-materialBase/texto/" + filename)
             ruas.append(rua)
-    with open("../priv/fake/roads.json", "w") as f:
+    with open("priv/fake/roads.json", "w") as f:
         f.write(json.dumps(ruas, indent=4, ensure_ascii=False))

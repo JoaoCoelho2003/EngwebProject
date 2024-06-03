@@ -37,4 +37,6 @@ npm-debug.log
 
 MapaRuas-materialBase.zip
 
-MapaRuas-materialBase/
+MapaRuas-materialBase/*
+
+!MapaRuas-materialBase/.gitkeep
