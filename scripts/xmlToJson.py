@@ -106,11 +106,21 @@ def parse_file(filename):
             rua.update({key: dic[key] for key in ["figuras", "descricao", "casas"]})
     return rua
 
+def add_figuras_atuais(rua, numero):
+    rua["figuras_atuais"] = []
+    for fig in os.listdir("MapaRuas-materialBase/atual"):
+        if re.match(r"{}-.*".format(numero), fig):
+            rua["figuras_atuais"].append({
+                "imagem": "MapaRuas-materialBase/atual/" + fig,
+            })
+
 if __name__ == "__main__":
     ruas = []
     for filename in os.listdir("MapaRuas-materialBase/texto"):
         if filename.endswith(".xml"):
             rua = parse_file("MapaRuas-materialBase/texto/" + filename)
+            add_figuras_atuais(rua,str(rua["numero"]))
             ruas.append(rua)
+
     with open("priv/fake/roads.json", "w") as f:
         f.write(json.dumps(ruas, indent=4, ensure_ascii=False))

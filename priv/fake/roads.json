@@ -22,6 +22,14 @@
                 "foro": "",
                 "descricao": "A fachada situa-se no Campo da Vinha."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/59-RuadosBisca°nhos-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/59-RuadosBisca°nhos-Vista1.JPG"
+            }
         ]
     },
     {
@@ -81,6 +89,14 @@
                 "foro": "",
                 "descricao": "Os subenfiteutas pagam foro ao nº 1 do Campo de Santiago."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/34-CangostaDasCruzes-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/34-CangostaDasCruzes-Vista1.JPG"
+            }
         ]
     },
     {
@@ -103,6 +119,14 @@
                 "enfiteuta": "-",
                 "foro": "-",
                 "descricao": "Não tem casas foreiras ao Cabido."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/29-RuadoBeco-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/29-RuadoBeco-Vista2.JPG"
             }
         ]
     },
@@ -307,6 +331,14 @@
                 "foro": "780 reis e 4 galinhas",
                 "descricao": "Encontram-se unidas, num só prazo, desde o ano de1680."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/22-RuaDeMaximinos-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/22-RuaDeMaximinos-Vista2.JPG"
+            }
         ]
     },
     {
@@ -432,6 +464,14 @@
                 "foro": "",
                 "descricao": "Confronta, do sul, com a casa n.° 17 da Praça do Gavião."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/51-RuaDaOliveira-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/51-RuaDaOliveira-Vista2.JPG"
+            }
         ]
     },
     {
@@ -515,6 +555,14 @@
                 "foro": "",
                 "descricao": "Corresponde ao n.º 10 da Rua de Maximinos, para onde tem a frontariae serventia principais."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/18-RuaDasChagas-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/18-RuaDasChagas-Vista2.JPG"
+            }
         ]
     },
     {
@@ -549,6 +597,14 @@
                 "enfiteuta": "",
                 "foro": "",
                 "descricao": "Corresponde a um campo do prazo da  Quinta da Cónega. Confronta, do nascente, com a casa nº22 da Rua da Cónega."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/57-EstradadeReal-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/57-EstradadeReal-Vista1.JPG"
             }
         ]
     },
@@ -789,6 +845,14 @@
                 "foro": "",
                 "descricao": " Os herdeiros de  Agostinho Leitão, casadocom  Paula da Costa, pagam 2000 reis e 2 galinhas aoenfiteuta da Quinta da Cónega. A casa nº171 confronta, do nascente, com a cangosta do Pópulo."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/58-RuadaC¢nega-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/58-RuadaC¢nega-Vista1.JPG"
+            }
         ]
     },
     {
@@ -993,6 +1057,14 @@
                 "enfiteuta": "Vid. casa n.º1.",
                 "foro": "",
                 "descricao": "Jácome de Matos, casado com Sebastiana Maria, paga 800 reis ao enfiteuta do prazo da 1.ª metade do casal do Lagarto. Confronta, do nascente, com casa foreira à Misericórdia."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/55-RuadeInfias-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/55-RuadeInfias-Vista2.JPG"
             }
         ]
     },
@@ -1647,6 +1719,14 @@
                 "foro": "",
                 "descricao": "Os herdeiros de António Manuel, ferreiro, casado com Maria Francisca, pagam 200 reis e 1 galinha ao enfeiteuta do prazo do casal dos Chãos ou Quinteiro. Confronta, do sul, com a entrada da Rua de Sto. André."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/53-RuadosCh∆osdeCima-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/53-RuadosCh∆osdeCima-Vista1.JPG"
+            }
         ]
     },
     {
@@ -1682,6 +1762,14 @@
                 "foro": "150 reis e 2 galinhas",
                 "descricao": "Confronta, de Sul, com parte da mesma casa foreira à Confraria da Trindade, antiga Confraria da Companhia de Jesus e, de Norte, com casa dízima a Deus"
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/1-RuadoCampo-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/1-RuadoCampo-Vista1.JPG"
+            }
         ]
     },
     {
@@ -1698,7 +1786,15 @@
             }
         ],
         "descricao": "Rua ampla, de boas e grandes casas de pedra, aberta por D. Diogo de Sousa: «Fez a rua de S. Marcos, a qual é da Cappella maior da Sé até a porta do dito S. Marcos; comprou muitas casas acerca da Sé para fazer a dita rua e quintaes atraz d'ellas porque tudo era cerrado de casas e de quintaes e não havia ahi rua nenhuma...»Esta rua é uma das mais importantes obras urbanísticas de D. Diogo de Sousa. Ao ligar as traseiras da Sé com a porta de S. João, este arcebispo não se limitou a permitir um maior ângulo de visão para a belíssima capela mor da Sé, também obra sua; acima de tudo o que esta artéria representa é um violento abanão na estrutura urbana, pois que será ampla e de bons prédios, grandes e de pedra; e, principalmente, permitirá o abrir a cidade ao exterior, porque continuava pelo Campo dos Remédios e Granginhos em direcçãoà rua da Ponte de Guimarães.Nela se fixaria a família dos Coimbras — família que acompanhou D. Diogo na sua vinda para Braga — em casa hoje reconstruída noutro local e desenhada por João de Castilho; os Paiva Marinho, na notável casa dos Paivas, riscada em finais do séc. XVI por alguém que passoupor Florença e procurou transplantar um pouco da arquitectura do Palácio Pitti; a irmã do Cónego Francisco Pacheco Pereira na grande casa do Passadiço; e os Lagos e os Antões Pereira em casas mais simples, mas não menos belas, que no Mappa se vêem com os nºs 9 e 10.",
-        "casas": []
+        "casas": [],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/9-RuaDeS.Jo∆o-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/9-RuaDeS.Jo∆o-Vista2.JPG"
+            }
+        ]
     },
     {
         "numero": 23,
@@ -1829,6 +1925,14 @@
                 "foro": "15 reis",
                 "descricao": "O foro é respeitante à cozinha, dado que o resto da casa não pertence aocabido."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/23-RuaDosSapateirosERossioDaPraáa-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/23-RuaDosSapateirosERossioDaPraáa-Vista2.JPG"
+            }
         ]
     },
     {
@@ -1899,6 +2003,14 @@
                 "enfiteuta": null,
                 "foro": null,
                 "descricao": "Portal de serventia do campo da casa n.º 20 da Rua do Arrabalde de Cruz da Pedra. Confronta, do nascente, com casa pertencente à propriedade, denominada, «O Bispo»."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/30-CangostaDeS.Sebasti∆o-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/30-CangostaDeS.Sebasti∆o-Vista1.JPG"
             }
         ]
     },
@@ -2139,6 +2251,14 @@
                 "foro": "",
                 "descricao": "Pagam foro ao n.º50."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/27-RuaDaCruzDePedra-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/27-RuaDaCruzDePedra-Vista1.JPG"
+            }
         ]
     },
     {
@@ -2300,6 +2420,14 @@
                 "foro": "",
                 "descricao": "Pertence à casa n.° 15 da Rua de Sto. André, para onde tem a frontaria e serventia principais."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/47-RuaDeS.BarnabÇ-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/47-RuaDeS.BarnabÇ-Vista2.JPG"
+            }
         ]
     },
     {
@@ -2430,6 +2558,14 @@
                 "enfiteuta": "Teresa da Silveira, viúva de Sebastião do Couto",
                 "foro": "300 reis e 2 galinhas",
                 "descricao": "O emprazamento foi feito em 1710."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/11-RuaDosCegosOuDoForno-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/11-RuaDosCegosOuDoForno-Vista1.JPG"
             }
         ]
     },
@@ -2870,6 +3006,14 @@
                 "foro": "",
                 "descricao": "António Francisco, ferreiro, casado com Maria de Freitas, paga 1603 reis ao nº 89 e 1 galinha. em nome do mesmo subenfiteuta, ao n° 42 da Rua de S. Lázaro.Este número corresponde a um «chão de casa» e confronta, do norte, com casa foreira à Capela de D. Gonçalo Pereira."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/38-RuaDaPonteDeGuimar∆es-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/38-RuaDaPonteDeGuimar∆es-Vista1.JPG"
+            }
         ]
     },
     {
@@ -2940,6 +3084,14 @@
                 "enfiteuta": "",
                 "foro": "",
                 "descricao": "Corresponde ao n° 22 da Rua do Poço, para onde tem a frontaria principal."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/15-TravessadaRuadoPoáoparaadeD.Gualdim-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/15-TravessadaRuadoPoáoparaadeD.Gualdim-Vista2.JPG"
             }
         ]
     },
@@ -3162,6 +3314,14 @@
                 "foro": "",
                 "descricao": "Pertence à casa n.° 10 da Rua das Palhotas, para onde tem a frontaria principal."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/56-CangostadaEscoura-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/56-CangostadaEscoura-Vista2.JPG"
+            }
         ]
     },
     {
@@ -3287,6 +3447,14 @@
                 "foro": "400 reis e 2 galinhas",
                 "descricao": "Pertencem, ainda, ao prazo da casa nº 33 os nº 37 a 42 da cangosta da rua das Águas."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/36-RuaDasµguas-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/36-RuaDasµguas-Vista2.JPG"
+            }
         ]
     },
     {
@@ -3384,6 +3552,14 @@
                 "foro": "820 reis e 2 galinhas",
                 "descricao": "A casa nº16 foi unida ao nº17, no ano de 1667 . O nº17 confronta com a Rua do Poço ."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/5-RuaDasOucias-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/5-RuaDasOucias-Vista1.JPG"
+            }
         ]
     },
     {
@@ -3430,6 +3606,14 @@
                 "enfiteuta": null,
                 "foro": null,
                 "descricao": "Corresponde ao n.º 15 da Rua de D. Gualdim, para onde tem a frontaria e serventia principais."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/17-TravessadaRuadeD.GualdimatÇaoCoutodoArvoredo-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/17-TravessadaRuadeD.GualdimatÇaoCoutodoArvoredo-Vista2.JPG"
             }
         ]
     },
@@ -3483,6 +3667,14 @@
                 "enfiteuta": "",
                 "foro": "",
                 "descricao": "Corresponde ao n.º 18 da Rua de Maximinos, para onde tem afrontaria e serventia principais."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/24-RuaDaVielinha-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/24-RuaDaVielinha-Vista1.JPG"
             }
         ]
     },
@@ -3747,6 +3939,14 @@
                 "foro": "",
                 "descricao": "Manuel Ferreira, estudante, paga 2000 reis ao nº 42.Confronta, do norte, com a cangosta que vem de trás de S. Marcos para a Rua das Águas. Foi construída antes 1718."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/37-RuaDeS.L†zaro-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/37-RuaDeS.L†zaro-Vista2.JPG"
+            }
         ]
     },
     {
@@ -3805,6 +4005,14 @@
                 "enfiteuta": "",
                 "foro": "",
                 "descricao": "Corresponde ao n.º 11 da Rua de D. Gualdim, para onde tem frontaria e serventia principais."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/20-TerreiroDeSto.Ant¢nioEPostigo-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/20-TerreiroDeSto.Ant¢nioEPostigo-Vista1.JPG"
             }
         ]
     },
@@ -3937,6 +4145,14 @@
                 "foro": "",
                 "descricao": "André da Silva, albardeiro, casado com Maria Francisca, paga 3710 reis ao enfiteuta do prazo do casal dos Chãos ou Quinteiro, à face do qual foi subemprazado, no ano de 1732. A casa n.º 26 correspondia, antes desta data, a duas moradas de casas. Confronta, do sul, com o quintal do Recolhimento de Sta. Maria Madalena."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/49-RuaDeS.Gonáalo-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/49-RuaDeS.Gonáalo-Vista2.JPG"
+            }
         ]
     },
     {
@@ -4001,6 +4217,14 @@
                 "enfiteuta": "Pedro Gomes de Basto, c.c. Maria de Magalhães",
                 "foro": "",
                 "descricao": "   Confronta, do sul, com o terreiro de S. Lázaro e, do poente, com a Rua dos Granginhos.   "
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/35-RuaDeS.Marcos-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/35-RuaDeS.Marcos-Vista2.JPG"
             }
         ]
     },
@@ -4103,6 +4327,14 @@
                 "foro": "260 reis e 1 capão",
                 "descricao": ""
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/4-PraáaDoP∆o-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/4-PraáaDoP∆o-Vista1.JPG"
+            }
         ]
     },
     {
@@ -4121,6 +4353,14 @@
                 "enfiteuta": "*Vid.casa nº33 da Rua das Águas (rua 36)",
                 "foro": "",
                 "descricao": "A casa nº37 confronta, de poente, com o nº36 da rua das Águas."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/60-CangostadaRuadasµguas-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/60-CangostadaRuadasµguas-Vista2.JPG"
             }
         ]
     },
@@ -4144,6 +4384,14 @@
                 "enfiteuta": "-",
                 "foro": "-",
                 "descricao": "Não tem casas foreiras ao cabido."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/28-RuaDireita-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/28-RuaDireita-Vista2.JPG"
             }
         ]
     },
@@ -4314,6 +4562,14 @@
                 "foro": "4000 reis",
                 "descricao": "Situa-se defronte da Sé e foi mandada edificar, em 1518, pelo Arcebispo D. Diogo de Sousa. No ano de 1634 procedeu-se à sua ampliação, tendo para o efeito sido efectuado um contrato (nota do tabelião Diogo de Magalhães), através do qual, o Cabido cedeu as casas n.º 26 da Rua de D. Gualdim e n.° 1 da Rua de Maximinos ao Senado da Câmara de Braga, abrigando-se este a pagar àquela entidade a quantia anual de 4000 reis. Posteriormente, já no pontificado do arcebispo D. José de Bragança (1741-1756), dado o mau estado de conservação e a falta de espaço, (agravada pelas audiências dos ministros judiciais, que nelas se realizavam), foi decidido construir uma casa mais ampla na actual Praça do Município, então denominada Campo de Touros."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/16-RuaDeD.Gualdim-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/16-RuaDeD.Gualdim-Vista2.JPG"
+            }
         ]
     },
     {
@@ -4420,6 +4676,14 @@
                 "enfiteuta": "",
                 "foro": "",
                 "descricao": "Corresponde ao nº1 da Rua do Campo, para onde se tem a fronteira e serventia principais.A frontaria que dá para a Rua Nova de Sousa é foreira, à comenda de S. Pedro de Merelim."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/2-RuaNova-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/2-RuaNova-Vista2.JPG"
             }
         ]
     },
@@ -4738,6 +5002,14 @@
                 "foro": "265 reis e 2 galinhas",
                 "descricao": "Do nascente e poente confronta com casas dízimas a Deus. Até ao ano de 1679 o cabido possuía apenas as traseiras desta casa. A parte da frente era dízima a Deus. Posteriormente, Domingos Pinheiro Leite doou ao cabido a parte que lhe cabia \"se alcançasse sentença a seu favor no pleito que trazia sobre a dita parte com Mariana Vieira, viúva\".  "
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/6-RuaDoSoutoPortaDoSouto-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/6-RuaDoSoutoPortaDoSouto-Vista1.JPG"
+            }
         ]
     },
     {
@@ -4869,6 +5141,14 @@
                 "foro": "-",
                 "descricao": "Os herdeiros de Francisco de Magalhães, filho de Francisco Gonçalves, o Louro, e de sua 1ª mulher, Isabel de Magalhães, pagam 160 reis e 1 galinha ao nº 2 do Campo de Santiago."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/32-RuaDosPelames-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/32-RuaDosPelames-Vista2.JPG"
+            }
         ]
     },
     {
@@ -4972,6 +5252,14 @@
                 "foro": "",
                 "descricao": "«Chãos de casa» do prazo do casal dos Chãos ou Quinteiro. O chão n.° 36 confronta, do sul, com o chão n.° 12 da Rua de S. Gonçalo."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/48-PraáaDoGavi∆o-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/48-PraáaDoGavi∆o-Vista2.JPG"
+            }
         ]
     },
     {
@@ -5043,6 +5331,14 @@
                 "foro": "",
                 "descricao": "Corresponde ao n.º 9 da Rua das Oussias, para onde tem a frontaria e serventia principais. Situa-se na esquina da Rua Pequena e terreiro das Oussias."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/13-RuaPequena-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/13-RuaPequena-Vista2.JPG"
+            }
         ]
     },
     {
@@ -5089,6 +5385,17 @@
                 "enfiteuta": "Jácome Borges Pereira Pacheco, enfiteuta principal do prazo do casal de Infias ou Flores.",
                 "foro": "",
                 "descricao": "Paga foro ao enfiteuta do prazo do casal de Infias ou Flores. Confronta, do nascente, com casa foreira à confraria de S. João do Souto."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/52-rmargar-t.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/52-RuaemFrentedeNossaSenhoradeGuadalupe-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/52-RuaemFrentedeNossaSenhoradeGuadalupe-Vista2.JPG"
             }
         ]
     },
@@ -5185,6 +5492,14 @@
                 "foro": "800 reis, 3 galinhas e 1 capão",
                 "descricao": "Confronta, do poente, com casas foreiras a António Barreto de Meneses."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/44-RuadaFontedaCarcova-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/44-RuadaFontedaCarcova-Vista1.JPG"
+            }
         ]
     },
     {
@@ -5274,6 +5589,14 @@
                 "foro": "410 e 4 galinhas",
                 "descricao": "Confronta, do nascente, com casa foreira ao Hospital de S. Marcos."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/10-TravessadaRuadeS.Jo∆oparaadoForno-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/10-TravessadaRuadeS.Jo∆oparaadoForno-Vista1.JPG"
+            }
         ]
     },
     {
@@ -5339,6 +5662,14 @@
                 "foro": "",
                 "descricao": "A casa e parte do quintal são foreiras ao Hospital de S.Marcos.Pela outra parte do quintal paga-se, de foro, 451 reis ao nº1 do Campo de S.Sebastião. Encontra-sesubemprazada aos herdeiros do Padre António Velho Maciel, beneficiado."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/26-RuadeS.MiguelOAnjo-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/26-RuadeS.MiguelOAnjo-Vista2.JPG"
+            }
         ]
     },
     {
@@ -5397,6 +5728,14 @@
                 "enfiteuta": "Manuel Fernandes Lima",
                 "foro": "",
                 "descricao": "A casa e a outra parte do quintal não são foreiras ao cabido."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/41-CampodeSantaAna-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/41-CampodeSantaAna-Vista1.JPG"
             }
         ]
     },
@@ -5661,6 +6000,14 @@
                 "foro": "",
                 "descricao": "Pedro Machado, casado com Maria Ferreira, paga 2000 reis ao enfiteuta do prazo do casal dos Chãos ou Quinteiro. Ficaram unidas em 1738. A casa n.° 49 confronta, do poente, com o quintal da casa n.° 27 da Rua dos Chãos de Baixo."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/46-RuaDeSantoAndrÇ-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/46-RuaDeSantoAndrÇ-Vista1.JPG"
+            }
         ]
     },
     {
@@ -5785,6 +6132,14 @@
                 "enfiteuta": "",
                 "foro": "",
                 "descricao": "   O cabido recebeu, assim, do Cónego Francisco de Meira Carrilho, enfiteuta principal, em troca dos nº 25, 26 e 27, a casa nº7 da Rua dos Chãos de Baixo, bem como 30.000 reis que andavam a juro, «para satisfação de algum prejuízo, que pudesse haver nesta subrogação».   "
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/33-CampoDeS.Tiago-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/33-CampoDeS.Tiago-Vista1.JPG"
             }
         ]
     },
@@ -5935,6 +6290,14 @@
                 "foro": "100 reis, 6 alqueires de trigo, 6 de pão meado e 2 galinhas",
                 "descricao": "O emprazamento mais antigo que se conehce data de 1483 e foi feito a favor de Martim Álvares, ouvires, da cidade de Braga.Seguem-se os emprazamentos dos anos de 1550 e 1579. Pertence a este prazo os n.º1 a 23 da rua Nova da Seara."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/43-CampodeNossaSenhoraaBranca.RuadaRÇgua.RuaNovadaSeara-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/43-CampodeNossaSenhoraaBranca.RuadaRÇgua.RuaNovadaSeara-Vista2.JPG"
+            }
         ]
     },
     {
@@ -5999,6 +6362,14 @@
                 "enfiteuta": "D. Agostinha Maria de Barros Gavião, enfiteuta principal do prazo do casal dos Chãos ou Quinteiro.",
                 "foro": "",
                 "descricao": "«Chãos de casa» do prazo do casal dos Chãos ou Quinteiro. O n.° 35 confronta, do poente, com o n.° 27 da Praça do Gavião."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/50-RuaDeNossaSenhoraDeGuadalupe-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/50-RuaDeNossaSenhoraDeGuadalupe-Vista2.JPG"
             }
         ]
     },
@@ -6172,6 +6543,14 @@
                 "enfiteuta": "",
                 "foro": "",
                 "descricao": "Corresponde ao n.º 1 da Praça do Pão, para onde tem a frontaria e serventia principais."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/14-RuadeSta.MariaoudoPoáo-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/14-RuadeSta.MariaoudoPoáo-Vista2.JPG"
             }
         ]
     },
@@ -6436,6 +6815,14 @@
                 "foro": "",
                 "descricao": "Helena Teresa, filha de Manuel Carvalho, paga 230 reis ao enfiteuta da 1.ª metade do casal do Lagarto. A casa é foreira a Jácome Borges Pacheco e confronta, de ambas as partes, com casas que lhe pertencem."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/54-RuaDasPalhotas-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/54-RuadasPalhotas-Vista2.JPG"
+            }
         ]
     },
     {
@@ -6488,6 +6875,14 @@
                 "enfiteuta": "Pedro Pereira",
                 "foro": "40 reis e 1 galinha",
                 "descricao": "Foi demolida para alargamento das casas do Cabido, depois do ano de 1793."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/3-RuaDosAáouguesVelhos-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/3-RuaDosAáouguesVelhos-Vista1.JPG"
             }
         ]
     },
@@ -6603,6 +6998,14 @@
                 "enfiteuta": "A viúva do Capitão Domingues Gomes Lages",
                 "foro": "210 reis 2 capões",
                 "descricao": "O nº 20 confronta, do poente, com casa de vínculo. O nº 21 situa-se por detrás da Igreja de S. João do Souto e, por sentença que alcançou Teotónio Soares de Brito contra o cabido, ficou-lhe a pertencer o nº 19. "
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/8-RuaDeJanes-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/8-RuaDeJanes-Vista1.JPG"
             }
         ]
     },
@@ -6789,6 +7192,14 @@
                 "foro": "",
                 "descricao": "Corresponde ao nº 51 da Rua da Ponte de Guimarães, para onde tem a frontaria principal."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/40-RuaDoPaymanta-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/40-RuaDoPaymanta-Vista1.JPG"
+            }
         ]
     },
     {
@@ -6914,6 +7325,14 @@
                 "foro": "440 reis e 2 galinhas",
                 "descricao": "A casa n.º 22 confronta, do norte, com a travessa que vem da Ruade D. Gualdim."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/19-RuaDeSto.Ant¢nio-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/19-RuaDeSto.Ant¢nio-Vista2.JPG"
+            }
         ]
     },
     {
@@ -6990,6 +7409,14 @@
                 "enfiteuta": "",
                 "foro": "",
                 "descricao": "Corresponde ao n.º 20 da Rua do Forno, para onde tem a frontaria e serventia principais. Confronta, do poente, com casa foreira à cororaria.   "
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/12-TravessaDaRuaDoFornoParaADoPoco-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/12-TravessaDaRuaDoFornoParaADoPoco-Vista2.JPG"
             }
         ]
     },
@@ -7326,6 +7753,14 @@
                 "foro": "",
                 "descricao": "Os herdeiros de Maria Ferreira, viúva de António Rodrigues, mercador, e sua filha Ana, pagam 20 reis ao enfiteuta do prazo do casal dos Chãos ou Quinteiro. Confronta, do sul, com casa foreira à Câmara e do poente, com o Eirado. Antes do ano de 1681 correspondia a duas casas."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/45-RuaDosCh∆osDeBaixo-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/45-RuaDosCh∆osDeBaixo-Vista2.JPG"
+            }
         ]
     },
     {
@@ -7505,6 +7940,14 @@
                 "foro": "",
                 "descricao": "A casa n.º40 confronta, do norte, com casa foreira à capela de D.Gonçalo Pereira."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/42-CampoECaláadadeNossaSenhoraaBranca-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/42-CampoECaláadadeNossaSenhoraaBranca-Vista2.JPG"
+            }
         ]
     },
     {
@@ -7533,6 +7976,14 @@
                 "enfiteuta": "Jacinto de Magalhães",
                 "foro": "350 reis e ... galinhas",
                 "descricao": "em 1674 o n.º3 e as nove casas que constituiam este prazo foram unidas ao n.º2.A casa n.º2 confronta, do sul, com terreiro da casa n.º1 e, o n.º11, do norte, com casa foreira aoHospital de S. Marcos"
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/25-CampoDeS.Sebasti∆oEEmFrenteDoAáougue-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/25-CampoDeS.Sebasti∆oEEmFrenteDoAáougue-Vista2.JPG"
             }
         ]
     },
@@ -7601,6 +8052,14 @@
                 "foro": "-",
                 "descricao": "Portal de serventia do campo da casa nº 20 da Rua do Arrabalde da Cruz da PedraConfronta, do nascente, com a casa pertencente à propriedade, denominada, \"O Bispo\"."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/31-RuaDoAlcaide-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/31-RuaDoAlcaide-Vista1.JPG"
+            }
         ]
     },
     {
@@ -7631,6 +8090,14 @@
                 "enfiteuta": "Dr.António Fernandes do Vale, médico  ",
                 "foro": "100 reis e 4 galinhas",
                 "descricao": " Antes de 1480 funcionou aqui o \"Forno da Vila\""
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/7-LouraETerreiroDoCastelo-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/7-LouraETerreiroDoCastelo-Vista1.JPG"
             }
         ]
     },
@@ -7769,6 +8236,14 @@
                 "foro": "",
                 "descricao": "Confronta, do sul, com a dita rua."
             }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/39-PonteDeGuimar∆es-Vista2.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/39-PonteDeGuimar∆es-Vista1.JPG"
+            }
         ]
     },
     {
@@ -7875,6 +8350,14 @@
                 "enfiteuta": "",
                 "foro": "",
                 "descricao": "Corresponde ao n.º 12 da Rua de Maximinos, para onde tem afronteira e serventia principais."
+            }
+        ],
+        "figuras_atuais": [
+            {
+                "imagem": "MapaRuas-materialBase/atual/21-RuaVerde-Vista1.JPG"
+            },
+            {
+                "imagem": "MapaRuas-materialBase/atual/21-RuaVerde-Vista2.JPG"
             }
         ]
     }

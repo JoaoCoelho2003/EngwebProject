@@ -44,6 +44,13 @@ defmodule Engweb.Repo.Seeds.Roads do
           road_id: id_road
         })
       end)
+
+      road["figuras_atuais"] |> Enum.each(fn fig ->
+        Roads.create_current_image(%{
+          image: fig["imagem"],
+          road_id: id_road
+        })
+      end)
     end)
   end
 end

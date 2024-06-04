@@ -9,6 +9,7 @@ defmodule Engweb.Roads do
   alias Engweb.Roads.Road
   alias Engweb.Roads.Images
   alias Engweb.Roads.Houses
+  alias Engweb.Roads.CurrentImage
 
   @doc """
   Returns the list of roads.
@@ -295,6 +296,12 @@ defmodule Engweb.Roads do
   """
   def change_house(%Houses{} = house, attrs \\ %{}) do
     Houses.changeset(house, attrs)
+  end
+
+  def create_current_image(attrs \\ %{}) do
+    %CurrentImage{}
+    |> CurrentImage.changeset(attrs)
+    |> Repo.insert()
   end
 
 end
