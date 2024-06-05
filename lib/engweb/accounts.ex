@@ -350,4 +350,8 @@ defmodule Engweb.Accounts do
       {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
+
+  def get_one_user_by_role(role) do
+    Repo.one!(from u in User, where: u.role == ^role)
+  end
 end

@@ -6,6 +6,7 @@ defmodule Engweb.Repo.Migrations.CreateRoads do
       add :num, :integer
       add :name, :string
       add :description, :text
+      add :user_id, references(:users, on_delete: :nothing)
 
       timestamps(type: :utc_datetime)
     end

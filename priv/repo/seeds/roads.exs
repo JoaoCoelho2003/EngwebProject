@@ -3,6 +3,7 @@ defmodule Engweb.Repo.Seeds.Roads do
   alias Engweb.Roads
   alias Engweb.Roads.Road
   alias Engweb.Repo
+  alias Engweb.Accounts
 
   @roads File.read!("priv/fake/roads.json") |> Jason.decode!()
 
@@ -17,12 +18,15 @@ defmodule Engweb.Repo.Seeds.Roads do
   end
 
   def seed_roads(roads) do
+    admin = Accounts.get_one_user_by_role("admin")
+
     roads
     |> Enum.each(fn road ->
       road_entry = %{
         num: road["numero"],
         name: road["nome"],
-        description: road["descricao"]
+        description: road["descricao"],
+        user_id: admin.id
       } |> Roads.create_road()
 
       id_road = Roads.get_road_by_num(road["numero"]).id

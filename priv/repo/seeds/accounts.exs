@@ -18,6 +18,20 @@ defmodule Engweb.Repo.Seeds.Accounts do
 
   def seed_users(characters) do
 
+    case Accounts.register_user(%{
+      email: "admin@mail.pt",
+      password: "password1234",
+      name: "admin",
+      filiation: "docente",
+      role: "admin"
+    }) do
+      {:ok, changeset} ->
+        Repo.update!(Accounts.User.confirm_changeset(changeset))
+
+      {:error, changeset} ->
+        Mix.shell().error(Kernel.inspect(changeset.errors))
+    end
+
     for character <- characters do
       email = (character |> String.downcase() |> String.replace(~r/\s*/, "")) <> "@mail.pt"
 
