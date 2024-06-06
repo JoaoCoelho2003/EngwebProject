@@ -6,7 +6,8 @@ defmodule EngwebWeb.RoadLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :roads, Roads.list_roads())}
+    roads = Roads.list_roads() |> Enum.sort_by(& &1.num)
+    {:ok, stream(socket, :roads, roads)}
   end
 
   @impl true
