@@ -1,4 +1,4 @@
-defmodule EngwebWeb.UserConfirmationLive do
+defmodule EngwebWeb.UserLive.UserConfirmationLive do
   use EngwebWeb, :live_view
 
   alias Engweb.Accounts

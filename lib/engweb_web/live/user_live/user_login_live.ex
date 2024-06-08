@@ -1,4 +1,4 @@
-defmodule EngwebWeb.UserLoginLive do
+defmodule EngwebWeb.UserLive.UserLoginLive do
   use EngwebWeb, :live_view
 
   def render(assigns) do

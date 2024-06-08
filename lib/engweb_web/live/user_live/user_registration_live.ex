@@ -1,4 +1,4 @@
-defmodule EngwebWeb.UserRegistrationLive do
+defmodule EngwebWeb.UserLive.UserRegistrationLive do
   use EngwebWeb, :live_view
 
   alias Engweb.Accounts

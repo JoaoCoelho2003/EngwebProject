@@ -1,4 +1,4 @@
-defmodule EngwebWeb.UserResetPasswordLive do
+defmodule EngwebWeb.UserLive.UserResetPasswordLive do
   use EngwebWeb, :live_view
 
   alias Engweb.Accounts
