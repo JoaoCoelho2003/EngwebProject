@@ -7,6 +7,10 @@ defmodule Engweb.Roads.Road do
     field :num, :integer
     field :description, :string
     field :user_id, :id
+
+    has_many :images, Engweb.Roads.Images
+    has_one :current_image, Engweb.Roads.CurrentImage
+
     timestamps(type: :utc_datetime)
   end
 

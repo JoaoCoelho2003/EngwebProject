@@ -6,10 +6,7 @@ defmodule Engweb.Roads do
   import Ecto.Query, warn: false
   alias Engweb.Repo
 
-  alias Engweb.Roads.Road
-  alias Engweb.Roads.Images
-  alias Engweb.Roads.Houses
-  alias Engweb.Roads.CurrentImage
+  alias Engweb.Roads.{Road, Images, Houses, CurrentImage}
 
   @doc """
   Returns the list of roads.
@@ -150,7 +147,6 @@ defmodule Engweb.Roads do
 
   """
   def get_image!(id), do: Repo.get!(Images, id)
-
 
   @doc """
   Creates an image.
@@ -298,10 +294,37 @@ defmodule Engweb.Roads do
     Houses.changeset(house, attrs)
   end
 
+  @doc """
+  Creates a current image.
+
+  ## Examples
+
+      iex> create_current_image(%{field: value})
+      {:ok, %CurrentImage{}}
+
+      iex> create_current_image(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
   def create_current_image(attrs \\ %{}) do
     %CurrentImage{}
     |> CurrentImage.changeset(attrs)
     |> Repo.insert()
   end
 
+  @doc """
+  Gets the current image for a specific road.
+
+  ## Examples
+
+      iex> get_current_image_by_road(road_id)
+      %CurrentImage{}
+
+      iex> get_current_image_by_road(456)
+      nil
+
+  """
+  def get_current_image_by_road(road_id) do
+    Repo.one(from ci in CurrentImage, where: ci.road_id == ^road_id)
+  end
 end
