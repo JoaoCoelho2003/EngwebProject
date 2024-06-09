@@ -12,7 +12,7 @@ defmodule EngwebWeb.RoadLive.Show do
   def handle_params(%{"id" => id}, _, socket) do
     road = Roads.get_road!(id)
     images = Roads.list_images_by_road(id)
-    current_image = Roads.get_current_image_by_road(id)
+    current_image = Roads.list_current_images_by_road(id)
 
     {:noreply,
      socket

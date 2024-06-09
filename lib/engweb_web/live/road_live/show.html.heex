@@ -16,7 +16,13 @@
 <div>
   <h2>Current Image</h2>
   <%= if @current_image do %>
-    <img src={@current_image.image} alt={"Current image for #{@road.name}"}>
+    <ul>
+      <%= for imagem <- @current_image do %>
+        <li>
+          <img src={imagem.image}/>
+        </li>
+      <% end %>
+    </ul>  
   <% else %>
     <p>No current image available.</p>
   <% end %>

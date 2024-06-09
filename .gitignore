@@ -40,3 +40,7 @@ MapaRuas-materialBase.zip
 MapaRuas-materialBase/*
 
 !MapaRuas-materialBase/.gitkeep
+
+priv/static/images/imagem/*
+
+!priv/static/images/imagem/.gitkeep

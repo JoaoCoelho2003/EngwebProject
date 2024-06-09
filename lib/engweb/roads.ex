@@ -324,7 +324,7 @@ defmodule Engweb.Roads do
       nil
 
   """
-  def get_current_image_by_road(road_id) do
-    Repo.one(from ci in CurrentImage, where: ci.road_id == ^road_id)
+  def list_current_images_by_road (road_id) do
+    Repo.all(from ci in CurrentImage, where: ci.road_id == ^road_id)
   end
 end
