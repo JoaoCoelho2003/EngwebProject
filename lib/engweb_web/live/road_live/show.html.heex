@@ -20,10 +20,10 @@
 
 <div style="text-align: center; margin-top: 30px; margin-bottom: 40px;">
   <h2 style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">Present Day Images</h2>
-  <%= if @current_image do %>
+  <%= if @current_images do %>
     <div class="max-w-screen-xl mx-auto">
       <ul style="list-style-type: none; padding: 0; margin: 0;">
-        <%= for image <- @current_image do %>
+        <%= for image <- @current_images do %>
           <li style="display: inline-block; margin: 0 2vw;">
             <img src={image.image} style="max-width: 25vw; height: auto; display: block; margin: 0 auto 4vw;">
           </li>
@@ -63,6 +63,8 @@
     action={@live_action}
     road={@road}
     current_user={@current_user}
+    images={@images}
+    current_images={@current_images}
     patch={~p"/roads/#{@road.id}"}
     />
 </.modal>

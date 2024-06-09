@@ -9,7 +9,7 @@ defmodule Engweb.Roads.Road do
     field :user_id, :id
 
     has_many :images, Engweb.Roads.Images
-    has_many :current_image, Engweb.Roads.CurrentImage
+    has_many :current_images, Engweb.Roads.CurrentImages
 
     timestamps(type: :utc_datetime)
   end

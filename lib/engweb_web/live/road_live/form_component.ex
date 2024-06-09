@@ -26,15 +26,18 @@ defmodule EngwebWeb.RoadLive.FormComponent do
       </div>
       <% else %>
         <.simple_form
-          for={@form}
+          for={@form_road}
           id="road-form"
           phx-target={@myself}
           phx-change="validate"
           phx-submit="save"
+          multipart
         >
-          <.input field={@form[:num]} type="number" label="Num" />
-          <.input field={@form[:name]} type="text" label="Name" />
-          <.input field={@form[:description]} type="text" label="Description" />
+          <.input field={@form_road[:num]} type="number" label="Num" />
+          <.input field={@form_road[:name]} type="text" label="Name" />
+          <.input field={@form_road[:description]} type="text" label="Description" />
+          <!-- Add images -->
+          <.input field={@form_images[:image]} type="file" label="Image" />
           <:actions>
             <.button phx-disable-with="Saving...">Save Road</.button>
           </:actions>
@@ -45,13 +48,17 @@ defmodule EngwebWeb.RoadLive.FormComponent do
   end
 
   @impl true
-  def update(%{road: road} = assigns, socket) do
-    changeset = Roads.change_road(road)
-
+  def update(%{road: road, images: images, current_images: current_images} = assigns, socket) do
+    changeset_road = Roads.change_road(road)
+    changeset_images = Enum.map(images, &Roads.Images.changeset(&1, %{}))
+    changeset_current_images = Enum.map(current_images, &Roads.CurrentImages.changeset(&1, %{}))
     {:ok,
      socket
      |> assign(assigns)
-     |> assign_form(changeset)}
+     |> assign_form(:form_road,changeset_road)
+     |> assign_form(:form_images, changeset_images)
+     |> assign_form(:form_current_images, changeset_current_images)
+    }
   end
 
   @impl true
@@ -61,7 +68,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
       |> Roads.change_road(road_params)
       |> Map.put(:action, :validate)
 
-    {:noreply, assign_form(socket, changeset)}
+    {:noreply, assign_form(socket, :form_road ,changeset)}
   end
 
   def handle_event("save", %{"road" => road_params}, socket) do
@@ -86,7 +93,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
           |> push_patch(to: socket.assigns.patch)}
 
         {:error, %Ecto.Changeset{} = changeset} ->
-          {:noreply, assign_form(socket, changeset)}
+          {:noreply, assign_form(socket, :form_road, changeset)}
       end
     end
   end
@@ -105,7 +112,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
           |> push_patch(to: socket.assigns.patch)}
 
         {:error, %Ecto.Changeset{} = changeset} ->
-          {:noreply, assign_form(socket, changeset)}
+          {:noreply, assign_form(socket, :form_road ,changeset)}
       end
     end
   end
@@ -129,8 +136,18 @@ defmodule EngwebWeb.RoadLive.FormComponent do
     end
   end
 
-  defp assign_form(socket, %Ecto.Changeset{} = changeset) do
-    assign(socket, :form, to_form(changeset))
+  defp assign_form(socket, :form_road , %Ecto.Changeset{} = changeset) do
+    assign(socket, :form_road, to_form(changeset))
+  end
+
+  defp assign_form(socket, :form_images, changesets) do
+    images = Enum.map(changesets, &to_form/1)
+    IO.inspect(images)
+    assign(socket, :form_images, Enum.map(changesets, &to_form/1))
+  end
+
+  defp assign_form(socket, :form_current_images, changesets) do
+    assign(socket, :form_current_images, Enum.map(changesets, &to_form/1))
   end
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})

@@ -1,4 +1,4 @@
-defmodule Engweb.Roads.CurrentImage do
+defmodule Engweb.Roads.CurrentImages do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -10,8 +10,8 @@ defmodule Engweb.Roads.CurrentImage do
   end
 
   @doc false
-  def changeset(current_image, attrs) do
-    current_image
+  def changeset(current_images, attrs) do
+    current_images
     |> cast(attrs, [:image, :road_id])
     |> validate_required([:image, :road_id])
   end

@@ -6,7 +6,7 @@ defmodule Engweb.Roads do
   import Ecto.Query, warn: false
   alias Engweb.Repo
 
-  alias Engweb.Roads.{Road, Images, Houses, CurrentImage, Comment}
+  alias Engweb.Roads.{Road, Images, Houses, CurrentImages, Comment}
 
   @doc """
   Returns the list of roads.
@@ -119,6 +119,10 @@ defmodule Engweb.Roads do
     Road.changeset(road, attrs)
   end
 
+  def list_roads_by_user_id(user_id) do
+    Repo.all(from r in Road, where: r.user_id == ^user_id)
+  end
+
   @doc """
   Returns the list of images.
 
@@ -198,6 +202,10 @@ defmodule Engweb.Roads do
   """
   def delete_image(%Images{} = image) do
     Repo.delete(image)
+  end
+
+  def change_images(%Images{} = image, attrs \\ %{}) do
+    Images.changeset(image, attrs)
   end
 
   @doc """
@@ -299,16 +307,16 @@ defmodule Engweb.Roads do
 
   ## Examples
 
-      iex> create_current_image(%{field: value})
-      {:ok, %CurrentImage{}}
+      iex> create_current_images(%{field: value})
+      {:ok, %CurrentImages{}}
 
-      iex> create_current_image(%{field: bad_value})
+      iex> create_current_images(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_current_image(attrs \\ %{}) do
-    %CurrentImage{}
-    |> CurrentImage.changeset(attrs)
+  def create_current_images(attrs \\ %{}) do
+    %CurrentImages{}
+    |> CurrentImages.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -317,15 +325,19 @@ defmodule Engweb.Roads do
 
   ## Examples
 
-      iex> get_current_image_by_road(road_id)
-      %CurrentImage{}
+      iex> get_current_images_by_road(road_id)
+      %CurrentImages{}
 
-      iex> get_current_image_by_road(456)
+      iex> get_current_images_by_road(456)
       nil
 
   """
   def list_current_images_by_road (road_id) do
-    Repo.all(from ci in CurrentImage, where: ci.road_id == ^road_id)
+    Repo.all(from ci in CurrentImages, where: ci.road_id == ^road_id)
+  end
+
+  def change_current_images(%CurrentImages{} = current_images, attrs \\ %{}) do
+    CurrentImages.changeset(current_images, attrs)
   end
 
   def list_comments_by_road(road_id) do

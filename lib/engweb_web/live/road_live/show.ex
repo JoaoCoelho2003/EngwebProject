@@ -12,14 +12,14 @@ defmodule EngwebWeb.RoadLive.Show do
   def handle_params(%{"id" => id}, _, socket) do
     road = Roads.get_road!(id)
     images = Roads.list_images_by_road(id)
-    current_image = Roads.list_current_images_by_road(id)
+    current_images = Roads.list_current_images_by_road(id)
 
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
      |> assign(:road, road)
      |> assign(:images, images)
-     |> assign(:current_image, current_image)}
+     |> assign(:current_images, current_images)}
   end
 
   defp page_title(:show), do: "Show Road"

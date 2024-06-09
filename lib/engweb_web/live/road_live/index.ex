@@ -18,11 +18,11 @@ defmodule EngwebWeb.RoadLive.Index do
              |> Engweb.Repo.preload(:images)
              |> Map.get(:images)
 
-    current_image = road
-                    |> Engweb.Repo.preload(:current_image)
-                    |> Map.get(:current_image)
+    current_images = road
+                    |> Engweb.Repo.preload(:current_images)
+                    |> Map.get(:current_images)
 
-    %{road | images: images, current_image: current_image}
+    %{road | images: images, current_images: current_images}
   end
 
 
@@ -32,22 +32,12 @@ defmodule EngwebWeb.RoadLive.Index do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  defp apply_action(socket, :edit, %{"id" => id}) do
-    road = Roads.get_road!(id) |> load_road_data()
-
-    socket
-    |> assign(:page_title, "Edit Road")
-    |> assign(:road, road)
-    |> assign(:images, road.images)
-    |> assign(:current_image, road.current_image)
-  end
-
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Road")
     |> assign(:road, %Road{})
     |> assign(:images, [])
-    |> assign(:current_image, [])
+    |> assign(:current_images, [])
   end
 
   defp apply_action(socket, :index, _params) do
@@ -55,30 +45,6 @@ defmodule EngwebWeb.RoadLive.Index do
     |> assign(:page_title, "Listing Roads")
     |> assign(:road, nil)
     |> assign(:images, [])
-    |> assign(:current_image, [])
-  end
-
-  @impl true
-  def handle_info({EngwebWeb.RoadLive.FormComponent, {:saved, road}}, socket) do
-    road = road |> load_road_data()
-    {:noreply, stream_insert(socket, :roads, road)}
-  end
-
-  @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
-    road = Roads.get_road!(id)
-    {:ok, _} = Roads.delete_road(road)
-
-    {:noreply, stream_delete(socket, :roads, road)}
-  end
-
-  def handle_event("delete_image", %{"id" => id}, socket) do
-    image = Roads.get_image!(id)
-    {:ok, _} = Roads.delete_image(image)
-
-    {:noreply,
-      socket
-      |> update(:images, fn images -> Enum.reject(images, &(&1.id == id)) end)
-    }
+    |> assign(:current_images, [])
   end
 end
