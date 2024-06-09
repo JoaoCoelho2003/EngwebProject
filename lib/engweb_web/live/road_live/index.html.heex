@@ -1,10 +1,12 @@
-<.header>
-  <:actions>
-    <.link patch={~p"/roads/new"}>
-      <.button>New Road</.button>
-    </.link>
-  </:actions>
-</.header>
+<%= if @current_user do %>
+  <.header>
+    <:actions>
+      <.link patch={~p"/roads/new"}>
+        <.button>New Road</.button>
+      </.link>
+    </:actions>
+  </.header>
+<% end %>
 
 <.table
   id="roads"
@@ -37,6 +39,7 @@
     title={@page_title}
     action={@live_action}
     road={@road}
+    current_user={@current_user}
     patch={~p"/"}
   />
 </.modal>

@@ -47,7 +47,7 @@ defmodule EngwebWeb.RoadLive.Index do
     |> assign(:page_title, "New Road")
     |> assign(:road, %Road{})
     |> assign(:images, [])
-    |> assign(:current_image, nil)
+    |> assign(:current_image, [])
   end
 
   defp apply_action(socket, :index, _params) do
@@ -55,7 +55,7 @@ defmodule EngwebWeb.RoadLive.Index do
     |> assign(:page_title, "Listing Roads")
     |> assign(:road, nil)
     |> assign(:images, [])
-    |> assign(:current_image, nil)
+    |> assign(:current_image, [])
   end
 
   @impl true

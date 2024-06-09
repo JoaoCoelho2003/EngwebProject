@@ -11,7 +11,7 @@ defmodule EngwebWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
-    
+
   end
 
   pipeline :api do
@@ -21,7 +21,26 @@ defmodule EngwebWeb.Router do
   scope "/", EngwebWeb do
     pipe_through :browser
 
-    live "/", RoadLive.Index, :index
+    live_session :home,
+      on_mount: [{EngwebWeb.UserAuth, :mount_current_user}] do
+      live "/", RoadLive.Index, :index
+    end
+  end
+
+  scope "/roads", EngwebWeb do
+    pipe_through :browser
+
+    live_session :post_roads,
+      on_mount: [{EngwebWeb.UserAuth, :ensure_authenticated}] do
+      live "/new", RoadLive.Index, :new
+      live "/:id/edit", RoadLive.Index, :edit
+      live "/:id/show/edit", RoadLive.Show, :edit
+    end
+
+    live_session :roads,
+      on_mount: [{EngwebWeb.UserAuth, :mount_current_user}] do
+        live "/:id", RoadLive.Show, :show
+    end
   end
 
   # Other scopes may use custom stacks.
@@ -85,13 +104,4 @@ defmodule EngwebWeb.Router do
     end
   end
 
-  scope "/", EngwebWeb do
-    pipe_through [:browser]
-    live_session :roads do
-      live "/roads/new", RoadLive.Index, :new
-      live "/roads/:id/edit", RoadLive.Index, :edit
-      live "/roads/:id", RoadLive.Show, :show
-      live "/roads/:id/show/edit", RoadLive.Show, :edit
-    end
-  end
 end

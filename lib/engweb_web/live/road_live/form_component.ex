@@ -70,7 +70,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
   end
 
   defp save_road(socket, :new, road_params) do
-    case Roads.create_road(road_params) do
+    case Map.put(road_params, "user_id", socket.assigns.current_user.id) |> Roads.create_road() do
       {:ok, road} ->
         notify_parent({:saved, road})
 
