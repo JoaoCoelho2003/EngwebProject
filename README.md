@@ -44,6 +44,12 @@ Then you can run the script python to create the json file that will be used to 
 python3 scripts/xmlToJson.py
 ```
 
+Before populating the database, you need to add the image files to the `priv/static/images/imagem` folder.
+
+```bash
+mv MapaRuas-materialBase/imagem/* MapaRuas-materialBase/atual/* priv/static/images/imagem```
+```
+
 Finally, you can run the following command to create and populate the database:
 
 ```bash

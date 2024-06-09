@@ -14,6 +14,6 @@ defmodule Engweb.Roads.Images do
   def changeset(images, attrs) do
     images
     |> cast(attrs, [:image, :legenda, :road_id])
-    |> validate_required([:image, :legenda])
+    |> validate_required([:image, :legenda, :road_id])
   end
 end

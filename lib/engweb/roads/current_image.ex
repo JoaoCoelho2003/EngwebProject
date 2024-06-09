@@ -12,7 +12,7 @@ defmodule Engweb.Roads.CurrentImage do
   @doc false
   def changeset(current_image, attrs) do
     current_image
-    |> cast(attrs, [:image])
-    |> validate_required([:image])
+    |> cast(attrs, [:image, :road_id])
+    |> validate_required([:image, :road_id])
   end
 end
