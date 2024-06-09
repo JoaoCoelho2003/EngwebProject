@@ -6,7 +6,7 @@ defmodule Engweb.Roads do
   import Ecto.Query, warn: false
   alias Engweb.Repo
 
-  alias Engweb.Roads.{Road, Images, Houses, CurrentImage}
+  alias Engweb.Roads.{Road, Images, Houses, CurrentImage, Comment}
 
   @doc """
   Returns the list of roads.
@@ -326,5 +326,31 @@ defmodule Engweb.Roads do
   """
   def list_current_images_by_road (road_id) do
     Repo.all(from ci in CurrentImage, where: ci.road_id == ^road_id)
+  end
+
+  def list_comments_by_road(road_id) do
+    Repo.all(from c in Comment, where: c.road_id == ^road_id)
+  end
+
+  def get_comment!(id), do: Repo.get!(Comment, id)
+
+  def create_comment(attrs \\ %{}) do
+    %Comment{}
+    |> Comment.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_comment(%Comment{} = comment, attrs) do
+    comment
+    |> Comment.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_comment(%Comment{} = comment) do
+    Repo.delete(comment)
+  end
+
+  def get_comment_by_id(id) do
+    Repo.get_by(Comment, id: id)
   end
 end
