@@ -49,3 +49,17 @@ Finally, you can run the following command to create and populate the database:
 ```bash
 mix ecto.setup
 ```
+
+## Import and export data
+
+To import data from the database to a sql file, you can run the following command:
+
+```bash
+bash export.sh
+```
+
+Similarly, to import data from a sql file to the database, you can run the following command:
+
+```bash
+bash import.sh
+```
