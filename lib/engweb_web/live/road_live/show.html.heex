@@ -1,3 +1,4 @@
+<%= if @current_user != nil and (@current_user.id == @road.user_id or @current_user.role == "admin") do %>
 <.header>
   <%= @road.name %>
   <:actions>
@@ -9,6 +10,7 @@
     </.link>
   </:actions>
 </.header>
+<% end %>
 
 <.list>
   <:item title="Road Number"><%= @road.num %></:item>

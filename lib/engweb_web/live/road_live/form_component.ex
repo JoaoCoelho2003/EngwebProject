@@ -121,7 +121,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
           {:noreply,
           socket
           |> put_flash(:info, "Road deleted successfully")
-          |> push_navigate(to: socket.assigns.patch)}
+          |> redirect(to: socket.assigns.patch)}
 
         {:error, _} ->
           {:noreply, socket |> put_flash(:error, "Error deleting road")}
