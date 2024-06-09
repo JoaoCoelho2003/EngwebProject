@@ -13,31 +13,35 @@
   <:item title="Description"><%= @road.description %></:item>
 </.list>
 
-<div>
-  <h2>Current Image</h2>
+<div style="text-align: center; margin-top: 30px; margin-bottom: 40px;">
+  <h2 style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">Present Day Images</h2>
   <%= if @current_image do %>
-    <ul>
-      <%= for imagem <- @current_image do %>
-        <li>
-          <img src={imagem.image}/>
-        </li>
-      <% end %>
-    </ul>  
+    <div class="max-w-screen-xl mx-auto">
+      <ul style="list-style-type: none; padding: 0; margin: 0;">
+        <%= for image <- @current_image do %>
+          <li style="display: inline-block; margin: 0 2vw;">
+            <img src={image.image} style="max-width: 25vw; height: auto; display: block; margin: 0 auto 4vw;">
+          </li>
+        <% end %>
+      </ul>
+    </div>
   <% else %>
     <p>No current image available.</p>
   <% end %>
 </div>
 
-<div>
-  <h2>Images</h2>
+<div style="text-align: center; margin-top: 30px; margin-bottom: 40px;">
+  <h2 style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">Old Images</h2>
   <%= if Enum.empty?(@images) do %>
     <p>No images available.</p>
   <% else %>
-    <ul>
-      <%= for imagem <- @images do %>
-        <li>
-          <img src={imagem.image} alt={imagem.legenda}>
-          <p><%= imagem.legenda %></p>
+    <ul style="list-style-type: none; padding: 0; margin: 0;">
+      <%= for image <- @images do %>
+        <li style="display: inline-block; margin: 0 10px;">
+          <div style="text-align: center;">
+            <img src={image.image} alt={image.legenda} style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
+            <p style="font-weight: bold; margin-bottom: 20px;"><%= image.legenda %></p>
+          </div>
         </li>
       <% end %>
     </ul>
