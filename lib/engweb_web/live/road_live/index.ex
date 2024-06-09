@@ -5,9 +5,7 @@ defmodule EngwebWeb.RoadLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    roads = Roads.list_roads()
-             |> Enum.map(&load_road_data/1)
-             |> Enum.sort_by(& &1.num)
+    roads = list_roads()
 
     {:ok, stream(socket, :roads, roads)}
   end
@@ -80,17 +78,20 @@ defmodule EngwebWeb.RoadLive.Index do
   end
 
   def handle_event("search", %{"query" => query}, socket) do
-    roads =
-      if String.trim(query) != "" do
-        Roads.filter_roads_by_name(query)
-      else
-        Roads.list_roads()
-      end
-      |> Enum.map(&load_road_data/1)
-      |> Enum.sort_by(& &1.num)
+    roads = list_roads(query)
+    # print lenght of roads
+    IO.puts(Enum.count(roads))
+    {:noreply, stream(socket, :roads, roads, reset: true)}
+  end
 
-
-    {:noreply, assign(socket, :roads, roads)}
+  defp list_roads(query \\ "") do
+    if String.trim(query) != "" do
+      Roads.filter_roads_by_name(query)
+    else
+      Roads.list_roads()
+    end
+    |> Enum.map(&load_road_data/1)
+    |> Enum.sort_by(& &1.num)
   end
 
 end
