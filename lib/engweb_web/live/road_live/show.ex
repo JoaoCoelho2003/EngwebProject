@@ -24,4 +24,5 @@ defmodule EngwebWeb.RoadLive.Show do
 
   defp page_title(:show), do: "Show Road"
   defp page_title(:edit), do: "Edit Road"
+  defp page_title(:delete), do: "Delete Road"
 end
