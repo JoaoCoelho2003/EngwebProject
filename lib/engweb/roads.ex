@@ -328,6 +328,22 @@ defmodule Engweb.Roads do
     Repo.all(from ci in CurrentImage, where: ci.road_id == ^road_id)
   end
 
+    @doc """
+  Filters roads by name.
+
+  Returns a list of roads whose names match the given query.
+
+  ## Examples
+
+      iex> filter_roads_by_name("Main")
+      [%Road{name: "Main Street", ...}, ...]
+
+  """
+  def filter_roads_by_name(name_query) do
+    query = from(r in Road, where: ilike(r.name, ^"%#{name_query}%"))
+    Repo.all(query)
+  end
+
   def list_comments_by_road(road_id) do
     Repo.all(from c in Comment, where: c.road_id == ^road_id)
   end

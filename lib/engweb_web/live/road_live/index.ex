@@ -1,14 +1,11 @@
 defmodule EngwebWeb.RoadLive.Index do
   use EngwebWeb, :live_view
-
   alias Engweb.Roads
   alias Engweb.Roads.Road
 
   @impl true
   def mount(_params, _session, socket) do
-    roads = Roads.list_roads()
-             |> Enum.map(&load_road_data/1)
-             |> Enum.sort_by(& &1.num)
+    roads = list_roads()
 
     {:ok, stream(socket, :roads, roads)}
   end
@@ -24,8 +21,6 @@ defmodule EngwebWeb.RoadLive.Index do
 
     %{road | images: images, current_image: current_image}
   end
-
-
 
   @impl true
   def handle_params(params, _url, socket) do
@@ -81,4 +76,22 @@ defmodule EngwebWeb.RoadLive.Index do
       |> update(:images, fn images -> Enum.reject(images, &(&1.id == id)) end)
     }
   end
+
+  def handle_event("search", %{"query" => query}, socket) do
+    roads = list_roads(query)
+    # print lenght of roads
+    IO.puts(Enum.count(roads))
+    {:noreply, stream(socket, :roads, roads, reset: true)}
+  end
+
+  defp list_roads(query \\ "") do
+    if String.trim(query) != "" do
+      Roads.filter_roads_by_name(query)
+    else
+      Roads.list_roads()
+    end
+    |> Enum.map(&load_road_data/1)
+    |> Enum.sort_by(& &1.num)
+  end
+
 end
