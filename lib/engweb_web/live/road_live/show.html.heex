@@ -55,7 +55,7 @@
 
 <.back navigate={~p"/"}>Return</.back>
 
-<.modal :if={@live_action == :edit} id="road-modal" show on_cancel={JS.patch(~p"/roads/#{@road.id}")}>
+<.modal :if={@live_action in [:edit, :delete]} id="road-modal" show on_cancel={JS.patch(~p"/roads/#{@road.id}")}>
   <.live_component
     module={EngwebWeb.RoadLive.FormComponent}
     id={@road.id}
@@ -63,20 +63,12 @@
     action={@live_action}
     road={@road}
     current_user={@current_user}
-    images={@images}
-    current_images={@current_images}
-    patch={~p"/roads/#{@road.id}"}
-    />
-</.modal>
-
-<.modal :if={@live_action == :delete} id="road-modal_delete" show on_cancel={JS.patch(~p"/roads/#{@road.id}")}>
-  <.live_component
-    module={EngwebWeb.RoadLive.FormComponent}
-    id={@road.id}
-    title={@page_title}
-    action={@live_action}
-    road={@road}
-    current_user={@current_user}
-    patch={~p"/"}
+    patch={
+      if @live_action == :edit do
+       ~p"/roads/#{@road.id}"
+      else
+       ~p"/"  
+      end
+    }
     />
 </.modal>

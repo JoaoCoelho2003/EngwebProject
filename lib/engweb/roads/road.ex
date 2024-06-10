@@ -19,5 +19,6 @@ defmodule Engweb.Roads.Road do
     road
     |> cast(attrs, [:num, :name, :description, :user_id])
     |> validate_required([:num, :name, :description, :user_id])
+    |> unique_constraint(:num)
   end
 end
