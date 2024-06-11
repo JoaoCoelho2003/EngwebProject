@@ -199,8 +199,6 @@ defmodule EngwebWeb.RoadLive.FormComponent do
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
 
   defp consume_uploaded_images(socket, :image) do
-    IO.inspect(socket.assigns.descriptions, label: "Descriptions Before Upload")
-
     uploaded_files =
       consume_uploaded_entries(socket, :image, fn %{path: path}, entry ->
         dest = Path.join([:code.priv_dir(:engweb), "static", "uploads", Path.basename(path)])
@@ -208,8 +206,6 @@ defmodule EngwebWeb.RoadLive.FormComponent do
         File.cp!(path, dest)
         {:ok, {~p"/uploads/#{Path.basename(dest)}", socket.assigns.descriptions[entry.ref]}}
       end)
-
-    IO.inspect(uploaded_files, label: "Uploaded Files")
 
     updated_socket = socket
       |> update(:uploaded_images, &(&1 ++ uploaded_files))
@@ -229,13 +225,13 @@ defmodule EngwebWeb.RoadLive.FormComponent do
 
   defp create_images(socket, road, :image) do
     Enum.each(socket.assigns.uploaded_images, fn path ->
-      Roads.create_image(%{road_id: road.id, path: elem(path,0), description: elem(path,1)})
+      Roads.create_image(%{road_id: road.id, image: elem(path,0), legenda: elem(path,1)})
     end)
   end
 
   defp create_current_images(socket, road, :current_image) do
     Enum.each(socket.assigns.uploaded_current_images, fn path ->
-      Roads.create_image(%{road_id: road.id, path: path})
+      Roads.create_current_images(%{road_id: road.id, image: path})
     end)
   end
 end
