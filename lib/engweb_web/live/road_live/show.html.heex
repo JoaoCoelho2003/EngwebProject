@@ -19,7 +19,7 @@
 </.list>
 
 <div style="text-align: center; margin-top: 30px; margin-bottom: 40px;">
-  <h2 style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">Present Day Images</h2>
+  <h2 style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">Imagens Atuais (2019)</h2>
   <%= if @current_image do %>
     <div class="max-w-screen-xl mx-auto">
       <ul style="list-style-type: none; padding: 0; margin: 0;">
@@ -36,7 +36,7 @@
 </div>
 
 <div style="text-align: center; margin-top: 30px; margin-bottom: 40px;">
-  <h2 style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">Old Images</h2>
+  <h2 style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">Imagens Antigas</h2>
   <%= if Enum.empty?(@images) do %>
     <p>No images available.</p>
   <% else %>
@@ -50,6 +50,36 @@
         </li>
       <% end %>
     </ul>
+  <% end %>
+</div>
+
+<div style="text-align: center; margin-top: 30px; margin-bottom: 40px;">
+  <h2 style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">Casas</h2>
+  <%= if Enum.empty?(@houses) do %>
+    <p>No houses available.</p>
+  <% else %>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-300">
+        <thead>
+          <tr>
+            <th class="py-2 px-4 border-b">Number</th>
+            <th class="py-2 px-4 border-b">Enfiteuta</th>
+            <th class="py-2 px-4 border-b">Foro</th>
+            <th class="py-2 px-4 border-b">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for house <- @houses do %>
+            <tr>
+              <td class="py-2 px-4 border-b"><%= house.num %></td>
+              <td class="py-2 px-4 border-b"><%= house.enfiteuta %></td>
+              <td class="py-2 px-4 border-b"><%= house.foro %></td>
+              <td class="py-2 px-4 border-b"><%= house.description %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   <% end %>
 </div>
 

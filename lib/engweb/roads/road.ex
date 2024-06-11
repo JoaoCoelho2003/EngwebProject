@@ -10,6 +10,7 @@ defmodule Engweb.Roads.Road do
 
     has_many :images, Engweb.Roads.Images
     has_many :current_image, Engweb.Roads.CurrentImage
+    has_many :houses, Engweb.Roads.Houses
 
     timestamps(type: :utc_datetime)
   end
