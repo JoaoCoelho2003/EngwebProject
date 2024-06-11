@@ -15,11 +15,11 @@ defmodule EngwebWeb.RoadLive.Index do
              |> Engweb.Repo.preload(:images)
              |> Map.get(:images)
 
-    current_image = road
+    current_images = road
                     |> Engweb.Repo.preload(:current_image)
                     |> Map.get(:current_image)
 
-    %{road | images: images, current_image: current_image}
+    %{road | images: images, current_image: current_images}
   end
 
   @impl true
@@ -84,6 +84,12 @@ defmodule EngwebWeb.RoadLive.Index do
     {:noreply, stream(socket, :roads, roads, reset: true)}
   end
 
+  @impl true
+  def handle_event("navigate_to_road", %{"id" => id}, socket) do
+    road_url = "/roads/#{id}"
+    {:noreply, redirect(socket, to: road_url)}
+  end
+
   defp list_roads(query \\ "") do
     if String.trim(query) != "" do
       Roads.filter_roads_by_name(query)
@@ -93,5 +99,4 @@ defmodule EngwebWeb.RoadLive.Index do
     |> Enum.map(&load_road_data/1)
     |> Enum.sort_by(& &1.num)
   end
-
 end

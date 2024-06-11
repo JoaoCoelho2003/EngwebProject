@@ -9,7 +9,6 @@
 <% end %>
 
 <form class="flex items-center max-w-lg mx-auto" phx-submit="search">
-  <label for="voice-search" class="sr-only">Search</label>
   <div class="relative w-full">
     <input type="text" id="query" name="query" class="bg-gray-250 border border-gray-400 text-black text-s rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-4 p-2.5" placeholder="Search for road" />
   </div>
@@ -20,16 +19,24 @@
   </button>
 </form>
 
-
-<.table
-  id="roads"
-  rows={@streams.roads}
-  row_click={fn {_id, road} -> JS.navigate(~p"/roads/#{road}") end}
->
-  <:col :let={{_id, road}} label="Number"><%= road.num %></:col>
-  <:col :let={{_id, road}} label="Name"><%= road.name %></:col>
-  <:col :let={{_id, road}} label="Description"><%= road.description %></:col>
-</.table>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+  <%= for {_, road} <- @streams.roads do %>
+    <div class="bg-white rounded-md p-4 cursor-pointer" phx-click="navigate_to_road" phx-value-id={road.id}>
+      <p class="text-lg font-bold mb-2"><%= road.name %></p>
+      <div class="grid grid-cols-2 gap-4">
+      </div>
+      <div class="grid grid-cols-1 gap-4">
+        <%= if Enum.any?(road.current_image) do %>
+          <% current_image = hd(road.current_image) %>
+          <div class="relative" style="padding-top: 80%;">
+            <div class="absolute top-0 left-0 w-full h-full overflow-hidden">
+              <img src={current_image.image} alt="Current Image" class="object-cover w-full h-full grayscale hover:grayscale-0 transform hover:scale-110 transition duration-500 ease-in-out"/>            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
 
 <.modal :if={@live_action == :new} id="road-modal" show on_cancel={JS.patch(~p"/")}>
   <.live_component
