@@ -10,9 +10,8 @@ defmodule EngwebWeb.RoadLive.FormComponent do
     <div>
       <.header>
         <%= @title %>
-        <:subtitle>Use this form to manage road records in your database.</:subtitle>
       </.header>
-      <%= if @action == :delete do %>
+      <%= if @action in [:delete, :delete_image, :delete_current_image] do %>
         <div class="flex justify-end">
           <.simple_form
             for={@form}
@@ -37,31 +36,33 @@ defmodule EngwebWeb.RoadLive.FormComponent do
           <.input field={@form[:num]} type="number" label="Num" />
           <.input field={@form[:name]} type="text" label="Name" />
           <.input field={@form[:description]} type="textarea" label="Description" />
-          <div class="flex flex-col">
-            <p class="mb-2">Images</p>
-            <%= for index <- 0..(@uploads.image.max_entries - 1) do %>
-              <p class="mb-2">Image <%= index + 1 %></p>
-              <.live_component
-                module={ImageUploader}
-                id={"uploader_#{index + 1}"}
-                uploads={@uploads}
-                target={@myself}
-                index={index}
-                description={@descriptions[index] || ""}
-                class={
-                  if length(@uploads.image.entries) < (index + 1) do
-                    ""
-                  else
-                    "hidden"
-                  end
-                }
-              />
-            <% end %>
-          </div>
-          <div>
-            <p class="mb-2">Current Images</p>
-            <.live_component module={CurrentImageUploader} id="uploader" uploads={@uploads} target={@myself} />
+          <%= if @action == :new do %>
+            <div class="flex flex-col">
+              <p class="mb-2">Images</p>
+              <%= for index <- 0..(@uploads.image.max_entries - 1) do %>
+                <p class="mb-2">Image <%= index + 1 %></p>
+                <.live_component
+                  module={ImageUploader}
+                  id={"uploader_#{index + 1}"}
+                  uploads={@uploads}
+                  target={@myself}
+                  index={index}
+                  description={@descriptions[index] || ""}
+                  class={
+                    if length(@uploads.image.entries) < (index + 1) do
+                      ""
+                    else
+                      "hidden"
+                    end
+                  }
+                />
+              <% end %>
             </div>
+            <div>
+              <p class="mb-2">Current Images</p>
+              <.live_component module={CurrentImageUploader} id="uploader" uploads={@uploads} target={@myself} />
+              </div>
+          <% end %>
           <:actions>
             <.button phx-disable-with="Saving...">Save Road</.button>
           </:actions>
@@ -76,8 +77,8 @@ defmodule EngwebWeb.RoadLive.FormComponent do
     changeset = Roads.change_road(road)
     {:ok,
      socket
-     |> allow_upload(:image, accept: ~w(.png .jpg .jpeg), max_entries: 2)
-     |> allow_upload(:current_image, accept: ~w(.png .jpg .jpeg), max_entries: 2)
+     |> allow_upload(:image, accept: ~w(.png .jpg .jpeg), max_entries: Roads.max_image_uploads())
+     |> allow_upload(:current_image, accept: ~w(.png .jpg .jpeg), max_entries: Roads.max_current_image_uploads())
      |> assign(:descriptions, %{})
      |> assign(:uploaded_images, [])
      |> assign(:uploaded_current_images, [])
@@ -113,7 +114,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
   end
 
   def handle_event("delete", _params, socket) do
-    delete_road(socket)
+    delete(socket, socket.assigns.action)
   end
 
   def handle_event("cancel-image", %{"ref" => ref}, socket) do
@@ -173,7 +174,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
     end
   end
 
-  defp delete_road(socket) do
+  defp delete(socket, :delete) do
     if socket.assigns.road.user_id != socket.assigns.current_user.id do
       {:noreply, socket |> put_flash(:error, "You are not allowed to delete this road")}
     else
@@ -189,6 +190,40 @@ defmodule EngwebWeb.RoadLive.FormComponent do
         {:error, _} ->
           {:noreply, socket |> put_flash(:error, "Error deleting road")}
       end
+    end
+  end
+
+  defp delete(socket, :delete_image) do
+    image = Roads.get_image!(socket.assigns.id)
+    IO.inspect(image)
+    File.rm!(Path.join([:code.priv_dir(:engweb), "static", image.image]))
+
+    case Roads.delete_image(image) do
+      {:ok, _} ->
+        {:noreply,
+        socket
+        |> put_flash(:info, "Image deleted successfully")
+        |> push_patch(to: socket.assigns.patch)}
+
+      {:error, _} ->
+        {:noreply, socket |> put_flash(:error, "Error deleting image")}
+    end
+  end
+
+  defp delete(socket, :delete_current_image) do
+    current_image = Roads.get_current_image!(socket.assigns.id)
+    IO.inspect(current_image)
+    File.rm!(Path.join([:code.priv_dir(:engweb), "static", current_image.image]))
+
+    case Roads.delete_current_image(current_image) do
+      {:ok, _} ->
+        {:noreply,
+        socket
+        |> put_flash(:info, "Current Image deleted successfully")
+        |> push_patch(to: socket.assigns.patch)}
+
+      {:error, _} ->
+        {:noreply, socket |> put_flash(:error, "Error deleting current image")}
     end
   end
 

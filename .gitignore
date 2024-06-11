@@ -44,3 +44,5 @@ MapaRuas-materialBase/*
 priv/static/images/imagem/*
 
 !priv/static/images/imagem/.gitkeep
+
+priv/static/uploads/*

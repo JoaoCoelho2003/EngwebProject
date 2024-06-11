@@ -8,6 +8,12 @@ defmodule Engweb.Roads do
 
   alias Engweb.Roads.{Road, Images, Houses, CurrentImages, Comment}
 
+  @max_image_uploads 2
+  @max_current_image_uploads 2
+
+  def max_image_uploads, do: @max_image_uploads
+  def max_current_image_uploads, do: @max_current_image_uploads
+
   @doc """
   Returns the list of roads.
 
@@ -208,6 +214,10 @@ defmodule Engweb.Roads do
     Images.changeset(image, attrs)
   end
 
+  def delete_image(%Images{} = image) do
+    Repo.delete(image)
+  end
+
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking image changes.
 
@@ -338,6 +348,12 @@ defmodule Engweb.Roads do
 
   def change_current_images(%CurrentImages{} = current_images, attrs \\ %{}) do
     CurrentImages.changeset(current_images, attrs)
+  end
+
+  def get_current_image!(id), do: Repo.get!(CurrentImages, id)
+
+  def delete_current_image(%CurrentImages{} = current_image) do
+    Repo.delete(current_image)
   end
 
   def list_comments_by_road(road_id) do
