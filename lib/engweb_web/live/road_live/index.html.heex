@@ -19,20 +19,21 @@
   </button>
 </form>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-10">
   <%= for {_, road} <- @streams.roads do %>
-    <div class="bg-white rounded-md p-4 cursor-pointer" phx-click="navigate_to_road" phx-value-id={road.id}>
-      <p class="text-lg font-bold mb-2"><%= road.name %></p>
-      <div class="grid grid-cols-2 gap-4">
-      </div>
-      <div class="grid grid-cols-1 gap-4">
+    <div class="bg-white rounded-md overflow-hidden cursor-pointer shadow-md" phx-click="navigate_to_road" phx-value-id={road.id}>
+      <div class="relative group" style="padding-top: 80%;">
         <%= if Enum.any?(road.current_image) do %>
           <% current_image = hd(road.current_image) %>
-          <div class="relative" style="padding-top: 80%;">
-            <div class="absolute top-0 left-0 w-full h-full overflow-hidden">
-              <img src={current_image.image} alt="Current Image" class="object-cover w-full h-full grayscale hover:grayscale-0 transform hover:scale-110 transition duration-500 ease-in-out"/>            </div>
+          <div class="absolute top-0 left-0 w-full h-full overflow-hidden">
+            <img src={current_image.image} alt="Current Image" class="object-cover w-full h-full grayscale group-hover:grayscale-0 transform hover:scale-110 transition duration-500 ease-in-out"/>
+            <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white text-center p-2">
+              <p class="text-lg font-bold"><%= road.name %></p>
+            </div>
           </div>
         <% end %>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
       </div>
     </div>
   <% end %>
