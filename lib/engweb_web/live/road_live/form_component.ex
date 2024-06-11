@@ -2,6 +2,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
   use EngwebWeb, :live_component
 
   alias Engweb.Roads
+  alias EngwebWeb.RoadLive.{CurrentImageUploader, ImageUploader}
 
   @impl true
   def render(assigns) do
@@ -31,14 +32,36 @@ defmodule EngwebWeb.RoadLive.FormComponent do
           phx-target={@myself}
           phx-change="validate"
           phx-submit="save"
-          phx-drop-target={@uploads.images.ref}
           multipart
         >
           <.input field={@form[:num]} type="number" label="Num" />
           <.input field={@form[:name]} type="text" label="Name" />
-          <.input field={@form[:description]} type="text" label="Description" />
-
-          <.live_file_input upload={@uploads.images}/>
+          <.input field={@form[:description]} type="textarea" label="Description" />
+          <div class="flex flex-col">
+            <p class="mb-2">Images</p>
+            <%= for index <- 0..(@uploads.image.max_entries - 1) do %>
+              <p class="mb-2">Image <%= index + 1 %></p>
+              <.live_component
+                module={ImageUploader}
+                id={"uploader_#{index + 1}"}
+                uploads={@uploads}
+                target={@myself}
+                index={index}
+                description={@descriptions[index] || ""}
+                class={
+                  if length(@uploads.image.entries) < (index + 1) do
+                    ""
+                  else
+                    "hidden"
+                  end
+                }
+              />
+            <% end %>
+          </div>
+          <div>
+            <p class="mb-2">Current Images</p>
+            <.live_component module={CurrentImageUploader} id="uploader" uploads={@uploads} target={@myself} />
+            </div>
           <:actions>
             <.button phx-disable-with="Saving...">Save Road</.button>
           </:actions>
@@ -51,12 +74,13 @@ defmodule EngwebWeb.RoadLive.FormComponent do
   @impl true
   def update(%{road: road} = assigns, socket) do
     changeset = Roads.change_road(road)
-
     {:ok,
      socket
+     |> allow_upload(:image, accept: ~w(.png .jpg .jpeg), max_entries: 2)
+     |> allow_upload(:current_image, accept: ~w(.png .jpg .jpeg), max_entries: 2)
+     |> assign(:descriptions, %{})
      |> assign(assigns)
      |> assign_form(changeset)
-     |> allow_upload(:images, accept: ~w(.png .jpg .jpeg), max_entries: 2)
     }
   end
 
@@ -70,12 +94,32 @@ defmodule EngwebWeb.RoadLive.FormComponent do
     {:noreply, assign_form(socket, changeset)}
   end
 
+  def handle_event("validate-description", %{"description_0" => description}, socket) do
+    ref = Enum.at(socket.assigns.uploads.image.entries, 0).ref
+    descriptions = Map.put(socket.assigns.descriptions, ref, description)
+    {:noreply, assign(socket, :descriptions, descriptions)}
+  end
+
+  def handle_event("validate-description", %{"description_1" => description}, socket) do
+    ref = Enum.at(socket.assigns.uploads.image.entries, 1).ref
+    descriptions = Map.put(socket.assigns.descriptions, ref, description)
+    {:noreply, assign(socket, :descriptions, descriptions)}
+  end
+
   def handle_event("save", %{"road" => road_params}, socket) do
     save_road(socket, socket.assigns.action, road_params)
   end
 
   def handle_event("delete", _params, socket) do
     delete_road(socket)
+  end
+
+  def handle_event("cancel-image", %{"ref" => ref}, socket) do
+    {:noreply, cancel_upload(socket, :image, ref)}
+  end
+
+  def handle_event("cancel-current-image", %{"ref" => ref}, socket) do
+    {:noreply, cancel_upload(socket, :current_image, ref)}
   end
 
   defp save_road(socket, :edit, road_params) do
