@@ -1,14 +1,11 @@
 defmodule EngwebWeb.RoadLive.Index do
   use EngwebWeb, :live_view
-
   alias Engweb.Roads
   alias Engweb.Roads.Road
 
   @impl true
   def mount(_params, _session, socket) do
-    roads = Roads.list_roads()
-             |> Enum.map(&load_road_data/1)
-             |> Enum.sort_by(& &1.id)
+    roads = list_roads()
 
     {:ok, stream(socket, :roads, roads)}
   end
@@ -23,6 +20,7 @@ defmodule EngwebWeb.RoadLive.Index do
                     |> Map.get(:current_images)
 
     %{road | images: images, current_images: current_images}
+
   end
 
   @impl true
@@ -50,5 +48,28 @@ defmodule EngwebWeb.RoadLive.Index do
   def handle_info({EngwebWeb.RoadLive.FormComponent, {:saved, road}}, socket) do
     road = road |> load_road_data()
     {:noreply, stream_insert(socket, :roads, road)}
+  end
+
+  def handle_event("search", %{"query" => query}, socket) do
+    roads = list_roads(query)
+    # print lenght of roads
+    IO.puts(Enum.count(roads))
+    {:noreply, stream(socket, :roads, roads, reset: true)}
+  end
+
+  @impl true
+  def handle_event("navigate_to_road", %{"id" => id}, socket) do
+    road_url = "/roads/#{id}"
+    {:noreply, redirect(socket, to: road_url)}
+  end
+
+  defp list_roads(query \\ "") do
+    if String.trim(query) != "" do
+      Roads.filter_roads_by_name(query)
+    else
+      Roads.list_roads()
+    end
+    |> Enum.map(&load_road_data/1)
+    |> Enum.sort_by(& &1.num)
   end
 end

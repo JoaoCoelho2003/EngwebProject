@@ -2,6 +2,7 @@ defmodule EngwebWeb.RoadLive.Show do
   use EngwebWeb, :live_view
 
   alias Engweb.Roads
+  alias Engweb.Repo
 
   @impl true
   def mount(_params, _session, socket) do
@@ -9,11 +10,13 @@ defmodule EngwebWeb.RoadLive.Show do
   end
 
   @impl true
+
   def handle_params(unsigned_params, _, socket) do
     id = unsigned_params["id"]
-    road = Roads.get_road!(id)
-    images = Roads.list_images_by_road(id)
-    current_images = Roads.list_current_images_by_road(id)
+    road = Roads.get_road!(id) |> Repo.preload([:images, :current_images, :houses])
+    images = road.images
+    current_images = road.current_images
+    houses = road.houses
 
     socket =
      socket
@@ -23,7 +26,8 @@ defmodule EngwebWeb.RoadLive.Show do
      |> assign(:current_images, current_images)
      |> assign(:max_image_uploads, Roads.max_image_uploads())
      |> assign(:max_current_image_uploads, Roads.max_current_image_uploads())
-
+     |> assign(:houses, houses)}
+     
     case socket.assigns.live_action do
       :delete_image ->
         image_id = unsigned_params["image_id"]

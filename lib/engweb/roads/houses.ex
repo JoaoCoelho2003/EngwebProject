@@ -15,7 +15,7 @@ defmodule Engweb.Roads.Houses do
   @doc false
   def changeset(houses, attrs) do
     houses
-    |> cast(attrs, [:num, :enfiteuta, :foro, :description])
-    |> validate_required([:num, :enfiteuta, :foro, :description])
+    |> cast(attrs, [:road_id ,:num, :enfiteuta, :foro, :description])
+    |> validate_required([:road_id ,:num, :enfiteuta, :foro, :description])
   end
 end
