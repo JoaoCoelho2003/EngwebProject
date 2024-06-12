@@ -20,7 +20,13 @@ defmodule EngwebWeb.RoadLive.FormComponent do
             phx-submit="delete"
           >
           <:actions>
-            <.button phx-disable-with="Deleting..." class="bg bg-red-600 hover:bg-red-700">Delete Road</.button>
+            <.button phx-disable-with="Deleting..." class="bg bg-red-600 hover:bg-red-700">Delete <%=
+              if @action == :delete do
+                "Road"
+              else
+                "Image"
+              end
+            %></.button>
           </:actions>
       </.simple_form>
       </div>

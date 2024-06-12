@@ -214,10 +214,6 @@ defmodule Engweb.Roads do
     Images.changeset(image, attrs)
   end
 
-  def delete_image(%Images{} = image) do
-    Repo.delete(image)
-  end
-
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking image changes.
 
