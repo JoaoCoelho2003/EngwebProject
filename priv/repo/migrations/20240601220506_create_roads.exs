@@ -3,7 +3,6 @@ defmodule Engweb.Repo.Migrations.CreateRoads do
 
   def change do
     create table(:roads) do
-      add :num, :integer
       add :name, :string
       add :description, :text
       add :user_id, references(:users, on_delete: :nothing)

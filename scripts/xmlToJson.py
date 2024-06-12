@@ -122,5 +122,6 @@ if __name__ == "__main__":
             add_figuras_atuais(rua,str(rua["numero"]))
             ruas.append(rua)
 
+    ruas.sort(key=lambda x: x["numero"])
     with open("priv/fake/roads.json", "w") as f:
         f.write(json.dumps(ruas, indent=4, ensure_ascii=False))

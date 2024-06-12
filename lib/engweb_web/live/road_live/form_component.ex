@@ -39,7 +39,6 @@ defmodule EngwebWeb.RoadLive.FormComponent do
           phx-submit="save"
           multipart
         >
-          <.input field={@form[:num]} type="number" label="Num" />
           <.input field={@form[:name]} type="text" label="Name" />
           <.input field={@form[:description]} type="textarea" label="Description" />
           <%= if @action == :new do %>

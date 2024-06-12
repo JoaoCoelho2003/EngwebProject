@@ -23,19 +23,16 @@ defmodule Engweb.Repo.Seeds.Roads do
     roads
     |> Enum.each(fn road ->
       road_entry = %{
-        num: road["numero"],
         name: road["nome"],
         description: road["descricao"],
         user_id: admin.id
       } |> Roads.create_road()
 
-      id_road = Roads.get_road_by_num(road["numero"]).id
-
       road["figuras"] |> Enum.each(fn fig ->
         Roads.create_image(%{
           image: fig["imagem"],
           legenda: fig["legenda"],
-          road_id: id_road
+          road_id: road["numero"]
         })
       end)
 
@@ -45,14 +42,14 @@ defmodule Engweb.Repo.Seeds.Roads do
           enfiteuta: house["enfiteuta"],
           foro: house["foro"],
           description: house["descricao"],
-          road_id: id_road
+          road_id: road["numero"]
         })
       end)
 
       road["figuras_atuais"] |> Enum.each(fn fig ->
         Roads.create_current_images(%{
           image: fig["imagem"],
-          road_id: id_road
+          road_id: road["numero"]
         })
       end)
     end)
