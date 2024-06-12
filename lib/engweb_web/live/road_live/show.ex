@@ -26,8 +26,8 @@ defmodule EngwebWeb.RoadLive.Show do
      |> assign(:current_images, current_images)
      |> assign(:max_image_uploads, Roads.max_image_uploads())
      |> assign(:max_current_image_uploads, Roads.max_current_image_uploads())
-     |> assign(:houses, houses)}
-     
+     |> assign(:houses, houses)
+
     case socket.assigns.live_action do
       :delete_image ->
         image_id = unsigned_params["image_id"]

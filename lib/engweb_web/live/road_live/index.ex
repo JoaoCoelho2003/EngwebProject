@@ -20,12 +20,13 @@ defmodule EngwebWeb.RoadLive.Index do
                     |> Map.get(:current_images)
 
     %{road | images: images, current_images: current_images}
-
   end
 
   @impl true
+  @spec handle_params(any(), any(), Phoenix.LiveView.Socket.t()) :: {:noreply, map()}
   def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+    roads = list_roads()
+    {:noreply, apply_action(stream(socket, :roads, roads), socket.assigns.live_action, params)}
   end
 
   defp apply_action(socket, :new, _params) do
@@ -52,8 +53,6 @@ defmodule EngwebWeb.RoadLive.Index do
 
   def handle_event("search", %{"query" => query}, socket) do
     roads = list_roads(query)
-    # print lenght of roads
-    IO.puts(Enum.count(roads))
     {:noreply, stream(socket, :roads, roads, reset: true)}
   end
 
@@ -70,6 +69,6 @@ defmodule EngwebWeb.RoadLive.Index do
       Roads.list_roads()
     end
     |> Enum.map(&load_road_data/1)
-    |> Enum.sort_by(& &1.num)
+    |> Enum.sort_by(& &1.id)
   end
 end
