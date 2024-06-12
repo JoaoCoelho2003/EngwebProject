@@ -69,6 +69,11 @@ defmodule EngwebWeb.RoadLive.FormComponent do
               <.live_component module={CurrentImageUploader} id="uploader" uploads={@uploads} target={@myself} />
               </div>
           <% end %>
+          <div class="flex flex-col gap-y-2">
+            <%= for {_field, message} <- @error do %>
+              <p class="text-red-500"><%= message %></p>
+            <% end %>
+          </div>
           <:actions>
             <.button phx-disable-with="Saving...">Save Road</.button>
           </:actions>
@@ -89,6 +94,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
      |> assign(:uploaded_images, [])
      |> assign(:uploaded_current_images, [])
      |> assign(assigns)
+     |> assign(:error, %{})
      |> assign_form(changeset)
     }
   end
@@ -116,7 +122,10 @@ defmodule EngwebWeb.RoadLive.FormComponent do
   end
 
   def handle_event("save", %{"road" => road_params}, socket) do
-    save_road(socket, socket.assigns.action, road_params)
+    case validate_images(socket) do
+      {:error, socket} -> {:noreply, socket}
+      {:ok, socket} -> save_road(socket, socket.assigns.action, road_params)
+    end
   end
 
   def handle_event("delete", _params, socket) do
@@ -124,7 +133,12 @@ defmodule EngwebWeb.RoadLive.FormComponent do
   end
 
   def handle_event("cancel-image", %{"ref" => ref}, socket) do
-    {:noreply, cancel_upload(socket, :image, ref)}
+    if socket.assigns.descriptions[ref] do
+      descriptions = Map.delete(socket.assigns.descriptions, ref)
+      {:noreply, socket |> assign(:descriptions, descriptions) |> cancel_upload(:image, ref)}
+    else
+      {:noreply, cancel_upload(socket, :image, ref)}
+    end
   end
 
   def handle_event("cancel-current-image", %{"ref" => ref}, socket) do
@@ -271,5 +285,56 @@ defmodule EngwebWeb.RoadLive.FormComponent do
     Enum.each(socket.assigns.uploaded_current_images, fn path ->
       Roads.create_current_images(%{road_id: road.id, image: path})
     end)
+  end
+
+  defp validate_images(socket) do
+    socket = validate_descriptions(socket)
+
+    errors = socket.assigns.error
+
+    errors =
+      if length(socket.assigns.uploads.image.entries) == 0 do
+        Map.put(errors, "min_image", "You must provide at least one image")
+      else
+        Map.delete(errors, "min_image")
+      end
+
+    errors =
+      if length(socket.assigns.uploads.current_image.entries) == 0 do
+        Map.put(errors, "min_current_image", "You must provide at least one current image")
+      else
+        Map.delete(errors, "min_current_image")
+      end
+
+    errors =
+      if length(socket.assigns.uploads.image.entries) > socket.assigns.uploads.image.max_entries do
+        Map.put(errors, "max_image", "You can only upload up to #{socket.assigns.uploads.image.max_entries} images")
+      else
+        Map.delete(errors, "max_image")
+      end
+
+    errors =
+      if length(socket.assigns.uploads.current_image.entries) > socket.assigns.uploads.current_image.max_entries do
+        Map.put(errors, "max_current_image", "You can only upload up to #{socket.assigns.uploads.current_image.max_entries} current images")
+      else
+        Map.delete(errors, "max_current_image")
+      end
+
+    if map_size(errors) > 0 do
+      {:error, socket |> assign(:error, errors)}
+    else
+      {:ok, socket}
+    end
+  end
+
+  defp validate_descriptions(socket) do
+    errors =
+      if length(socket.assigns.uploads.image.entries) != map_size(socket.assigns.descriptions) do
+        Map.put(socket.assigns.error, "description", "You must provide a description for each image")
+      else
+        Map.delete(socket.assigns.error, "description")
+      end
+
+    assign(socket, :error, errors)
   end
 end
