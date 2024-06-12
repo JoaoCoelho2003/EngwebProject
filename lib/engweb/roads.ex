@@ -391,7 +391,7 @@ defmodule Engweb.Roads do
 
   def delete_current_images_by_road(road_id) do
     Enum.each(list_current_images_by_road(road_id), fn current_image ->
-      case File.rm!(Path.join([:code.priv_dir(:engweb), "static", current_image.image])) do
+      case File.rm(Path.join([:code.priv_dir(:engweb), "static", current_image.image])) do
         :ok -> IO.puts("File deleted")
         {:error, reason} -> IO.puts("Error deleting file: #{inspect(reason)}")
       end

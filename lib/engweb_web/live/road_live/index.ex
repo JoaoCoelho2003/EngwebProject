@@ -25,8 +25,6 @@ defmodule EngwebWeb.RoadLive.Index do
     %{road | images: images, current_images: current_images}
   end
 
-
-
   @impl true
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
@@ -46,5 +44,11 @@ defmodule EngwebWeb.RoadLive.Index do
     |> assign(:road, nil)
     |> assign(:images, [])
     |> assign(:current_images, [])
+  end
+
+  @impl true
+  def handle_info({EngwebWeb.RoadLive.FormComponent, {:saved, road}}, socket) do
+    road = road |> load_road_data()
+    {:noreply, stream_insert(socket, :roads, road)}
   end
 end
