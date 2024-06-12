@@ -197,6 +197,14 @@ defmodule EngwebWeb.RoadLive.FormComponent do
     if socket.assigns.road.user_id != socket.assigns.current_user.id do
       {:noreply, socket |> put_flash(:error, "You are not allowed to delete this road")}
     else
+      Roads.delete_images_by_road(socket.assigns.road.id)
+
+      Roads.delete_comments_by_road(socket.assigns.road.id)
+
+      Roads.delete_current_images_by_road(socket.assigns.road.id)
+
+      Roads.delete_houses_by_road(socket.assigns.road.id)
+
       case Roads.delete_road(socket.assigns.road) do
         {:ok, _} ->
           notify_parent({:deleted, socket.assigns.road})
@@ -231,7 +239,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
 
   defp delete(socket, :delete_current_image) do
     current_image = Roads.get_current_image!(socket.assigns.id)
-    IO.inspect(current_image)
+
     File.rm!(Path.join([:code.priv_dir(:engweb), "static", current_image.image]))
 
     case Roads.delete_current_image(current_image) do

@@ -377,4 +377,34 @@ defmodule Engweb.Roads do
   def get_comment_by_id(id) do
     Repo.get_by(Comment, id: id)
   end
+
+  def delete_images_by_road(road_id) do
+    Enum.each(list_images_by_road(road_id), fn image ->
+      case File.rm(Path.join([:code.priv_dir(:engweb), "static", image.image])) do
+        :ok -> IO.puts("File deleted")
+        {:error, reason} -> IO.puts("Error deleting file: #{inspect(reason)}")
+      end
+    end)
+
+    Repo.delete_all(from i in Images, where: i.road_id == ^road_id)
+  end
+
+  def delete_current_images_by_road(road_id) do
+    Enum.each(list_current_images_by_road(road_id), fn current_image ->
+      case File.rm!(Path.join([:code.priv_dir(:engweb), "static", current_image.image])) do
+        :ok -> IO.puts("File deleted")
+        {:error, reason} -> IO.puts("Error deleting file: #{inspect(reason)}")
+      end
+    end)
+
+    Repo.delete_all(from ci in CurrentImages, where: ci.road_id == ^road_id)
+  end
+
+  def delete_comments_by_road(road_id) do
+    Repo.delete_all(from c in Comment, where: c.road_id == ^road_id)
+  end
+
+  def delete_houses_by_road(road_id) do
+    Repo.delete_all(from h in Houses, where: h.road_id == ^road_id)
+  end
 end
