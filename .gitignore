@@ -46,3 +46,5 @@ priv/static/images/imagem/*
 !priv/static/images/imagem/.gitkeep
 
 priv/static/uploads/*
+
+!priv/static/uploads/.gitkeep
