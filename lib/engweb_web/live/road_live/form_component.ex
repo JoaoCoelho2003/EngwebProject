@@ -242,10 +242,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
         {:ok, {~p"/uploads/#{Path.basename(dest)}", socket.assigns.descriptions[entry.ref]}}
       end)
 
-    updated_socket = socket
-      |> update(:uploaded_images, &(&1 ++ uploaded_files))
-
-    {:noreply, updated_socket}
+    {:noreply, update(socket, :uploaded_images, &(&1 ++ uploaded_files))}
   end
 
   defp consume_uploaded_images(socket, :current_image) do
