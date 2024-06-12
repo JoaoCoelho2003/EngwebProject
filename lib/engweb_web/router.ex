@@ -36,6 +36,10 @@ defmodule EngwebWeb.Router do
       live "/:id/edit", RoadLive.Show, :edit
       live "/:id/show/edit", RoadLive.Show, :edit
       live "/:id/delete", RoadLive.Show, :delete
+      live "/:id/image/:image_id/delete", RoadLive.Show, :delete_image
+      live "/:id/current_image/:current_image_id/delete", RoadLive.Show, :delete_current_image
+      live "/:id/image/new", RoadLive.Show, :new_image
+      live "/:id/current_image/new", RoadLive.Show, :new_current_image
     end
 
     live_session :roads,

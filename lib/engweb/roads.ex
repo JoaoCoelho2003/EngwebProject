@@ -6,7 +6,13 @@ defmodule Engweb.Roads do
   import Ecto.Query, warn: false
   alias Engweb.Repo
 
-  alias Engweb.Roads.{Road, Images, Houses, CurrentImage, Comment}
+  alias Engweb.Roads.{Road, Images, Houses, CurrentImages, Comment}
+
+  @max_image_uploads 2
+  @max_current_image_uploads 2
+
+  def max_image_uploads, do: @max_image_uploads
+  def max_current_image_uploads, do: @max_current_image_uploads
 
   @doc """
   Returns the list of roads.
@@ -119,6 +125,10 @@ defmodule Engweb.Roads do
     Road.changeset(road, attrs)
   end
 
+  def list_roads_by_user_id(user_id) do
+    Repo.all(from r in Road, where: r.user_id == ^user_id)
+  end
+
   @doc """
   Returns the list of images.
 
@@ -198,6 +208,10 @@ defmodule Engweb.Roads do
   """
   def delete_image(%Images{} = image) do
     Repo.delete(image)
+  end
+
+  def change_images(%Images{} = image, attrs \\ %{}) do
+    Images.changeset(image, attrs)
   end
 
   @doc """
@@ -299,16 +313,16 @@ defmodule Engweb.Roads do
 
   ## Examples
 
-      iex> create_current_image(%{field: value})
-      {:ok, %CurrentImage{}}
+      iex> create_current_images(%{field: value})
+      {:ok, %CurrentImages{}}
 
-      iex> create_current_image(%{field: bad_value})
+      iex> create_current_images(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_current_image(attrs \\ %{}) do
-    %CurrentImage{}
-    |> CurrentImage.changeset(attrs)
+  def create_current_images(attrs \\ %{}) do
+    %CurrentImages{}
+    |> CurrentImages.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -317,15 +331,25 @@ defmodule Engweb.Roads do
 
   ## Examples
 
-      iex> get_current_image_by_road(road_id)
-      %CurrentImage{}
+      iex> get_current_images_by_road(road_id)
+      %CurrentImages{}
 
-      iex> get_current_image_by_road(456)
+      iex> get_current_images_by_road(456)
       nil
 
   """
   def list_current_images_by_road (road_id) do
-    Repo.all(from ci in CurrentImage, where: ci.road_id == ^road_id)
+    Repo.all(from ci in CurrentImages, where: ci.road_id == ^road_id)
+  end
+
+  def change_current_images(%CurrentImages{} = current_images, attrs \\ %{}) do
+    CurrentImages.changeset(current_images, attrs)
+  end
+
+  def get_current_image!(id), do: Repo.get!(CurrentImages, id)
+
+  def delete_current_image(%CurrentImages{} = current_image) do
+    Repo.delete(current_image)
   end
 
     @doc """
@@ -368,5 +392,35 @@ defmodule Engweb.Roads do
 
   def get_comment_by_id(id) do
     Repo.get_by(Comment, id: id)
+  end
+
+  def delete_images_by_road(road_id) do
+    Enum.each(list_images_by_road(road_id), fn image ->
+      case File.rm(Path.join([:code.priv_dir(:engweb), "static", image.image])) do
+        :ok -> IO.puts("File deleted")
+        {:error, reason} -> IO.puts("Error deleting file: #{inspect(reason)}")
+      end
+    end)
+
+    Repo.delete_all(from i in Images, where: i.road_id == ^road_id)
+  end
+
+  def delete_current_images_by_road(road_id) do
+    Enum.each(list_current_images_by_road(road_id), fn current_image ->
+      case File.rm(Path.join([:code.priv_dir(:engweb), "static", current_image.image])) do
+        :ok -> IO.puts("File deleted")
+        {:error, reason} -> IO.puts("Error deleting file: #{inspect(reason)}")
+      end
+    end)
+
+    Repo.delete_all(from ci in CurrentImages, where: ci.road_id == ^road_id)
+  end
+
+  def delete_comments_by_road(road_id) do
+    Repo.delete_all(from c in Comment, where: c.road_id == ^road_id)
+  end
+
+  def delete_houses_by_road(road_id) do
+    Repo.delete_all(from h in Houses, where: h.road_id == ^road_id)
   end
 end

@@ -4,13 +4,13 @@ defmodule Engweb.Roads.Road do
 
   schema "roads" do
     field :name, :string
-    field :num, :integer
     field :description, :string
     field :user_id, :id
 
     has_many :images, Engweb.Roads.Images
-    has_many :current_image, Engweb.Roads.CurrentImage
+    has_many :current_images, Engweb.Roads.CurrentImages
     has_many :houses, Engweb.Roads.Houses
+
 
     timestamps(type: :utc_datetime)
   end
@@ -18,7 +18,7 @@ defmodule Engweb.Roads.Road do
   @doc false
   def changeset(road, attrs) do
     road
-    |> cast(attrs, [:num, :name, :description, :user_id])
-    |> validate_required([:num, :name, :description, :user_id])
+    |> cast(attrs, [:name, :description, :user_id])
+    |> validate_required([:name, :description, :user_id])
   end
 end

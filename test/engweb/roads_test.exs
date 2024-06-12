@@ -21,12 +21,11 @@ defmodule Engweb.RoadsTest do
     end
 
     test "create_road/1 with valid data creates a road" do
-      valid_attrs = %{name: "some name", description: "some description", num: 42}
+      valid_attrs = %{name: "some name", description: "some description"}
 
       assert {:ok, %Road{} = road} = Roads.create_road(valid_attrs)
       assert road.name == "some name"
       assert road.description == "some description"
-      assert road.num == 42
     end
 
     test "create_road/1 with invalid data returns error changeset" do
@@ -35,12 +34,11 @@ defmodule Engweb.RoadsTest do
 
     test "update_road/2 with valid data updates the road" do
       road = road_fixture()
-      update_attrs = %{name: "some updated name", description: "some updated description", num: 43}
+      update_attrs = %{name: "some updated name", description: "some updated description"}
 
       assert {:ok, %Road{} = road} = Roads.update_road(road, update_attrs)
       assert road.name == "some updated name"
       assert road.description == "some updated description"
-      assert road.num == 43
     end
 
     test "update_road/2 with invalid data returns error changeset" do
