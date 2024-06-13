@@ -77,7 +77,7 @@
             <li>No activity detected</li>
           <% else %>
             <%= for comment <- @comments do %>
-              <li><%= comment.comment %> - <%= comment.inserted_at %></li>
+              <li><%= comment.comment %></li>
             <% end %>
           <% end %>
         </ul>

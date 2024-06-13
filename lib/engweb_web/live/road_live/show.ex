@@ -10,23 +10,21 @@ defmodule EngwebWeb.RoadLive.Show do
   end
 
   @impl true
-
   def handle_params(unsigned_params, _, socket) do
     id = unsigned_params["id"]
-    road = Roads.get_road!(id) |> Repo.preload([:images, :current_images, :houses])
-    images = road.images
-    current_images = road.current_images
-    houses = road.houses
+    road = Roads.get_road!(id) |> Repo.preload([:images, :current_images, :houses, :comments])
 
     socket =
-     socket
-     |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:road, road)
-     |> assign(:images, images)
-     |> assign(:current_images, current_images)
-     |> assign(:max_image_uploads, Roads.max_image_uploads())
-     |> assign(:max_current_image_uploads, Roads.max_current_image_uploads())
-     |> assign(:houses, houses)
+      socket
+      |> assign(:page_title, page_title(socket.assigns.live_action))
+      |> assign(:road, road)
+      |> assign(:images, road.images)
+      |> assign(:current_images, road.current_images)
+      |> assign(:max_image_uploads, Roads.max_image_uploads())
+      |> assign(:max_current_image_uploads, Roads.max_current_image_uploads())
+      |> assign(:houses, road.houses)
+      |> assign(:comments, road.comments)
+      |> assign(:new_comment, %Roads.Comment{})
 
     case socket.assigns.live_action do
       :delete_image ->
@@ -40,6 +38,58 @@ defmodule EngwebWeb.RoadLive.Show do
     end
   end
 
+  @impl true
+  def handle_event("add_comment", %{"comment" => comment_text}, socket) do
+    case Roads.create_comment(%{
+      comment: comment_text,
+      likes: 0,
+      dislikes: 0,
+      road_id: socket.assigns.road.id,
+      user_id: socket.assigns.current_user.id
+    }) do
+      {:ok, comment} ->
+        updated_comments = [comment | socket.assigns.comments]
+        {:noreply, assign(socket, comments: updated_comments, new_comment: %Roads.Comment{})}
+      {:error, changeset} ->
+        {:noreply, assign(socket, new_comment: changeset)}
+    end
+  end
+
+  def handle_event("vote_comment", %{"comment_id" => comment_id, "vote" => "up"}, socket) do
+    comment = Roads.get_comment!(comment_id)
+    updated_comment = %{comment | likes: comment.likes + 1}
+
+    case Roads.update_comment(comment, updated_comment) do
+      {:ok, _updated_comment} ->
+        {:noreply, push_event(socket, "comment_voted", %{"comment_id" => comment_id, "vote" => "up"})}
+      {:error, _changeset} ->
+        {:noreply, socket}
+    end
+  end
+
+  def handle_event("vote_comment", %{"comment_id" => comment_id, "vote" => "down"}, socket) do
+    comment = Roads.get_comment!(comment_id)
+    updated_comment = %{comment | dislikes: comment.dislikes + 1}
+
+    case Roads.update_comment(comment, updated_comment) do
+      {:ok, _updated_comment} ->
+        {:noreply, push_event(socket, "comment_voted", %{"comment_id" => comment_id, "vote" => "down"})}
+      {:error, _changeset} ->
+        {:noreply, socket}
+    end
+  end
+
+  def handle_event("delete_comment", %{"comment_id" => comment_id}, socket) do
+    comment = Roads.get_comment!(comment_id)
+
+    case Roads.delete_comment(comment) do
+      {:ok, _} ->
+        {:noreply, socket}
+      {:error, _changeset} ->
+        {:noreply, socket}
+    end
+  end
+
   defp page_title(:show), do: "Show Road"
   defp page_title(:edit), do: "Edit Road"
   defp page_title(:delete), do: "Delete Road"
@@ -47,5 +97,4 @@ defmodule EngwebWeb.RoadLive.Show do
   defp page_title(:delete_current_image), do: "Delete Current Image"
   defp page_title(:new_image), do: "New Image"
   defp page_title(:new_current_image), do: "New Current Image"
-
 end

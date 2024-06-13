@@ -119,6 +119,47 @@
   <% end %>
 </div>
 
+<div>
+  <h2>Comments</h2>
+  <%= for comment <- @comments do %>
+    <div class="comment">
+      <p><%= comment.comment %></p>
+      <div class="comment-actions">
+        <span class="vote">
+          <a href="#" phx-click="vote_comment" phx-value-comment_id={comment.id} phx-value-vote="up">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8 3.879l5.94 5.774a.25.25 0 0 1-.19.427H10.5v3.75a.25.25 0 0 1-.25.25h-1.5a.25.25 0 0 1-.25-.25V10H3.25a.25.25 0 0 1-.177-.427L8 3.879zm1 .102L3.573 9.656a.75.75 0 0 0 1.154.916L8 7.185l3.273 3.387a.75.75 0 0 0 1.154-.916L9 3.98a.75.75 0 0 0-1 .001z"/>
+            </svg>
+          </a>
+          <%= comment.likes %>
+        </span>
+        <span class="vote">
+          <a href="#" phx-click="vote_comment" phx-value-comment_id={comment.id} phx-value-vote="down">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8 12.121l-5.94-5.774a.25.25 0 0 1 .19-.427H5.5V2.75a.25.25 0 0 1 .25-.25h1.5a.25.25 0 0 1 .25.25v3.75h5.94a.25.25 0 0 1 .177.427L8 12.121zm1-.102L12.427 6.344a.75.75 0 0 0-1.154-.916L8 8.815 4.727 5.428a.75.75 0 0 0-1.154.916L7 11.02a.75.75 0 0 0 1-.001z"/>
+            </svg>
+          </a>
+          <%= comment.dislikes %>
+        </span>
+        <%= if @current_user && (@current_user.id == comment.user_id || @current_user.role == "admin") do %>
+          <a href="#" phx-click="delete_comment" phx-value-comment_id={comment.id}>
+            Delete
+          </a>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= if @current_user do %>
+    <form phx-submit="add_comment">
+      <textarea name="comment" placeholder="Add a comment..." required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+  <% else %>
+    <p>You need to log in to comment.</p>
+  <% end %>
+</div>
+
 <.back navigate={~p"/"}>Return</.back>
 
 <.modal :if={@live_action in [:edit, :delete, :delete_image, :delete_current_image]} id="road-modal" show on_cancel={JS.patch(~p"/roads/#{@road.id}")}>
