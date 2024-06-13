@@ -3,7 +3,6 @@ defmodule EngwebWeb.RoadLive.Show do
 
   alias Engweb.Roads
   alias Engweb.Repo
-  alias Engweb.Roads.Comment
 
   @impl true
   def mount(_params, _session, socket) do
@@ -63,29 +62,61 @@ defmodule EngwebWeb.RoadLive.Show do
     end
   end
 
-  @impl true
-  def handle_event("vote_comment", %{"comment_id" => comment_id, "vote" => "up"}, socket) do
+  defp has_voted(user_id, comment_id) do
     comment = Roads.get_comment!(comment_id)
-    updated_comment = %{likes: comment.likes + 1}
 
-    case Roads.update_comment(comment, updated_comment) do
-      {:ok, _updated_comment} ->
-        {:noreply, push_event(socket, "comment_voted", %{"comment_id" => comment_id, "vote" => "up"})}
-      {:error, _changeset} ->
-        {:noreply, socket}
+    if comment.likes > 0 && Enum.any?(comment.likes_by, &(&1 == user_id)) do
+      {:already_voted, :likes}
+    elsif comment.dislikes > 0 && Enum.any?(comment.dislikes_by, &(&1 == user_id)) do
+      {:already_voted, :dislikes}
+    else
+      {:not_voted, nil}
     end
   end
 
-  @impl true
+  def handle_event("vote_comment", %{"comment_id" => comment_id, "vote" => "up"}, socket) do
+    comment = Roads.get_comment!(comment_id)
+
+    case has_voted(socket.assigns.current_user.id, comment_id) do
+      {:already_voted, :likes} ->
+        updated_comment = %{likes: comment.likes - 1}
+        Roads.update_comment(comment, updated_comment)
+        {:noreply, push_event(socket, "comment_voted", %{"comment_id" => comment_id, "vote" => nil})}
+      {:already_voted, _} ->
+        updated_comment = %{likes: comment.likes + 1}
+        Roads.update_comment(comment, updated_comment)
+        {:noreply, push_event(socket, "comment_voted", %{"comment_id" => comment_id, "vote" => "up"})}
+      {:not_voted, _} ->
+        updated_comment = %{likes: comment.likes + 1}
+        case Roads.update_comment(comment, updated_comment) do
+          {:ok, _updated_comment} ->
+            {:noreply, push_event(socket, "comment_voted", %{"comment_id" => comment_id, "vote" => "up"})}
+          {:error, _changeset} ->
+            {:noreply, socket}
+        end
+    end
+  end
+
   def handle_event("vote_comment", %{"comment_id" => comment_id, "vote" => "down"}, socket) do
     comment = Roads.get_comment!(comment_id)
-    updated_comment = %{dislikes: comment.dislikes + 1}
 
-    case Roads.update_comment(comment, updated_comment) do
-      {:ok, _updated_comment} ->
+    case has_voted(socket.assigns.current_user.id, comment_id) do
+      {:already_voted, :dislikes} ->
+        updated_comment = %{dislikes: comment.dislikes - 1}
+        Roads.update_comment(comment, updated_comment)
+        {:noreply, push_event(socket, "comment_voted", %{"comment_id" => comment_id, "vote" => nil})}
+      {:already_voted, _} ->
+        updated_comment = %{dislikes: comment.dislikes + 1}
+        Roads.update_comment(comment, updated_comment)
         {:noreply, push_event(socket, "comment_voted", %{"comment_id" => comment_id, "vote" => "down"})}
-      {:error, _changeset} ->
-        {:noreply, socket}
+      {:not_voted, _} ->
+        updated_comment = %{dislikes: comment.dislikes + 1}
+        case Roads.update_comment(comment, updated_comment) do
+          {:ok, _updated_comment} ->
+            {:noreply, push_event(socket, "comment_voted", %{"comment_id" => comment_id, "vote" => "down"})}
+          {:error, _changeset} ->
+            {:noreply, socket}
+        end
     end
   end
 

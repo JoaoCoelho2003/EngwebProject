@@ -124,8 +124,8 @@
   <div class="space-y-4">
     <%= for comment <- @comments do %>
       <div class="bg-white shadow-md rounded-lg p-4">
-        <p class="text-gray-800 font-bold"><%= comment.user_name %></p> <!-- Display username -->
-        <div class="pl-4"> <!-- Apply indentation -->
+        <p class="text-gray-800 font-bold"><%= comment.user_name %></p>
+        <div class="pl-4">
           <p class="text-gray-800"><%= comment.comment %></p>
         </div>
         <div class="flex items-center justify-between mt-2">
@@ -144,7 +144,27 @@
             <span><%= comment.dislikes %></span>
           </div>
           <%= if @current_user && (@current_user.id == comment.user_id || @current_user.role == "admin") do %>
-            <a href="#" phx-click="delete_comment" phx-value-comment_id={comment.id} class="text-red-600 hover:text-red-800">Delete</a>
+            <li class="relative dropdown">
+              <button id="options-button" class="flex items-center focus:outline-none">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#000000" stroke-width="2">
+                  <path stroke-linecap="round" d="M6 12h.01m6 0h.01m5.99 0h.01"/>
+                </svg>
+              </button>
+              <div id="options-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-20">
+                <a href="#" phx-click="edit_comment" phx-value-comment_id={comment.id} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#000000" stroke-width="1.2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                  </svg>
+                  Edit
+                </a>
+                <a href="#" phx-click="delete_comment" phx-value-comment_id={comment.id} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#000000" stroke-width="1.2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                  </svg>
+                  Delete
+                </a>
+              </div>
+          </li>
           <% end %>
         </div>
       </div>
@@ -153,8 +173,20 @@
 
   <%= if @current_user do %>
     <form phx-submit="add_comment" class="mt-4">
-      <textarea name="comment" placeholder="Add a comment..." required class="border rounded-md p-2 w-full"></textarea>
-      <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mt-2">Submit</button>
+      <div class="relative">
+        <textarea 
+          name="comment" 
+          placeholder="Add a comment" 
+          required 
+          class="border rounded-xl p-2 w-full min-h-12" 
+          onfocus="showButtons(this)" 
+          onblur="hideButtons(this)">
+        </textarea>
+        <div class="absolute right-2 bottom-2 hidden buttons space-x-2">
+          <button type="button" class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-md" onclick="cancelComment(this)">Cancel</button>
+          <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded-md">Submit</button>
+        </div>
+      </div>
     </form>
   <% else %>
     <p class="mt-4">You need to log in to comment.</p>
@@ -198,3 +230,63 @@
     patch={~p"/roads/#{@road.id}"}
     />
 </.modal>
+
+<script>
+  function showButtons(textarea) {
+    const buttons = textarea.nextElementSibling;
+    buttons.classList.remove('hidden');
+  }
+
+  function hideButtons(textarea) {
+    setTimeout(() => {
+      const buttons = textarea.nextElementSibling;
+      if (!buttons.querySelector(':hover')) {
+        buttons.classList.add('hidden');
+      }
+    }, 50);
+  }
+
+  function cancelComment(button) {
+    const textarea = button.closest('form').querySelector('textarea');
+    textarea.value = '';
+    const buttons = button.parentElement;
+    buttons.classList.add('hidden');
+  }
+
+  function cleanTextarea(textarea) {
+    textarea.value = textarea.value.trim();
+  }
+
+  function cleanTextareaBeforeSubmit(form) {
+    const textarea = form.querySelector('textarea[name="comment"]');
+    textarea.value = textarea.value.trim();
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const textareas = document.querySelectorAll("textarea[name='comment']");
+    textareas.forEach(textarea => {
+      textarea.value = textarea.value.trim();
+      textarea.addEventListener('focus', () => cleanTextarea(textarea));
+    });
+
+    const forms = document.querySelectorAll('form[phx-submit="add_comment"]');
+    forms.forEach(form => {
+      form.addEventListener('submit', () => cleanTextareaBeforeSubmit(form));
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const profileButton = document.getElementById('options-button');
+    const optionsDropdown = document.getElementById('options-dropdown');
+
+    profileButton.addEventListener('click', () => {
+      optionsDropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!profileButton.contains(event.target) && !optionsDropdown.contains(event.target)) {
+        optionsDropdown.classList.add('hidden');
+      }
+    });
+  });
+</script>
