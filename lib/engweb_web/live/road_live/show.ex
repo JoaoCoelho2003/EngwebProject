@@ -59,10 +59,8 @@ defmodule EngwebWeb.RoadLive.Show do
     end
   end
 
-  @impl true
   def handle_event("vote_comment", %{"comment_id" => comment_id, "vote" => "up"}, socket) do
     comment = Roads.get_comment!(comment_id)
-    updated_comment = %{likes: comment.likes + 1}
 
     case Roads.update_comment(comment, updated_comment) do
       {:ok, _updated_comment} ->
@@ -72,10 +70,8 @@ defmodule EngwebWeb.RoadLive.Show do
     end
   end
 
-  @impl true
   def handle_event("vote_comment", %{"comment_id" => comment_id, "vote" => "down"}, socket) do
     comment = Roads.get_comment!(comment_id)
-    updated_comment = %{dislikes: comment.dislikes + 1}
 
     case Roads.update_comment(comment, updated_comment) do
       {:ok, _updated_comment} ->
