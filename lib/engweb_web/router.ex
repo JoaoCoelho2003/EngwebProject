@@ -41,6 +41,8 @@ defmodule EngwebWeb.Router do
       live "/:id/current_image/:current_image_id/delete", RoadLive.Show, :delete_current_image
       live "/:id/image/new", RoadLive.Show, :new_image
       live "/:id/current_image/new", RoadLive.Show, :new_current_image
+      live "/:id/house/:house_id/delete", RoadLive.Show, :delete_house
+      live "/:id/house/new", RoadLive.Show, :new_house
     end
 
     live_session :roads,

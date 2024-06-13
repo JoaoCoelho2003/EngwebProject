@@ -11,7 +11,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
       <.header>
         <%= @title %>
       </.header>
-      <%= if @action in [:delete, :delete_image, :delete_current_image] do %>
+      <%= if @action in [:delete, :delete_image, :delete_current_image, :delete_house] do %>
         <div class="flex justify-end">
           <.simple_form
             for={@form}
@@ -21,10 +21,11 @@ defmodule EngwebWeb.RoadLive.FormComponent do
           >
           <:actions>
             <.button phx-disable-with="Deleting..." class="bg bg-red-600 hover:bg-red-700">Delete <%=
-              if @action == :delete do
-                "Road"
-              else
-                "Image"
+              case @action do
+                :delete -> "Road"
+                :delete_image -> "Image"
+                :delete_current_image -> "Current Image"
+                :delete_house -> "House"
               end
             %></.button>
           </:actions>
@@ -251,6 +252,19 @@ defmodule EngwebWeb.RoadLive.FormComponent do
 
       {:error, _} ->
         {:noreply, socket |> put_flash(:error, "Error deleting current image")}
+    end
+  end
+
+  defp delete(socket, :delete_house) do
+    case Roads.delete_house(Roads.get_house!(socket.assigns.id)) do
+      {:ok, _} ->
+        {:noreply,
+        socket
+        |> put_flash(:info, "House deleted successfully")
+        |> push_patch(to: socket.assigns.patch)}
+
+      {:error, _} ->
+        {:noreply, socket |> put_flash(:error, "Error deleting house")}
     end
   end
 
