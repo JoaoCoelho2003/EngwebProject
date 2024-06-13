@@ -146,7 +146,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
   end
 
   defp save_road(socket, :edit, road_params) do
-    if socket.assigns.road.user_id != socket.assigns.current_user.id do
+    if (socket.assigns.current_user.id != socket.assigns.road.user_id) and (socket.assigns.current_user.role != "admin") do
       {:noreply, socket |> put_flash(:error, "You are not allowed to edit this road")}
     else
       case Roads.update_road(socket.assigns.road, road_params) do
@@ -195,7 +195,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
   end
 
   defp delete(socket, :delete) do
-    if socket.assigns.road.user_id != socket.assigns.current_user.id do
+    if (socket.assigns.current_user.id != socket.assigns.road.user_id) and (socket.assigns.current_user.role != "admin") do
       {:noreply, socket |> put_flash(:error, "You are not allowed to delete this road")}
     else
       Roads.delete_images_by_road(socket.assigns.road.id)

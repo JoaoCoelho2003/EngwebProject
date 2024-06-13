@@ -1,53 +1,132 @@
-<%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) do %>
-  <.header>
-    <%= @road.name %>
-      <:actions>
-        <.link patch={~p"/roads/#{@road.id}/edit"} phx-click={JS.push_focus()}>
-          <.button>Edit road</.button>
-        </.link>
-        <.link patch={~p"/roads/#{@road.id}/delete"} phx-click={JS.push_focus()}>
-          <.button>Delete road</.button>
-        </.link>
-      </:actions>
-  </.header>
-  <% end %>
+<%= if @current_user != nil and (@current_user.id == @road.user_id or @current_user.role == "admin") do %>
+<.header>
+  <%= @road.name %>
+  <:actions>
+    <.link patch={~p"/roads/#{@road.id}/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit road</.button>
+    </.link>
+    <.link patch={~p"/roads/#{@road.id}/delete"} phx-click={JS.push_focus()}>
+      <.button>Delete road</.button>
+    </.link>
+  </:actions>
+</.header>
+<% end %>
 
-    <.list>
-      <:item title="Road Number">
-        <%= @road.id %>
-      </:item>
-      <:item title="Name">
-        <%= @road.name %>
-      </:item>
-      <:item title="Description">
-        <%= @road.description %>
-      </:item>
-    </.list>
+<.list>
+  <:item title="Road Number"><%= @road.id %></:item>
+  <:item title="Name"><%= @road.name %></:item>
+  <:item title="Description"><%= @road.description %></:item>
+</.list>
 
-    <div style="text-align: center; margin-top: 30px; margin-bottom: 40px;">
-      <div class="items-center">
-        <h2 style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">Imagens Atuais (2019)</h2>
-        <%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) and
-          (Enum.count(@current_images) < @max_current_image_uploads) do %>
-          <.link patch={~p"/roads/#{@road.id}/current_image/new"} phx-click={JS.push_focus()} class="flex justify-end">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="feather feather-plus-square">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-              <line x1="12" y1="8" x2="12" y2="16" />
-              <line x1="8" y1="12" x2="16" y2="12" />
-            </svg>
-          </.link>
+<div style="text-align: center; margin-top: 30px; margin-bottom: 40px;">
+  <div class="items-center">
+    <h2 style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">Imagens Atuais (2019)</h2>
+    <%= if @current_user != nil and (@current_user.id == @road.user_id or @current_user.role == "admin") and (Enum.count(@current_images) < @max_current_image_uploads) do %>
+      <.link patch={~p"/roads/#{@road.id}/current_image/new"} phx-click={JS.push_focus()} class="flex justify-end">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-square">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+      </.link>
+    <% end %>
+  </div>
+  <%= if @current_images do %>
+    <div class="max-w-screen-xl mx-auto">
+      <ul style="list-style-type: none; padding: 0; margin: 0;">
+        <%= for image <- @current_images do %>
+          <li style="display: inline-block; margin: 0 2vw;">
+            <img src={image.image} style="max-width: 25vw; height: auto; display: block; margin: 0 auto 4vw;">
+            <%= if @current_user != nil and (@current_user.id == @road.user_id or @current_user.role == "admin") do %>
+            <.link patch={~p"/roads/#{@road.id}/current_image/#{image.id}/delete"} phx-click={JS.push_focus()} class="flex justify-center mb-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-square">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <line x1="9" y1="9" x2="15" y2="15"/>
+                <line x1="15" y1="9" x2="9" y2="15"/></svg>                  
+            </.link>
           <% end %>
-      </div>
-      <%= if @current_images do %>
-        <div class="max-w-screen-xl mx-auto">
-          <ul style="list-style-type: none; padding: 0; margin: 0;">
-            <%= for image <- @current_images do %>
-              <li style="display: inline-block; margin: 0 2vw;">
-                <img src={image.image} style="max-width: 25vw; height: auto; display: block; margin: 0 auto 4vw;">
-                <%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) do %>
-                  <.link patch={~p"/roads/#{@road.id}/current_image/#{image.id}/delete"} phx-click={JS.push_focus()}
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% else %>
+    <p>No current image available.</p>
+  <% end %>
+</div>
+
+<div style="text-align: center; margin-top: 30px; margin-bottom: 40px;">
+  <div class="items-center">
+    <h2 style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">Imagens Antigas</h2>
+    <%= if @current_user != nil and (@current_user.id == @road.user_id or @current_user.role == "admin") and (Enum.count(@images) < @max_image_uploads) do %>
+      <.link patch={~p"/roads/#{@road.id}/image/new"} phx-click={JS.push_focus()} class="flex justify-end">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-square">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+      </.link>
+    <% end %>
+  </div>
+  <%= if Enum.empty?(@images) do %>
+    <p>No images available.</p>
+  <% else %>
+    <ul style="list-style-type: none; padding: 0; margin: 0;">
+      <%= for image <- @images do %>
+        <li style="display: inline-block; margin: 0 10px;">
+          <div style="text-align: center;">
+            <img src={image.image} alt={image.legenda} style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
+            <p style="font-weight: bold; margin-bottom: 20px;"><%= image.legenda %></p>
+            <%= if @current_user != nil and (@current_user.id == @road.user_id or @current_user.role == "admin") do %>
+              <.link patch={~p"/roads/#{@road.id}/image/#{image.id}/delete"} phx-click={JS.push_focus()} class="flex justify-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-square">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="9" y1="9" x2="15" y2="15"/>
+                  <line x1="15" y1="9" x2="9" y2="15"/></svg>                  
+              </.link>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>
+
+<div style="text-align: center; margin-top: 30px; margin-bottom: 40px;">
+  <div class="items-center">
+    <h2 style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">Casas</h2>
+    <%= if @current_user != nil and (@current_user.id == @road.user_id or @current_user.role == "admin") do %>
+      <.link patch={~p"/roads/#{@road.id}/house/new"} phx-click={JS.push_focus()} class="flex justify-end">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-square">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+      </.link>
+    <% end %>
+  </div>
+  <%= if Enum.empty?(@houses) do %>
+    <p>No houses available.</p>
+  <% else %>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-300">
+        <thead>
+          <tr>
+            <th class="py-2 px-4 border-b">Number</th>
+            <th class="py-2 px-4 border-b">Enfiteuta</th>
+            <th class="py-2 px-4 border-b">Foro</th>
+            <th class="py-2 px-4 border-b">Description</th>
+            <%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) do %>
+              <th class="py-2 px-4 border-b">Delete</th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for house <- @houses do %>
+            <tr>
+              <td class="py-2 px-4 border-b"><%= house.num %></td>
+              <td class="py-2 px-4 border-b"><%= house.enfiteuta %></td>
+              <td class="py-2 px-4 border-b"><%= house.foro %></td>
+              <td class="py-2 px-4 border-b"><%= house.description %></td>
+              <%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) do %>
+                <td class="py-2 px-4 border-b">
+                  <.link patch={~p"/roads/#{@road.id}/house/#{house.id}/delete"} phx-click={JS.push_focus()}
                     class="flex justify-center mb-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                       stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -57,158 +136,64 @@
                       <line x1="15" y1="9" x2="9" y2="15" />
                     </svg>
                   </.link>
-                  <% end %>
-              </li>
+                </td>
               <% end %>
-          </ul>
-        </div>
-        <% else %>
-          <p>No current image available.</p>
+            </tr>
           <% end %>
+        </tbody>
+      </table>
     </div>
+  <% end %>
+</div>
 
-    <div style="text-align: center; margin-top: 30px; margin-bottom: 40px;">
-      <div class="items-center">
-        <h2 style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">Imagens Antigas</h2>
-        <%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) and
-          (Enum.count(@images) < @max_image_uploads) do %>
-          <.link patch={~p"/roads/#{@road.id}/image/new"} phx-click={JS.push_focus()} class="flex justify-end">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="feather feather-plus-square">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-              <line x1="12" y1="8" x2="12" y2="16" />
-              <line x1="8" y1="12" x2="16" y2="12" />
-            </svg>
-          </.link>
-          <% end %>
-      </div>
-      <%= if Enum.empty?(@images) do %>
-        <p>No images available.</p>
-        <% else %>
-          <ul style="list-style-type: none; padding: 0; margin: 0;">
-            <%= for image <- @images do %>
-              <li style="display: inline-block; margin: 0 10px;">
-                <div style="text-align: center;">
-                  <img src={image.image} alt={image.legenda}
-                    style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
-                  <p style="font-weight: bold; margin-bottom: 20px;">
-                    <%= image.legenda %>
-                  </p>
-                  <%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) do %>
-                    <.link patch={~p"/roads/#{@road.id}/image/#{image.id}/delete"} phx-click={JS.push_focus()}
-                      class="flex justify-center mb-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="feather feather-x-square">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                        <line x1="9" y1="9" x2="15" y2="15" />
-                        <line x1="15" y1="9" x2="9" y2="15" />
-                      </svg>
-                    </.link>
-                    <% end %>
-                </div>
-              </li>
-              <% end %>
-          </ul>
-          <% end %>
-    </div>
+<.back navigate={~p"/"}>Return</.back>
 
-    <div style="text-align: center; margin-top: 30px; margin-bottom: 40px;">
-      <div class="items-center">
-        <h2 style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">Casas</h2>
-        <%= if @current_user != nil and (@current_user.id==@road.user_id or @current_user.role=="admin") %>
-          <.link patch={~p"/roads/#{@road.id}/house/new"} phx-click={JS.push_focus()} class="flex justify-end">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="feather feather-plus-square">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-              <line x1="12" y1="8" x2="12" y2="16" />
-              <line x1="8" y1="12" x2="16" y2="12" />
-            </svg>
-          </.link>
-        <% end %>
-      </div>
-      <%= if Enum.empty?(@houses) do %>
-        <p>No houses available.</p>
-        <% else %>
-          <div class="overflow-x-auto">
-            <table class="min-w-full bg-white border border-gray-300">
-              <thead>
-                <tr>
-                  <th class="py-2 px-4 border-b">Number</th>
-                  <th class="py-2 px-4 border-b">Enfiteuta</th>
-                  <th class="py-2 px-4 border-b">Foro</th>
-                  <th class="py-2 px-4 border-b">Description</th>
-                  <%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) do %>
-                    <th class="py-2 px-4 border-b">Delete</th>
-                    <% end %>
-                </tr>
-              </thead>
-              <tbody>
-                <%= for house <- @houses do %>
-                  <tr>
-                    <td class="py-2 px-4 border-b">
-                      <%= house.num %>
-                    </td>
-                    <td class="py-2 px-4 border-b">
-                      <%= house.enfiteuta %>
-                    </td>
-                    <td class="py-2 px-4 border-b">
-                      <%= house.foro %>
-                    </td>
-                    <td class="py-2 px-4 border-b">
-                      <%= house.description %>
-                    </td>
-                    <%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) do %>
-                      <td class="py-2 px-4 border-b">
-                        <.link patch={~p"/roads/#{@road.id}/house/#{house.id}/delete"} phx-click={JS.push_focus()}
-                          class="flex justify-center mb-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-x-square">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                            <line x1="9" y1="9" x2="15" y2="15" />
-                            <line x1="15" y1="9" x2="9" y2="15" />
-                          </svg>
-                        </.link>
-                      </td>
-                      <% end %>
-                  </tr>
-                  <% end %>
-              </tbody>
-            </table>
-          </div>
-          <% end %>
-    </div>
-
-    <.back navigate={~p"/"}>Return</.back>
-
-    <.modal :if={@live_action in [:edit, :delete, :delete_image, :delete_current_image, :delete_house]} id="road-modal"
-      show on_cancel={JS.patch(~p"/roads/#{@road.id}")}>
-      <.live_component module={EngwebWeb.RoadLive.FormComponent} id={ case @live_action do :delete_current_image ->
-        @current_image
-        :delete_image -> @image
+<.modal :if={@live_action in [:edit, :delete, :delete_image, :delete_current_image, :delete_house]} id="road-modal" show on_cancel={JS.patch(~p"/roads/#{@road.id}")}>
+  <.live_component
+    module={EngwebWeb.RoadLive.FormComponent}
+    id={
+      case @live_action do
+        :delete_current_image -> @current_image
         :delete_house -> @house
+        :delete_image -> @image
         _ -> @road.id
-        end
-        }
-        title={@page_title}
-        action={@live_action}
-        road={@road}
-        current_user={@current_user}
-        patch={
-        if @live_action == :delete do
-        ~p"/"
-        else
-        ~p"/roads/#{@road.id}"
-        end
-        }
-        />
-    </.modal>
+      end
+    }
+    title={@page_title}
+    action={@live_action}
+    road={@road}
+    current_user={@current_user}
+    patch={
+      if @live_action == :delete do
+        ~p"/"  
+      else
+        ~p"/roads/#{@road.id}" 
+      end
+    }
+    />
+</.modal>
 
-    <.modal :if={@live_action in [:new_image, :new_current_image]} id="road-modal" show
-      on_cancel={JS.patch(~p"/roads/#{@road.id}")}>
-      <.live_component module={EngwebWeb.RoadLive.FormNewImageComponent} id={@road.id} title={@page_title}
-        action={@live_action} road={@road} current_user={@current_user} patch={~p"/roads/#{@road.id}"} />
-    </.modal>
+<.modal :if={@live_action in [:new_image, :new_current_image]} id="road-modal" show on_cancel={JS.patch(~p"/roads/#{@road.id}")}>
+  <.live_component
+    module={EngwebWeb.RoadLive.FormNewImageComponent}
+    id={@road.id}
+    title={@page_title}
+    action={@live_action}
+    road={@road}
+    current_user={@current_user}
+    patch={~p"/roads/#{@road.id}"}
+    />
+</.modal>
+
+<.modal :if={@live_action == :new_house} id="road-modal" show on_cancel={JS.patch(~p"/roads/#{@road.id}")}>
+  <.live_component
+    module={EngwebWeb.RoadLive.FormNewHouse}
+    id={@road.id}
+    title={@page_title}
+    action={@live_action}
+    house={@house}
+    road={@road}
+    current_user={@current_user}
+    patch={~p"/roads/#{@road.id}"}
+    />
+</.modal>
