@@ -14,10 +14,7 @@ defmodule EngwebWeb.RoadLive.Show do
     id = unsigned_params["id"]
     road = Roads.get_road!(id) |> Repo.preload([:images, :current_images, :houses, :comments])
 
-    comments_with_users = Enum.map(road.comments, fn comment ->
-      user = Roads.get_user!(comment.user_id)
-      Map.put(comment, :user_name, user.name)
-    end)
+    comments_with_users = join_comments_with_users(road.comments)
 
     socket =
       socket
@@ -62,64 +59,25 @@ defmodule EngwebWeb.RoadLive.Show do
     end
   end
 
-  defp has_voted(user_id, comment_id) do
-    comment = Roads.get_comment!(comment_id)
-
-    cond do
-      comment.likes > 0 && Enum.any?(comment.likes_by, &(&1 == user_id)) ->
-        {:already_voted, :likes}
-
-      comment.dislikes > 0 && Enum.any?(comment.dislikes_by, &(&1 == user_id)) ->
-        {:already_voted, :dislikes}
-
-      true ->
-        {:not_voted, nil}
-    end
-  end
-
   def handle_event("vote_comment", %{"comment_id" => comment_id, "vote" => "up"}, socket) do
     comment = Roads.get_comment!(comment_id)
 
-    case has_voted(socket.assigns.current_user.id, comment_id) do
-      {:already_voted, :likes} ->
-        updated_comment = %{likes: comment.likes - 1}
-        Roads.update_comment(comment, updated_comment)
-        {:noreply, push_event(socket, "comment_voted", %{"comment_id" => comment_id, "vote" => nil})}
-      {:already_voted, _} ->
-        updated_comment = %{likes: comment.likes + 1}
-        Roads.update_comment(comment, updated_comment)
-        {:noreply, push_event(socket, "comment_voted", %{"comment_id" => comment_id, "vote" => "up"})}
-      {:not_voted, _} ->
-        updated_comment = %{likes: comment.likes + 1}
-        case Roads.update_comment(comment, updated_comment) do
-          {:ok, _updated_comment} ->
-            {:noreply, push_event(socket, "comment_voted", %{"comment_id" => comment_id, "vote" => "up"})}
-          {:error, _changeset} ->
-            {:noreply, socket}
-        end
+    case Roads.update_comment(comment, updated_comment) do
+      {:ok, _updated_comment} ->
+        {:noreply, socket |> assign(:comments, Enum.map(socket.assigns.comments, fn c -> if c.id == String.to_integer(comment_id) do Map.put(c, :likes, c.likes + 1) else c end end))}
+      {:error, _changeset} ->
+        {:noreply, socket}
     end
   end
 
   def handle_event("vote_comment", %{"comment_id" => comment_id, "vote" => "down"}, socket) do
     comment = Roads.get_comment!(comment_id)
 
-    case has_voted(socket.assigns.current_user.id, comment_id) do
-      {:already_voted, :dislikes} ->
-        updated_comment = %{dislikes: comment.dislikes - 1}
-        Roads.update_comment(comment, updated_comment)
-        {:noreply, push_event(socket, "comment_voted", %{"comment_id" => comment_id, "vote" => nil})}
-      {:already_voted, _} ->
-        updated_comment = %{dislikes: comment.dislikes + 1}
-        Roads.update_comment(comment, updated_comment)
-        {:noreply, push_event(socket, "comment_voted", %{"comment_id" => comment_id, "vote" => "down"})}
-      {:not_voted, _} ->
-        updated_comment = %{dislikes: comment.dislikes + 1}
-        case Roads.update_comment(comment, updated_comment) do
-          {:ok, _updated_comment} ->
-            {:noreply, push_event(socket, "comment_voted", %{"comment_id" => comment_id, "vote" => "down"})}
-          {:error, _changeset} ->
-            {:noreply, socket}
-        end
+    case Roads.update_comment(comment, updated_comment) do
+      {:ok, _updated_comment} ->
+        {:noreply, socket |> assign(:comments, Enum.map(socket.assigns.comments, fn c -> if c.id == String.to_integer(comment_id) do Map.put(c, :dislikes, c.dislikes + 1) else c end end))}
+      {:error, _changeset} ->
+        {:noreply, socket}
     end
   end
 
@@ -128,10 +86,17 @@ defmodule EngwebWeb.RoadLive.Show do
 
     case Roads.delete_comment(comment) do
       {:ok, _} ->
-        {:noreply, socket}
+        {:noreply, socket |> assign(:comments, Enum.filter(socket.assigns.comments, fn c -> c.id != String.to_integer(comment_id) end))}
       {:error, _changeset} ->
         {:noreply, socket}
     end
+  end
+
+  defp join_comments_with_users(comments) do
+    Enum.map(comments, fn comment ->
+      user = Roads.get_user!(comment.user_id)
+      Map.put(comment, :user_name, user.name)
+    end)
   end
 
   defp page_title(:show), do: "Show Road"
