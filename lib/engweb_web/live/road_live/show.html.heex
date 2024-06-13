@@ -120,43 +120,44 @@
 </div>
 
 <div>
-  <h2>Comments</h2>
-  <%= for comment <- @comments do %>
-    <div class="comment">
-      <p><%= comment.comment %></p>
-      <div class="comment-actions">
-        <span class="vote">
-          <a href="#" phx-click="vote_comment" phx-value-comment_id={comment.id} phx-value-vote="up">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M8 3.879l5.94 5.774a.25.25 0 0 1-.19.427H10.5v3.75a.25.25 0 0 1-.25.25h-1.5a.25.25 0 0 1-.25-.25V10H3.25a.25.25 0 0 1-.177-.427L8 3.879zm1 .102L3.573 9.656a.75.75 0 0 0 1.154.916L8 7.185l3.273 3.387a.75.75 0 0 0 1.154-.916L9 3.98a.75.75 0 0 0-1 .001z"/>
+  <h2 class="text-2xl font-bold mb-4">Comments</h2>
+  <div class="space-y-4">
+    <%= for comment <- @comments do %>
+      <div class="bg-white shadow-md rounded-lg p-4">
+        <p class="text-gray-800 font-bold"><%= comment.user_name %></p> <!-- Display username -->
+        <div class="pl-4"> <!-- Apply indentation -->
+          <p class="text-gray-800"><%= comment.comment %></p>
+        </div>
+        <div class="flex items-center justify-between mt-2">
+          <div class="flex space-x-2 text-sm text-gray-600">
+            <a href="#" phx-click="vote_comment" phx-value-comment_id={comment.id} phx-value-vote="up">
+              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#000000" stroke-width="1.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7 11c.889-.086 1.416-.543 2.156-1.057a22.323 22.323 0 0 0 3.958-5.084 1.6 1.6 0 0 1 .582-.628 1.549 1.549 0 0 1 1.466-.087c.205.095.388.233.537.406a1.64 1.64 0 0 1 .384 1.279l-1.388 4.114M7 11H4v6.5A1.5 1.5 0 0 0 5.5 19v0A1.5 1.5 0 0 0 7 17.5V11Zm6.5-1h4.915c.286 0 .372.014.626.15.254.135.472.332.637.572a1.874 1.874 0 0 1 .215 1.673l-2.098 6.4C17.538 19.52 17.368 20 16.12 20c-2.303 0-4.79-.943-6.67-1.475"/>
+              </svg>
+            </a>
+            <span><%= comment.likes %></span>
+            <a href="#" phx-click="vote_comment" phx-value-comment_id={comment.id} phx-value-vote="down">
+              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#000000" stroke-width="1.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 13c-.889.086-1.416.543-2.156 1.057a22.322 22.322 0 0 0-3.958 5.084 1.6 1.6 0 0 1-.582.628 1.549 1.549 0 0 1-1.466.087 1.587 1.587 0 0 1-.537-.406 1.666 1.666 0 0 1-.384-1.279l1.389-4.114M17 13h3V6.5A1.5 1.5 0 0 0 18.5 5v0A1.5 1.5 0 0 0 17 6.5V13Zm-6.5 1H5.585c-.286 0-.372-.014-.626-.15a1.797 1.797 0 0 1-.637-.572 1.873 1.873 0 0 1-.215-1.673l2.098-6.4C6.462 4.48 6.632 4 7.88 4c2.302 0 4.79.943 6.67 1.475"/>
             </svg>
-          </a>
-          <%= comment.likes %>
-        </span>
-        <span class="vote">
-          <a href="#" phx-click="vote_comment" phx-value-comment_id={comment.id} phx-value-vote="down">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M8 12.121l-5.94-5.774a.25.25 0 0 1 .19-.427H5.5V2.75a.25.25 0 0 1 .25-.25h1.5a.25.25 0 0 1 .25.25v3.75h5.94a.25.25 0 0 1 .177.427L8 12.121zm1-.102L12.427 6.344a.75.75 0 0 0-1.154-.916L8 8.815 4.727 5.428a.75.75 0 0 0-1.154.916L7 11.02a.75.75 0 0 0 1-.001z"/>
-            </svg>
-          </a>
-          <%= comment.dislikes %>
-        </span>
-        <%= if @current_user && (@current_user.id == comment.user_id || @current_user.role == "admin") do %>
-          <a href="#" phx-click="delete_comment" phx-value-comment_id={comment.id}>
-            Delete
-          </a>
-        <% end %>
+            </a>
+            <span><%= comment.dislikes %></span>
+          </div>
+          <%= if @current_user && (@current_user.id == comment.user_id || @current_user.role == "admin") do %>
+            <a href="#" phx-click="delete_comment" phx-value-comment_id={comment.id} class="text-red-600 hover:text-red-800">Delete</a>
+          <% end %>
+        </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 
   <%= if @current_user do %>
-    <form phx-submit="add_comment">
-      <textarea name="comment" placeholder="Add a comment..." required></textarea>
-      <button type="submit">Submit</button>
+    <form phx-submit="add_comment" class="mt-4">
+      <textarea name="comment" placeholder="Add a comment..." required class="border rounded-md p-2 w-full"></textarea>
+      <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mt-2">Submit</button>
     </form>
   <% else %>
-    <p>You need to log in to comment.</p>
+    <p class="mt-4">You need to log in to comment.</p>
   <% end %>
 </div>
 

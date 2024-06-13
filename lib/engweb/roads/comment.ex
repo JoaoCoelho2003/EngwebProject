@@ -1,5 +1,6 @@
 defmodule Engweb.Roads.Comment do
   use Ecto.Schema
+  alias Engweb.Repo
   import Ecto.Changeset
 
   schema "roads_comments" do

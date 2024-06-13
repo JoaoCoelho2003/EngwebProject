@@ -7,6 +7,7 @@ defmodule Engweb.Roads do
   alias Engweb.Repo
 
   alias Engweb.Roads.{Road, Images, Houses, CurrentImages, Comment}
+  alias Engweb.Accounts.User
 
   @max_image_uploads 2
   @max_current_image_uploads 2
@@ -59,6 +60,8 @@ defmodule Engweb.Roads do
   def get_road_by_num(num) do
     Repo.get_by(Road, num: num)
   end
+
+  def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
   Creates a road.

@@ -3,6 +3,7 @@ defmodule EngwebWeb.RoadLive.Show do
 
   alias Engweb.Roads
   alias Engweb.Repo
+  alias Engweb.Roads.Comment
 
   @impl true
   def mount(_params, _session, socket) do
@@ -14,6 +15,11 @@ defmodule EngwebWeb.RoadLive.Show do
     id = unsigned_params["id"]
     road = Roads.get_road!(id) |> Repo.preload([:images, :current_images, :houses, :comments])
 
+    comments_with_users = Enum.map(road.comments, fn comment ->
+      user = Roads.get_user!(comment.user_id)
+      Map.put(comment, :user_name, user.name)
+    end)
+
     socket =
       socket
       |> assign(:page_title, page_title(socket.assigns.live_action))
@@ -23,7 +29,7 @@ defmodule EngwebWeb.RoadLive.Show do
       |> assign(:max_image_uploads, Roads.max_image_uploads())
       |> assign(:max_current_image_uploads, Roads.max_current_image_uploads())
       |> assign(:houses, road.houses)
-      |> assign(:comments, road.comments)
+      |> assign(:comments, comments_with_users)
       |> assign(:new_comment, %Roads.Comment{})
 
     case socket.assigns.live_action do
@@ -48,16 +54,19 @@ defmodule EngwebWeb.RoadLive.Show do
       user_id: socket.assigns.current_user.id
     }) do
       {:ok, comment} ->
-        updated_comments = [comment | socket.assigns.comments]
+        user = Roads.get_user!(comment.user_id)
+        comment_with_user = Map.put(comment, :user_name, user.name)
+        updated_comments = [comment_with_user | socket.assigns.comments]
         {:noreply, assign(socket, comments: updated_comments, new_comment: %Roads.Comment{})}
       {:error, changeset} ->
         {:noreply, assign(socket, new_comment: changeset)}
     end
   end
 
+  @impl true
   def handle_event("vote_comment", %{"comment_id" => comment_id, "vote" => "up"}, socket) do
     comment = Roads.get_comment!(comment_id)
-    updated_comment = %{comment | likes: comment.likes + 1}
+    updated_comment = %{likes: comment.likes + 1}
 
     case Roads.update_comment(comment, updated_comment) do
       {:ok, _updated_comment} ->
@@ -67,9 +76,10 @@ defmodule EngwebWeb.RoadLive.Show do
     end
   end
 
+  @impl true
   def handle_event("vote_comment", %{"comment_id" => comment_id, "vote" => "down"}, socket) do
     comment = Roads.get_comment!(comment_id)
-    updated_comment = %{comment | dislikes: comment.dislikes + 1}
+    updated_comment = %{dislikes: comment.dislikes + 1}
 
     case Roads.update_comment(comment, updated_comment) do
       {:ok, _updated_comment} ->
