@@ -33,6 +33,7 @@ defmodule EngwebWeb.Router do
     live_session :post_roads,
       on_mount: [{EngwebWeb.UserAuth, :ensure_authenticated}] do
       live "/new", RoadLive.Index, :new
+      live "/:id/houses", RoadLive.Index, :houses
       live "/:id/edit", RoadLive.Show, :edit
       live "/:id/show/edit", RoadLive.Show, :edit
       live "/:id/delete", RoadLive.Show, :delete

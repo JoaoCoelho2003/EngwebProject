@@ -23,7 +23,6 @@ defmodule EngwebWeb.RoadLive.Index do
   end
 
   @impl true
-  @spec handle_params(any(), any(), Phoenix.LiveView.Socket.t()) :: {:noreply, map()}
   def handle_params(params, _url, socket) do
     roads = list_roads()
     {:noreply, apply_action(stream(socket, :roads, roads), socket.assigns.live_action, params)}
@@ -41,6 +40,16 @@ defmodule EngwebWeb.RoadLive.Index do
     socket
     |> assign(:page_title, "Listing Roads")
     |> assign(:road, nil)
+    |> assign(:images, [])
+    |> assign(:current_images, [])
+  end
+
+  defp apply_action(socket, :houses, params) do
+    road = Roads.get_road!(params["id"])
+
+    socket
+    |> assign(:page_title, "Houses")
+    |> assign(:road, road)
     |> assign(:images, [])
     |> assign(:current_images, [])
   end

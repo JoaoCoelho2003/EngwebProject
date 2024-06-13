@@ -185,7 +185,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
           {:noreply,
           socket
           |> put_flash(:info, "Road created successfully")
-          |> push_patch(to: socket.assigns.patch)}
+          |> push_patch(to: ~p"/roads/#{road.id}/houses")}
 
         {:error, %Ecto.Changeset{} = changeset} ->
           {:noreply, assign_form(socket, changeset)}
