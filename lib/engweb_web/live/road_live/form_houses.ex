@@ -50,7 +50,7 @@ defmodule EngwebWeb.RoadLive.FormHouses do
             <.input field={form[:num]} type="text" label="Num"/>
             <.input field={form[:enfiteuta]} type="text" label="Enfiteuta"/>
             <.input field={form[:foro]} type="text" label="Foro"/>
-            <.input field={form[:description]} type="text" label="Description"/>
+            <.input field={form[:description]} type="textarea" label="Description"/>
           </.simple_form>
         <% end %>
       <% end %>
