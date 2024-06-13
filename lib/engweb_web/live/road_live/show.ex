@@ -3,6 +3,7 @@ defmodule EngwebWeb.RoadLive.Show do
 
   alias Engweb.Roads
   alias Engweb.Repo
+  alias Engweb.Roads.Houses
 
   @impl true
   def mount(_params, _session, socket) do
@@ -35,6 +36,11 @@ defmodule EngwebWeb.RoadLive.Show do
       :delete_current_image ->
         current_image_id = unsigned_params["current_image_id"]
         {:noreply, socket |> assign(:current_image, current_image_id)}
+      :delete_house ->
+        house_id = unsigned_params["house_id"]
+        {:noreply, socket |> assign(:house, house_id)}
+      :new_house ->
+        {:noreply, socket |> assign(:house, %Houses{})}
       _ ->
         {:noreply, socket}
     end
@@ -47,5 +53,7 @@ defmodule EngwebWeb.RoadLive.Show do
   defp page_title(:delete_current_image), do: "Delete Current Image"
   defp page_title(:new_image), do: "New Image"
   defp page_title(:new_current_image), do: "New Current Image"
+  defp page_title(:delete_house), do: "Delete House"
+  defp page_title(:new_house), do: "New House"
 
 end

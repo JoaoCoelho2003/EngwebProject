@@ -101,7 +101,7 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
   end
 
   def handle_event("save", _, socket) do
-    if socket.assigns.road.user_id != socket.assigns.current_user.id do
+    if (socket.assigns.current_user.id != socket.assigns.road.user_id) and (socket.assigns.current_user.role != "admin") do
       {:noreply, socket |> put_flash(:error, "You are not allowed to create images for this road")}
     else
       save_image(socket, socket.assigns.action)

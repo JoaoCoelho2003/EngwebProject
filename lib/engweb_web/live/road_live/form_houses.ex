@@ -89,9 +89,7 @@ defmodule EngwebWeb.RoadLive.FormHouses do
   end
 
   def handle_event("save_houses", _unsigned_params, socket) do
-    IO.inspect(socket.assigns, label: "socket.assigns")
-    id = socket.assigns.current_user.id
-    if id == nil or id != socket.assigns.road.user_id do
+    if (socket.assigns.current_user.id != socket.assigns.road.user_id) and (socket.assigns.current_user.role != "admin") do
       {:noreply, socket |> put_flash(:error, "You are not authorized to perform this action")}
     else
       create_houses(socket)
