@@ -26,13 +26,13 @@
 
     <!-- Navigation Tabs -->
     <div class="flex space-x-4 border-b mb-4">
-      <a href={profile_url(@socket, @user.id, "overview")} class={"py-1 px-4 rounded-md " <> if(@active_tab == :overview, do: "bg-gray-300 text-black", else: "text-gray-600 hover:bg-gray-200 hover:text-black")}>
+      <a href={profile_url(@user.id, "overview")} class={"py-1 px-4 rounded-md " <> if(@active_tab == :overview, do: "bg-gray-300 text-black", else: "text-gray-600 hover:bg-gray-200 hover:text-black")}>
         Overview
       </a>
-      <a href={profile_url(@socket, @user.id, "roads")} class={"py-1 px-4 rounded-md " <> if(@active_tab == :roads, do: "bg-gray-300 text-black", else: "text-gray-600 hover:bg-gray-200 hover:text-black")}>
+      <a href={profile_url(@user.id, "roads")} class={"py-1 px-4 rounded-md " <> if(@active_tab == :roads, do: "bg-gray-300 text-black", else: "text-gray-600 hover:bg-gray-200 hover:text-black")}>
         Roads
       </a>
-      <a href={profile_url(@socket, @user.id, "comments")} class={"py-1 px-4 rounded-md " <> if(@active_tab == :comments, do: "bg-gray-300 text-black", else: "text-gray-600 hover:bg-gray-200 hover:text-black")}>
+      <a href={profile_url(@user.id, "comments")} class={"py-1 px-4 rounded-md " <> if(@active_tab == :comments, do: "bg-gray-300 text-black", else: "text-gray-600 hover:bg-gray-200 hover:text-black")}>
         Comments
       </a>
     </div>

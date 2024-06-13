@@ -24,7 +24,7 @@ defmodule EngwebWeb.UserLive.UserProfileLive do
     {:noreply, assign(socket, :active_tab, String.to_atom(tab))}
   end
 
-  def profile_url(socket, user_id, tab) do
+  def profile_url(user_id, tab) do
     "/users/#{user_id}/profile?tab=#{tab}"
   end
 end
