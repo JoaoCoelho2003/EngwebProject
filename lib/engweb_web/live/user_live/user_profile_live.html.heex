@@ -1,8 +1,9 @@
 <div class="flex flex-row space-x-6 mx-auto border rounded-lg py-6 px-4 bg-gray-200">
   <div class="flex-none pr-5 border-r-2 border-gray-500">
-    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.52 19c.64-2.2 1.84-3 3.22-3h6.52c1.38 0 2.58.8 3.22 3"/>
-    <circle cx="12" cy="10" r="3"/>
-    <circle cx="12" cy="12" r="10"/>
+    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5.52 19c.64-2.2 1.84-3 3.22-3h6.52c1.38 0 2.58.8 3.22 3"/>
+      <circle cx="12" cy="10" r="3"/>
+      <circle cx="12" cy="12" r="10"/>
     </svg>
   </div>
   <div class="flex-1">
@@ -20,7 +21,58 @@
       <p class="border rounded border-gray-500 w-full py-2 px-3"><%= @user.filiation %></p>
     </div>
     <div class="mb-4">
-      <label class="block mb-2 opacity-50">Confirmed  at  <%= @user.confirmed_at %></label>
+      <label class="block mb-2 opacity-50">Confirmed at <%= @user.confirmed_at %></label>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="flex space-x-4 border-b mb-4">
+      <a href={profile_url(@socket, "overview")} class={"pb-2 " <> if(@active_tab == :overview, do: "border-b-2 border-white", else: "")}>
+        Overview
+      </a>
+      <a href={profile_url(@socket, "roads")} class={"pb-2 " <> if(@active_tab == :roads, do: "border-b-2 border-white", else: "")}>
+        Roads
+      </a>
+      <a href={profile_url(@socket, "comments")} class={"pb-2 " <> if(@active_tab == :comments, do: "border-b-2 border-white", else: "")}>
+        Comments
+      </a>
+    </div>
+
+    <!-- Tab Content -->
+    <div>
+      <%= if @active_tab == :overview do %>
+        <h2 class="text-xl font-bold">Overview</h2>
+        <h3 class="text-lg font-semibold mt-4">Roads</h3>
+        <ul>
+          <%= for road <- @roads do %>
+            <li><%= road.name %> - <%= road.description %></li>
+          <% end %>
+        </ul>
+
+        <h3 class="text-lg font-semibold mt-4">Comments</h3>
+        <ul>
+          <%= for comment <- @comments do %>
+            <li><%= comment.comment %> - <%= comment.inserted_at %></li>
+          <% end %>
+        </ul>
+      <% end %>
+
+      <%= if @active_tab == :roads do %>
+        <h2 class="text-xl font-bold">Roads</h2>
+        <ul>
+          <%= for road <- @roads do %>
+            <li><%= road.name %> - <%= road.description %></li>
+          <% end %>
+        </ul>
+      <% end %>
+
+      <%= if @active_tab == :comments do %>
+        <h2 class="text-xl font-bold">Comments</h2>
+        <ul>
+          <%= for comment <- @comments do %>
+            <li><%= comment.comment %> - <%= comment.inserted_at %></li>
+          <% end %>
+        </ul>
+      <% end %>
     </div>
   </div>
 </div>

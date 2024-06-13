@@ -423,4 +423,16 @@ defmodule Engweb.Roads do
   def delete_houses_by_road(road_id) do
     Repo.delete_all(from h in Houses, where: h.road_id == ^road_id)
   end
+
+  def list_user_roads(user_id) do
+    Road
+    |> where(user_id: ^user_id)
+    |> Repo.all()
+  end
+
+  def list_user_comments(user_id) do
+    Comment
+    |> where(user_id: ^user_id)
+    |> Repo.all()
+  end
 end
