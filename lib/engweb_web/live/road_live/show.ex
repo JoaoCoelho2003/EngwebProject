@@ -65,12 +65,15 @@ defmodule EngwebWeb.RoadLive.Show do
   defp has_voted(user_id, comment_id) do
     comment = Roads.get_comment!(comment_id)
 
-    if comment.likes > 0 && Enum.any?(comment.likes_by, &(&1 == user_id)) do
-      {:already_voted, :likes}
-    elsif comment.dislikes > 0 && Enum.any?(comment.dislikes_by, &(&1 == user_id)) do
-      {:already_voted, :dislikes}
-    else
-      {:not_voted, nil}
+    cond do
+      comment.likes > 0 && Enum.any?(comment.likes_by, &(&1 == user_id)) ->
+        {:already_voted, :likes}
+
+      comment.dislikes > 0 && Enum.any?(comment.dislikes_by, &(&1 == user_id)) ->
+        {:already_voted, :dislikes}
+
+      true ->
+        {:not_voted, nil}
     end
   end
 
