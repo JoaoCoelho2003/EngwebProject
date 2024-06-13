@@ -93,7 +93,7 @@ defmodule EngwebWeb.Router do
       on_mount: [{EngwebWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserLive.UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserLive.UserSettingsLive, :confirm_email
-      live "/users/profile", UserLive.UserProfileLive, :user_profile
+      live "/users/:id/profile", UserLive.UserProfileLive, :user_profile
     end
   end
 

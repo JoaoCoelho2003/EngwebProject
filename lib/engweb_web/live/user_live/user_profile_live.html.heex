@@ -26,13 +26,13 @@
 
     <!-- Navigation Tabs -->
     <div class="flex space-x-4 border-b mb-4">
-      <a href={profile_url(@socket, "overview")} class={"pb-2 " <> if(@active_tab == :overview, do: "border-b-2 border-white", else: "")}>
+      <a href={profile_url(@socket, @user.id, "overview")} class={"py-1 px-4 rounded-md " <> if(@active_tab == :overview, do: "bg-gray-300 text-black", else: "text-gray-600 hover:bg-gray-200 hover:text-black")}>
         Overview
       </a>
-      <a href={profile_url(@socket, "roads")} class={"pb-2 " <> if(@active_tab == :roads, do: "border-b-2 border-white", else: "")}>
+      <a href={profile_url(@socket, @user.id, "roads")} class={"py-1 px-4 rounded-md " <> if(@active_tab == :roads, do: "bg-gray-300 text-black", else: "text-gray-600 hover:bg-gray-200 hover:text-black")}>
         Roads
       </a>
-      <a href={profile_url(@socket, "comments")} class={"pb-2 " <> if(@active_tab == :comments, do: "border-b-2 border-white", else: "")}>
+      <a href={profile_url(@socket, @user.id, "comments")} class={"py-1 px-4 rounded-md " <> if(@active_tab == :comments, do: "bg-gray-300 text-black", else: "text-gray-600 hover:bg-gray-200 hover:text-black")}>
         Comments
       </a>
     </div>
@@ -40,36 +40,45 @@
     <!-- Tab Content -->
     <div>
       <%= if @active_tab == :overview do %>
-        <h2 class="text-xl font-bold">Overview</h2>
-        <h3 class="text-lg font-semibold mt-4">Roads</h3>
-        <ul>
-          <%= for road <- @roads do %>
-            <li><%= road.name %> - <%= road.description %></li>
-          <% end %>
-        </ul>
+        <%= if Enum.empty?(@roads) and Enum.empty?(@comments) do %>
+          <p>No activity detected</p>
+        <% else %>
+          <h3 class="text-lg font-semibold mt-4">Roads</h3>
+          <ul>
+            <%= for road <- @roads do %>
+              <li><%= road.name %> - <%= road.description %></li>
+            <% end %>
+          </ul>
 
-        <h3 class="text-lg font-semibold mt-4">Comments</h3>
-        <ul>
-          <%= for comment <- @comments do %>
-            <li><%= comment.comment %> - <%= comment.inserted_at %></li>
-          <% end %>
-        </ul>
+          <h3 class="text-lg font-semibold mt-4">Comments</h3>
+          <ul>
+            <%= for comment <- @comments do %>
+              <li><%= comment.comment %> - <%= comment.inserted_at %></li>
+            <% end %>
+          </ul>
+        <% end %>
       <% end %>
 
       <%= if @active_tab == :roads do %>
-        <h2 class="text-xl font-bold">Roads</h2>
         <ul>
-          <%= for road <- @roads do %>
-            <li><%= road.name %> - <%= road.description %></li>
+          <%= if Enum.empty?(@roads) do %>
+            <li>No activity detected</li>
+          <% else %>
+            <%= for road <- @roads do %>
+              <li><%= road.name %> - <%= road.description %></li>
+            <% end %>
           <% end %>
         </ul>
       <% end %>
 
       <%= if @active_tab == :comments do %>
-        <h2 class="text-xl font-bold">Comments</h2>
         <ul>
-          <%= for comment <- @comments do %>
-            <li><%= comment.comment %> - <%= comment.inserted_at %></li>
+          <%= if Enum.empty?(@comments) do %>
+            <li>No activity detected</li>
+          <% else %>
+            <%= for comment <- @comments do %>
+              <li><%= comment.comment %> - <%= comment.inserted_at %></li>
+            <% end %>
           <% end %>
         </ul>
       <% end %>
