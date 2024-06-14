@@ -62,6 +62,8 @@ defmodule EngwebWeb.RoadLive.Show do
   def handle_event("vote_comment", %{"comment_id" => comment_id, "vote" => "up"}, socket) do
     comment = Roads.get_comment!(comment_id)
 
+    updated_comment = %{likes: comment.likes + 1}
+
     case Roads.update_comment(comment, updated_comment) do
       {:ok, _updated_comment} ->
         {:noreply, socket |> assign(:comments, Enum.map(socket.assigns.comments, fn c -> if c.id == String.to_integer(comment_id) do Map.put(c, :likes, c.likes + 1) else c end end))}
@@ -72,6 +74,8 @@ defmodule EngwebWeb.RoadLive.Show do
 
   def handle_event("vote_comment", %{"comment_id" => comment_id, "vote" => "down"}, socket) do
     comment = Roads.get_comment!(comment_id)
+
+    updated_comment = %{likes: comment.dislikes + 1}
 
     case Roads.update_comment(comment, updated_comment) do
       {:ok, _updated_comment} ->
