@@ -3,6 +3,7 @@ defmodule EngwebWeb.RoadLive.Show do
 
   alias Engweb.Roads
   alias Engweb.Repo
+  import Ecto.Query
 
   @impl true
   def mount(_params, _session, socket) do
@@ -12,7 +13,7 @@ defmodule EngwebWeb.RoadLive.Show do
   @impl true
   def handle_params(unsigned_params, _, socket) do
     id = unsigned_params["id"]
-    road = Roads.get_road!(id) |> Repo.preload([:images, :current_images, :houses, :comments])
+    road = Roads.get_road!(id) |> Repo.preload([:images, :current_images, :houses, comments: [:reactions]])
 
     comments_with_users = join_comments_with_users(road.comments)
 
@@ -44,44 +45,56 @@ defmodule EngwebWeb.RoadLive.Show do
   def handle_event("add_comment", %{"comment" => comment_text}, socket) do
     case Roads.create_comment(%{
       comment: comment_text,
-      likes: 0,
-      dislikes: 0,
       road_id: socket.assigns.road.id,
-      user_id: socket.assigns.current_user.id
+      user_id: socket.assigns.current_user.id,
+      reactions: %{}
     }) do
       {:ok, comment} ->
         user = Roads.get_user!(comment.user_id)
         comment_with_user = Map.put(comment, :user_name, user.name)
         updated_comments = [comment_with_user | socket.assigns.comments]
+        IO.inspect(comment)
         {:noreply, assign(socket, comments: updated_comments, new_comment: %Roads.Comment{})}
       {:error, changeset} ->
         {:noreply, assign(socket, new_comment: changeset)}
     end
   end
 
-  def handle_event("vote_comment", %{"comment_id" => comment_id, "vote" => "up"}, socket) do
-    comment = Roads.get_comment!(comment_id)
+  @impl true
+  def handle_event("vote_comment", %{"comment_id" => comment_id, "vote" => vote}, socket) do
+    user_id = socket.assigns.current_user.id
 
-    updated_comment = %{likes: comment.likes + 1}
+    existing_reaction = Repo.get_by(Roads.Reaction, user_id: user_id, comment_id: comment_id)
 
-    case Roads.update_comment(comment, updated_comment) do
-      {:ok, _updated_comment} ->
-        {:noreply, socket |> assign(:comments, Enum.map(socket.assigns.comments, fn c -> if c.id == String.to_integer(comment_id) do Map.put(c, :likes, c.likes + 1) else c end end))}
-      {:error, _changeset} ->
-        {:noreply, socket}
-    end
-  end
+    cond do
+      existing_reaction && existing_reaction.reaction_type == vote ->
+        case Roads.delete_reaction(existing_reaction) do
+          {:ok, _} ->
+            {:noreply, update_comment_reactions(socket, comment_id)}
+          {:error, _} ->
+            {:noreply, socket}
+        end
 
-  def handle_event("vote_comment", %{"comment_id" => comment_id, "vote" => "down"}, socket) do
-    comment = Roads.get_comment!(comment_id)
+      existing_reaction && existing_reaction.reaction_type != vote ->
+        changeset = Roads.Reaction.changeset(existing_reaction, %{reaction_type: vote})
+        case Repo.update(changeset) do
+          {:ok, _} ->
+            {:noreply, update_comment_reactions(socket, comment_id)}
+          {:error, _} ->
+            {:noreply, socket}
+        end
 
-    updated_comment = %{likes: comment.dislikes + 1}
-
-    case Roads.update_comment(comment, updated_comment) do
-      {:ok, _updated_comment} ->
-        {:noreply, socket |> assign(:comments, Enum.map(socket.assigns.comments, fn c -> if c.id == String.to_integer(comment_id) do Map.put(c, :dislikes, c.dislikes + 1) else c end end))}
-      {:error, _changeset} ->
-        {:noreply, socket}
+      true ->
+        case Roads.create_reaction(%{
+          reaction_type: vote,
+          comment_id: comment_id,
+          user_id: user_id
+        }) do
+          {:ok, _reaction} ->
+            {:noreply, update_comment_reactions(socket, comment_id)}
+          {:error, _changeset} ->
+            {:noreply, socket}
+        end
     end
   end
 
@@ -97,10 +110,25 @@ defmodule EngwebWeb.RoadLive.Show do
   end
 
   defp join_comments_with_users(comments) do
-    Enum.map(comments, fn comment ->
-      user = Roads.get_user!(comment.user_id)
-      Map.put(comment, :user_name, user.name)
-    end)
+    Enum.map(comments, &join_comment_with_reactions/1)
+  end
+
+  defp join_comment_with_reactions(comment) do
+    user = Roads.get_user!(comment.user_id)
+
+    reactions = Repo.all(from r in Roads.Reaction, where: r.comment_id == ^comment.id)
+    comment_with_reactions =
+      Map.put(comment, :reactions, reactions |> Enum.to_list())
+
+    Map.put(comment_with_reactions, :user_name, user.name)
+  end
+
+  defp update_comment_reactions(socket, comment_id) do
+    road_id = socket.assigns.road.id
+    road = Roads.get_road!(road_id) |> Repo.preload([comments: [:reactions]])
+
+    comments_with_users = join_comments_with_users(road.comments)
+    assign(socket, comments: comments_with_users)
   end
 
   defp page_title(:show), do: "Show Road"

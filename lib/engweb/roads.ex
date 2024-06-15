@@ -6,7 +6,7 @@ defmodule Engweb.Roads do
   import Ecto.Query, warn: false
   alias Engweb.Repo
 
-  alias Engweb.Roads.{Road, Images, Houses, CurrentImages, Comment}
+  alias Engweb.Roads.{Road, Images, Houses, CurrentImages, Comment, Reaction}
   alias Engweb.Accounts.User
 
   @max_image_uploads 2
@@ -437,5 +437,63 @@ defmodule Engweb.Roads do
     Comment
     |> where(user_id: ^user_id)
     |> Repo.all()
+  end
+
+  @doc """
+  Returns reactions for a comment.
+
+  ## Examples
+
+      iex> get_comment_reactions(comment_id)
+      %{likes: 5, dislikes: 2}
+
+  """
+  def get_comment_reactions(comment_id) do
+    like_count = Repo.aggregate(from(r in Reaction, where: r.comment_id == ^comment_id and r.reaction_type == "like"), :count, :id)
+    dislike_count = Repo.aggregate(from(r in Reaction, where: r.comment_id == ^comment_id and r.reaction_type == "dislike"), :count, :id)
+    %{likes: like_count, dislikes: dislike_count}
+  end
+
+  @doc """
+  Creates a reaction for a comment.
+
+  ## Examples
+
+      iex> create_reaction(%{reaction_type: "like", comment_id: comment_id, user_id: user_id})
+      {:ok, %Reaction{}}
+
+  """
+  def create_reaction(attrs \\ %{}) do
+    %Reaction{}
+    |> Reaction.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a reaction for a comment.
+
+  ## Examples
+
+      iex> update_reaction(reaction, %{reaction_type: "dislike"})
+      {:ok, %Reaction{}}
+
+  """
+  def update_reaction(%Reaction{} = reaction, attrs) do
+    reaction
+    |> Reaction.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a reaction for a comment.
+
+  ## Examples
+
+      iex> delete_reaction(reaction)
+      {:ok, %Reaction{}}
+
+  """
+  def delete_reaction(%Reaction{} = reaction) do
+    Repo.delete(reaction)
   end
 end
