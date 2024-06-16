@@ -13,9 +13,9 @@ defmodule EngwebWeb.UserLive.UserProfileLive do
 
       user ->
         roads = list_user_roads_with_images(user.id)
-        comments = Roads.list_user_comments(user.id)
+        comments = Roads.list_user_comments_inserted(user.id)
 
-        {:ok, assign(socket, user: user, active_tab: :overview, roads: roads, comments: comments)}
+        {:ok, assign(socket, user: user, active_tab: :roads, roads: roads, comments: comments)}
     end
   end
 
@@ -31,7 +31,7 @@ defmodule EngwebWeb.UserLive.UserProfileLive do
 
   @impl true
   def handle_params(params, _url, socket) do
-    tab = params["tab"] || "overview"
+    tab = params["tab"] || "roads"
     {:noreply, assign(socket, :active_tab, String.to_atom(tab))}
   end
 
