@@ -37,9 +37,11 @@ defmodule EngwebWeb.RoadLive.Index do
   end
 
   defp apply_action(socket, :index, _params) do
+    roads = list_roads()
     socket
     |> assign(:page_title, "Listing Roads")
     |> assign(:road, nil)
+    |> stream(:roads, roads, reset: true)
     |> assign(:images, [])
     |> assign(:current_images, [])
   end
@@ -60,6 +62,7 @@ defmodule EngwebWeb.RoadLive.Index do
     {:noreply, stream_insert(socket, :roads, road)}
   end
 
+  @impl true
   def handle_event("search", %{"query" => query}, socket) do
     roads = list_roads(query)
     {:noreply, stream(socket, :roads, roads, reset: true)}
@@ -69,6 +72,19 @@ defmodule EngwebWeb.RoadLive.Index do
   def handle_event("navigate_to_road", %{"id" => id}, socket) do
     road_url = "/roads/#{id}"
     {:noreply, redirect(socket, to: road_url)}
+  end
+
+  @impl true
+  def handle_event("phx:clear-flash", %{"key" => _key}, socket) do
+    roads = list_roads()
+    {:noreply, stream(socket, :roads, roads, reset: true)}
+  end
+
+  @impl true
+  def handle_info({:clear_flash, key}, socket) do
+    socket = clear_flash(socket, key)
+    roads = list_roads()
+    {:noreply, stream(socket, :roads, roads, reset: true)}
   end
 
   defp list_roads(query \\ "") do

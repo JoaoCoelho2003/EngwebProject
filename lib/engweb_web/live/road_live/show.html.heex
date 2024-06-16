@@ -1,7 +1,6 @@
-<div class="px-4 py-20 sm:px-6 lg:px-8">
+<div class="px-2 py-8 sm:px-4 lg:px-6">
   <%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) do %>
     <.header>
-      <%= @road.name %>
         <:actions>
           <.link patch={~p"/roads/#{@road.id}/edit"} phx-click={JS.push_focus()}>
             <.button>Edit road</.button>
