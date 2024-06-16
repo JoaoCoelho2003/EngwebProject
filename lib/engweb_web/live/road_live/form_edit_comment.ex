@@ -2,8 +2,6 @@ defmodule EngwebWeb.RoadLive.FormEditComment do
   use EngwebWeb, :live_component
 
   alias Engweb.Roads
-  alias Engweb.Repo
-
 
   @impl true
   def render(assigns) do

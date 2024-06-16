@@ -66,9 +66,7 @@ defmodule EngwebWeb.RoadLive.Show do
     }) do
       {:ok, comment} ->
         user = Roads.get_user!(comment.user_id)
-        comment_with_user = Map.put(comment, :user_name, user.name)
-
-        comment_with_user = count_likes_dislikes(comment_with_user)
+        comment_with_user = Map.put(comment, :user_name, user.name) |> Map.put(:likes, 0) |> Map.put(:dislikes, 0)
 
         updated_comments = [comment_with_user | socket.assigns.comments]
 
@@ -108,7 +106,7 @@ defmodule EngwebWeb.RoadLive.Show do
           comment_id: comment_id,
           user_id: user_id
         }) do
-          {:ok, reaction} ->
+          {:ok, _reaction} ->
             {:noreply, update_comment_reactions(socket)}
           {:error, _changeset} ->
             {:noreply, socket}
