@@ -35,7 +35,8 @@ defmodule EngwebWeb.UserLive.UserRegistrationLive do
 
           <.input field={@form[:email]} type="email" label="Email" required />
           <.input field={@form[:password]} type="password" label="Password" required />
-
+          <.input field={@form[:name]} type="text" label="Name" required />
+          <.input field={@form[:filiation]} type="select" label="Filiation" multiple={false} prompt="Select a filiation" options={[{"student", "student"},{"teacher", "teacher"}]} value="student" required />
           <:actions>
             <.button phx-disable-with="Creating account..." class="w-full">Create an account</.button>
           </:actions>
