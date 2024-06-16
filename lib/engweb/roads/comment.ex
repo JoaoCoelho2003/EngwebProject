@@ -4,10 +4,10 @@ defmodule Engweb.Roads.Comment do
 
   schema "roads_comments" do
     field :comment, :string
-    field :likes, :integer
-    field :dislikes, :integer
     field :road_id, :id
     field :user_id, :id
+
+    has_many :reactions, Engweb.Roads.Reaction
 
     timestamps(type: :utc_datetime)
   end
@@ -15,7 +15,7 @@ defmodule Engweb.Roads.Comment do
   @doc false
   def changeset(comment, attrs) do
     comment
-    |> cast(attrs, [:comment, :likes, :dislikes, :road_id, :user_id])
-    |> validate_required([:comment, :likes, :dislikes, :road_id, :user_id])
+    |> cast(attrs, [:comment, :road_id, :user_id])
+    |> validate_required([:comment, :road_id, :user_id])
   end
 end

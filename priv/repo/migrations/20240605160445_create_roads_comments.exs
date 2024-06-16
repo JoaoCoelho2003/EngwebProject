@@ -4,8 +4,6 @@ defmodule Engweb.Repo.Migrations.CreateRoadsComments do
   def change do
     create table(:roads_comments) do
       add :comment, :text
-      add :likes, :integer
-      add :dislikes, :integer
       add :road_id, references(:roads, on_delete: :nothing)
       add :user_id, references(:users, on_delete: :nothing)
 
