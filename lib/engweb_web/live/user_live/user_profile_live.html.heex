@@ -43,14 +43,32 @@
         <%= if Enum.empty?(@roads) and Enum.empty?(@comments) do %>
           <p>No activity detected</p>
         <% else %>
-          <h3 class="text-lg font-semibold mt-4">Roads</h3>
+          <h3 class="text-2xl md:text-3xl pl-2 my-2 border-l-4 text-black font-sans font-bold border-blue-600 mb-10 mt-10">
+              Roads
+          </h3>
           <ul>
             <%= for road <- @roads do %>
-              <li><%= road.name %> - <%= road.description %></li>
+              <div class="flex space-x-6 items-center">
+                <%= if Enum.any?(road.current_images) do %>
+                  <% current_image = hd(road.current_images) %>
+                  <div class="relative w-1/2 md:w-3/4 h-96 md:h-[70vh] lg:h-[1/2] cursor-pointer"
+                      phx-click="navigate_to_road"
+                      phx-value-id={road.id}>
+                    <div class="absolute inset-0 flex items-center justify-center overflow-hidden">
+                      <img src={current_image.image} alt="Current Image" class="object-cover w-full h-full transform hover:scale-110 transition duration-500 ease-in-out"/>
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white text-center p-2 pr-8">
+                      <p class="text-2xl font-bold"><%= road.name %></p>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
             <% end %>
           </ul>
 
-          <h3 class="text-lg font-semibold mt-4">Comments</h3>
+          <h3 class="text-2xl md:text-3xl pl-2 my-2 border-l-4 text-black font-sans font-bold border-blue-600 mb-10 mt-10">
+              Comments
+          </h3>
           <ul>
             <%= for comment <- @comments do %>
               <li><%= comment.comment %> - <%= comment.inserted_at %></li>
@@ -60,16 +78,31 @@
       <% end %>
 
       <%= if @active_tab == :roads do %>
-        <ul>
+        <div class="space-y-6">
           <%= if Enum.empty?(@roads) do %>
-            <li>No activity detected</li>
+            <p>No activity detected</p>
           <% else %>
             <%= for road <- @roads do %>
-              <li><%= road.name %> - <%= road.description %></li>
+              <div class="flex space-x-6 items-center">
+                <%= if Enum.any?(road.current_images) do %>
+                  <% current_image = hd(road.current_images) %>
+                  <div class="relative w-1/2 md:w-3/4 h-96 md:h-[70vh] lg:h-[1/2] cursor-pointer"
+                      phx-click="navigate_to_road"
+                      phx-value-id={road.id}>
+                    <div class="absolute inset-0 flex items-center justify-center overflow-hidden">
+                      <img src={current_image.image} alt="Current Image" class="object-cover w-full h-full transform hover:scale-110 transition duration-500 ease-in-out"/>
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white text-center p-2 pr-8">
+                      <p class="text-2xl font-bold"><%= road.name %></p>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
             <% end %>
           <% end %>
-        </ul>
+        </div>
       <% end %>
+
 
       <%= if @active_tab == :comments do %>
         <ul>

@@ -443,6 +443,13 @@ defmodule Engweb.Roads do
     |> Repo.all()
   end
 
+  def list_user_roads_inserted(user_id) do
+    Road
+    |> where(user_id: ^user_id)
+    |> order_by(desc: :inserted_at)
+    |> Repo.all()
+  end
+
   @doc """
   Returns reactions for a comment.
 
