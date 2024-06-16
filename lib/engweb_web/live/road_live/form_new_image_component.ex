@@ -60,6 +60,11 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
             <% end %>
           </div>
         <% end %>
+        <div class="flex flex-col gap-y-2">
+          <%= for {_field, message} <- @error do %>
+            <p class="text-red-500"><%= message %></p>
+          <% end %>
+        </div>
         <:actions>
           <.button phx-disable-with="Saving...">Save Image</.button>
         </:actions>
@@ -80,6 +85,7 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
             |> allow_upload(:image, accept: ~w(.png .jpg .jpeg), max_entries: 1)
             |> assign(:descriptions, %{})
             |> assign(:uploaded_images, [])
+            |> assign(:error, %{})
         }
       :new_current_image ->
         {:ok,
@@ -88,6 +94,7 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
             |> assign(:form, changeset)
             |> allow_upload(:current_image, accept: ~w(.png .jpg .jpeg), max_entries: 1)
             |> assign(:uploaded_current_images, [])
+            |> assign(:error, %{})
         }
     end
 
@@ -121,26 +128,36 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
   end
 
   defp save_image(socket, :new_image) do
-    {:noreply, socket} = consume_uploaded_images(socket, :new_image)
+    case validate_image(socket, :new_image) do
+      {:ok, socket} ->
+        {:noreply, socket} = consume_uploaded_images(socket, :new_image)
 
-    create_images(socket, socket.assigns.road.id, :new_image)
+        create_images(socket, socket.assigns.road.id, :new_image)
 
-    {:noreply,
-    socket
-      |> put_flash(:info, "Image created successfully")
-      |> push_patch(to: socket.assigns.patch)}
+        {:noreply,
+        socket
+          |> put_flash(:info, "Image created successfully")
+          |> push_patch(to: socket.assigns.patch)}
+
+      {:error, socket} -> {:noreply, socket}
+    end
   end
 
   defp save_image(socket, :new_current_image) do
-    {:noreply, socket} = consume_uploaded_images(socket, :new_current_image)
+    case validate_image(socket, :new_current_image) do
+      {:ok, socket} ->
+        {:noreply, socket} = consume_uploaded_images(socket, :new_current_image)
 
-    create_current_images(socket, socket.assigns.road.id, :new_current_image)
+        create_current_images(socket, socket.assigns.road.id, :new_current_image)
 
-    {:noreply,
-    socket
-      |> put_flash(:info, "Current Image created successfully")
-      |> push_patch(to: socket.assigns.patch)}
-  end
+        {:noreply,
+        socket
+          |> put_flash(:info, "Current Image created successfully")
+          |> push_patch(to: socket.assigns.patch)}
+
+        {:error, socket} -> {:noreply, socket}
+      end
+    end
 
   defp consume_uploaded_images(socket, :new_image) do
     uploaded_files =
@@ -174,5 +191,66 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
     Enum.each(socket.assigns.uploaded_current_images, fn path ->
       Roads.create_current_images(%{road_id: road_id, image: path})
     end)
+  end
+
+  defp validate_image(socket, :new_image) do
+    socket = validate_descriptions(socket)
+
+    errors = socket.assigns.error
+
+    errors =
+      if length(socket.assigns.uploads.image.entries) == 0 do
+        Map.put(errors, "min_image", "You must provide one image")
+      else
+        Map.delete(errors, "min_image")
+      end
+
+    errors =
+      if length(socket.assigns.uploads.image.entries) > socket.assigns.uploads.image.max_entries do
+        Map.put(errors, "max_image", "You can only upload up to #{socket.assigns.uploads.image.max_entries} images")
+      else
+        Map.delete(errors, "max_image")
+      end
+
+    if map_size(errors) > 0 do
+      {:error, socket |> assign(:error, errors)}
+    else
+      {:ok, socket}
+    end
+  end
+
+  defp validate_image(socket, :new_current_image) do
+    errors = socket.assigns.error
+
+    errors =
+      if length(socket.assigns.uploads.current_image.entries) == 0 do
+        Map.put(errors, "min_current_image", "You must provide one image")
+      else
+        Map.delete(errors, "min_current_image")
+      end
+
+    errors =
+      if length(socket.assigns.uploads.current_image.entries) > socket.assigns.uploads.current_image.max_entries do
+        Map.put(errors, "max_current_image", "You can only upload up to #{socket.assigns.uploads.current_image.max_entries} images")
+      else
+        Map.delete(errors, "max_current_image")
+      end
+
+    if map_size(errors) > 0 do
+      {:error, socket |> assign(:error, errors)}
+    else
+      {:ok, socket}
+    end
+  end
+
+  defp validate_descriptions(socket) do
+    errors =
+      if length(socket.assigns.uploads.image.entries) != map_size(socket.assigns.descriptions) do
+        Map.put(socket.assigns.error, "description", "You must provide a description for each image")
+      else
+        Map.delete(socket.assigns.error, "description")
+      end
+
+    assign(socket, :error, errors)
   end
 end
