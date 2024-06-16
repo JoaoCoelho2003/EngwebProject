@@ -140,7 +140,7 @@
                   <% else %>
                     <div class="w-full">
                       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        <%= for {house, index} <- Enum.with_index(@houses) do %>
+                        <%= for {house, _index} <- Enum.with_index(@houses) do %>
                             <div class="relative h-full ml-0 mr-0 sm:mr-10 mb-10">
                               <span class="absolute top-0 left-0 w-full h-full mt-1 ml-1 bg-indigo-500 rounded-lg"></span>
                               <div class="relative h-full p-5 bg-white border-2 rounded-lg #{border_class}">
