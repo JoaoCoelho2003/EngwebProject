@@ -52,6 +52,7 @@ defmodule EngwebWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
+        container: {:div, class: "h-full"},
         layout: {EngwebWeb.Layouts, :app}
 
       unquote(html_helpers())

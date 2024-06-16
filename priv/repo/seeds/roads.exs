@@ -22,7 +22,7 @@ defmodule Engweb.Repo.Seeds.Roads do
 
     roads
     |> Enum.each(fn road ->
-      road_entry = %{
+      %{
         name: road["nome"],
         description: road["descricao"],
         user_id: admin.id

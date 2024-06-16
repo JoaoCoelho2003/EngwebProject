@@ -11,7 +11,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
       <.header>
         <%= @title %>
       </.header>
-      <%= if @action in [:delete, :delete_image, :delete_current_image] do %>
+      <%= if @action in [:delete, :delete_image, :delete_current_image, :delete_house] do %>
         <div class="flex justify-end">
           <.simple_form
             for={@form}
@@ -21,10 +21,11 @@ defmodule EngwebWeb.RoadLive.FormComponent do
           >
           <:actions>
             <.button phx-disable-with="Deleting..." class="bg bg-red-600 hover:bg-red-700">Delete <%=
-              if @action == :delete do
-                "Road"
-              else
-                "Image"
+              case @action do
+                :delete -> "Road"
+                :delete_image -> "Image"
+                :delete_current_image -> "Current Image"
+                :delete_house -> "House"
               end
             %></.button>
           </:actions>
@@ -145,7 +146,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
   end
 
   defp save_road(socket, :edit, road_params) do
-    if socket.assigns.road.user_id != socket.assigns.current_user.id do
+    if (socket.assigns.current_user.id != socket.assigns.road.user_id) and (socket.assigns.current_user.role != "admin") do
       {:noreply, socket |> put_flash(:error, "You are not allowed to edit this road")}
     else
       case Roads.update_road(socket.assigns.road, road_params) do
@@ -185,7 +186,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
           {:noreply,
           socket
           |> put_flash(:info, "Road created successfully")
-          |> push_patch(to: socket.assigns.patch)}
+          |> push_patch(to: ~p"/roads/#{road.id}/houses")}
 
         {:error, %Ecto.Changeset{} = changeset} ->
           {:noreply, assign_form(socket, changeset)}
@@ -194,7 +195,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
   end
 
   defp delete(socket, :delete) do
-    if socket.assigns.road.user_id != socket.assigns.current_user.id do
+    if (socket.assigns.current_user.id != socket.assigns.road.user_id) and (socket.assigns.current_user.role != "admin") do
       {:noreply, socket |> put_flash(:error, "You are not allowed to delete this road")}
     else
       Roads.delete_images_by_road(socket.assigns.road.id)
@@ -251,6 +252,19 @@ defmodule EngwebWeb.RoadLive.FormComponent do
 
       {:error, _} ->
         {:noreply, socket |> put_flash(:error, "Error deleting current image")}
+    end
+  end
+
+  defp delete(socket, :delete_house) do
+    case Roads.delete_house(Roads.get_house!(socket.assigns.id)) do
+      {:ok, _} ->
+        {:noreply,
+        socket
+        |> put_flash(:info, "House deleted successfully")
+        |> push_patch(to: socket.assigns.patch)}
+
+      {:error, _} ->
+        {:noreply, socket |> put_flash(:error, "Error deleting house")}
     end
   end
 
