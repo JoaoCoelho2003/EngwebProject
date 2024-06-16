@@ -397,6 +397,10 @@ defmodule Engweb.Roads do
     Repo.get_by(Comment, id: id)
   end
 
+  def change_comment(%Comment{} = comment, attrs \\ %{}) do
+    Comment.changeset(comment, attrs)
+  end
+
   def delete_images_by_road(road_id) do
     Enum.each(list_images_by_road(road_id), fn image ->
       case File.rm(Path.join([:code.priv_dir(:engweb), "static", image.image])) do

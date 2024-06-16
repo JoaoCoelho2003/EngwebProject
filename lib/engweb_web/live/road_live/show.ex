@@ -18,7 +18,7 @@ defmodule EngwebWeb.RoadLive.Show do
     comments_with_users = join_comments_with_users(road.comments)
 
     comments_with_users = add_likes_dislikes(comments_with_users)
-    IO.inspect(comments_with_users)
+
     socket =
       socket
       |> assign(:page_title, page_title(socket.assigns.live_action))
@@ -38,6 +38,10 @@ defmodule EngwebWeb.RoadLive.Show do
       :delete_current_image ->
         current_image_id = unsigned_params["current_image_id"]
         {:noreply, socket |> assign(:current_image, current_image_id)}
+      :edit_comment ->
+        comment_id = unsigned_params["comment_id"]
+        comment = Roads.get_comment!(comment_id)
+        {:noreply, socket |> assign(:comment, comment)}
       _ ->
         {:noreply, socket}
     end
@@ -57,7 +61,7 @@ defmodule EngwebWeb.RoadLive.Show do
         comment_with_user = count_likes_dislikes(comment_with_user)
 
         updated_comments = [comment_with_user | socket.assigns.comments]
-        IO.inspect(comment)
+
         {:noreply, assign(socket, comments: updated_comments, new_comment: %Roads.Comment{})}
       {:error, changeset} ->
         {:noreply, assign(socket, new_comment: changeset)}
@@ -95,7 +99,6 @@ defmodule EngwebWeb.RoadLive.Show do
           user_id: user_id
         }) do
           {:ok, reaction} ->
-            IO.inspect(reaction)
             {:noreply, update_comment_reactions(socket)}
           {:error, _changeset} ->
             {:noreply, socket}
@@ -146,6 +149,7 @@ defmodule EngwebWeb.RoadLive.Show do
   defp page_title(:delete_current_image), do: "Delete Current Image"
   defp page_title(:new_image), do: "New Image"
   defp page_title(:new_current_image), do: "New Current Image"
+  defp page_title(:edit_comment), do: "Edit Comment"
 
   defp add_likes_dislikes(comments) do
     Enum.map(comments, &count_likes_dislikes/1)
