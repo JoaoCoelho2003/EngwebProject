@@ -17,6 +17,8 @@ defmodule EngwebWeb.RoadLive.Show do
 
     comments_with_users = join_comments_with_users(road.comments)
 
+    comments_with_users = add_likes_dislikes(comments_with_users)
+    IO.inspect(comments_with_users)
     socket =
       socket
       |> assign(:page_title, page_title(socket.assigns.live_action))
@@ -47,11 +49,13 @@ defmodule EngwebWeb.RoadLive.Show do
       comment: comment_text,
       road_id: socket.assigns.road.id,
       user_id: socket.assigns.current_user.id,
-      reactions: %{}
     }) do
       {:ok, comment} ->
         user = Roads.get_user!(comment.user_id)
         comment_with_user = Map.put(comment, :user_name, user.name)
+
+        comment_with_user = count_likes_dislikes(comment_with_user)
+
         updated_comments = [comment_with_user | socket.assigns.comments]
         IO.inspect(comment)
         {:noreply, assign(socket, comments: updated_comments, new_comment: %Roads.Comment{})}
@@ -70,7 +74,7 @@ defmodule EngwebWeb.RoadLive.Show do
       existing_reaction && existing_reaction.reaction_type == vote ->
         case Roads.delete_reaction(existing_reaction) do
           {:ok, _} ->
-            {:noreply, update_comment_reactions(socket, comment_id)}
+            {:noreply, update_comment_reactions(socket)}
           {:error, _} ->
             {:noreply, socket}
         end
@@ -79,7 +83,7 @@ defmodule EngwebWeb.RoadLive.Show do
         changeset = Roads.Reaction.changeset(existing_reaction, %{reaction_type: vote})
         case Repo.update(changeset) do
           {:ok, _} ->
-            {:noreply, update_comment_reactions(socket, comment_id)}
+            {:noreply, update_comment_reactions(socket)}
           {:error, _} ->
             {:noreply, socket}
         end
@@ -90,8 +94,9 @@ defmodule EngwebWeb.RoadLive.Show do
           comment_id: comment_id,
           user_id: user_id
         }) do
-          {:ok, _reaction} ->
-            {:noreply, update_comment_reactions(socket, comment_id)}
+          {:ok, reaction} ->
+            IO.inspect(reaction)
+            {:noreply, update_comment_reactions(socket)}
           {:error, _changeset} ->
             {:noreply, socket}
         end
@@ -123,11 +128,14 @@ defmodule EngwebWeb.RoadLive.Show do
     Map.put(comment_with_reactions, :user_name, user.name)
   end
 
-  defp update_comment_reactions(socket, comment_id) do
+  defp update_comment_reactions(socket) do
     road_id = socket.assigns.road.id
     road = Roads.get_road!(road_id) |> Repo.preload([comments: [:reactions]])
 
     comments_with_users = join_comments_with_users(road.comments)
+
+    comments_with_users = add_likes_dislikes(comments_with_users)
+
     assign(socket, comments: comments_with_users)
   end
 
@@ -138,4 +146,15 @@ defmodule EngwebWeb.RoadLive.Show do
   defp page_title(:delete_current_image), do: "Delete Current Image"
   defp page_title(:new_image), do: "New Image"
   defp page_title(:new_current_image), do: "New Current Image"
+
+  defp add_likes_dislikes(comments) do
+    Enum.map(comments, &count_likes_dislikes/1)
+  end
+
+  defp count_likes_dislikes(comment) do
+    likes = Enum.filter(comment.reactions, fn r -> r.reaction_type == "like" end)
+    dislikes = Enum.filter(comment.reactions, fn r -> r.reaction_type == "dislike" end)
+    Map.put(comment, :likes, Enum.count(likes))
+    |> Map.put(:dislikes, Enum.count(dislikes))
+  end
 end
