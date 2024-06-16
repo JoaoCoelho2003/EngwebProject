@@ -46,7 +46,7 @@ defmodule EngwebWeb.RoadLive.Show do
         {:noreply, socket |> assign(:house, %Houses{})}
       :edit_house ->
         house_id = unsigned_params["house_id"]
-        house = Enum.find(houses, &(&1.id == String.to_integer(house_id)))
+        house = Enum.find(road.houses, &(&1.id == String.to_integer(house_id)))
         {:noreply, socket |> assign(:house, house)}
       :edit_comment ->
         comment_id = unsigned_params["comment_id"]
