@@ -50,16 +50,28 @@ defmodule EngwebWeb.RoadLive.FormNewHouse do
     if (socket.assigns.current_user.id != socket.assigns.road.user_id) and (socket.assigns.current_user.role != "admin") do
       {:noreply, put_flash(socket, :error, "You are not authorized to perform this action")}
     else
-      create_house(socket, house_params)
+      save_house(socket, house_params, socket.assigns.action)
     end
   end
 
-  def create_house(socket, house) do
+  defp save_house(socket, house, :new_house) do
     case Map.put(house, "road_id", socket.assigns.road.id) |> Roads.create_house() do
       {:ok, _house} ->
         {:noreply,
         socket
           |> put_flash(:info, "House created successfully")
+          |> push_patch(to: socket.assigns.patch)}
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, :form, to_form(changeset))}
+    end
+  end
+
+  defp save_house(socket, house, :edit_house) do
+    case Roads.update_house(socket.assigns.house, house) do
+      {:ok, _house} ->
+        {:noreply,
+        socket
+          |> put_flash(:info, "House updated successfully")
           |> push_patch(to: socket.assigns.patch)}
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :form, to_form(changeset))}

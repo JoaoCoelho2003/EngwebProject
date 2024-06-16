@@ -41,6 +41,10 @@ defmodule EngwebWeb.RoadLive.Show do
         {:noreply, socket |> assign(:house, house_id)}
       :new_house ->
         {:noreply, socket |> assign(:house, %Houses{})}
+      :edit_house ->
+        house_id = unsigned_params["house_id"]
+        house = Enum.find(houses, &(&1.id == String.to_integer(house_id)))
+        {:noreply, socket |> assign(:house, house)}
       _ ->
         {:noreply, socket}
     end
@@ -54,6 +58,7 @@ defmodule EngwebWeb.RoadLive.Show do
   defp page_title(:new_image), do: "New Image"
   defp page_title(:new_current_image), do: "New Current Image"
   defp page_title(:delete_house), do: "Delete House"
+  defp page_title(:edit_house), do: "Edit House"
   defp page_title(:new_house), do: "New House"
 
 end
