@@ -49,7 +49,7 @@ defmodule EngwebWeb.RoadLive.FormEditComment do
 
 
   defp save_comment(socket, comment_params) do
-    if socket.assigns.road.user_id != socket.assigns.current_user.id do
+    if socket.assigns.comment.user_id != socket.assigns.current_user.id do
       {:noreply, socket |> put_flash(:error, "You are not allowed to edit this comment")}
     else
       case Roads.update_comment(socket.assigns.comment, comment_params) do
