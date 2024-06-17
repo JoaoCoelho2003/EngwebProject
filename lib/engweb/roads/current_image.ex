@@ -1,9 +1,11 @@
 defmodule Engweb.Roads.CurrentImages do
   use Ecto.Schema
+  use Waffle.Ecto.Schema
+
   import Ecto.Changeset
 
   schema "roads_currentimages" do
-    field :image, :string
+    field :image, Engweb.Uploaders.ImageUploader.Type
     field :road_id, :id
 
     timestamps(type: :utc_datetime)
@@ -12,7 +14,8 @@ defmodule Engweb.Roads.CurrentImages do
   @doc false
   def changeset(current_images, attrs) do
     current_images
-    |> cast(attrs, [:image, :road_id])
-    |> validate_required([:image, :road_id])
+    |> cast(attrs, [:road_id])
+    |> cast_attachments(attrs, [:image], allow_paths: true)
+    |> validate_required([:road_id])
   end
 end

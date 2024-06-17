@@ -50,11 +50,11 @@
         <%= if @current_images do %>
           <div class="container mx-auto px-5 py-2 lg:px-32 lg:pt-12">
             <div class="-m-1 flex flex-wrap md:-m-2 justify-center">
-              <%= for image <- @current_images do %>
+              <%= for {image, fig} <- @current_images do %>
                 <div class="flex w-1/3 justify-center p-1 md:p-2">
                   <div class="w-full">
                     <img alt="gallery" class="block h-full w-full rounded-lg object-cover object-center"
-                      src={image.image} />
+                      src={fig} />
                     <%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) do
                       %>
                       <.link patch={~p"/roads/#{@road.id}/current_image/#{image.id}/delete"} phx-click={JS.push_focus()}
@@ -101,11 +101,11 @@
                   <% else %>
                     <div class="container mx-auto px-5 py-2 lg:px-32 lg:pt-12">
                       <div class="-m-1 flex flex-wrap md:-m-2 justify-center">
-                        <%= for image <- @images do %>
+                        <%= for {image, fig} <- @images do %>
                           <div class="flex w-1/3 justify-center p-1 md:p-2">
                             <div class="w-full">
                               <img alt="gallery" class="block h-full w-full rounded-lg object-cover object-center"
-                                src={image.image} />
+                                src={fig} />
                               <p class="font-bold text-center my-2">
                                 <%= image.legenda %>
                               </p>

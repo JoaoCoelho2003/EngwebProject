@@ -29,8 +29,13 @@ defmodule Engweb.Repo.Seeds.Roads do
       } |> Roads.create_road()
 
       road["figuras"] |> Enum.each(fn fig ->
+        {name, mem_type} = get_mem_type_and_name(fig, :images)
         Roads.create_image(%{
-          image: fig["imagem"],
+          image:  %Plug.Upload{
+            content_type: "image/" <> mem_type,
+            filename: name <> "." <> mem_type,
+            path: fig["imagem"]
+          },
           legenda: fig["legenda"],
           road_id: road["numero"]
         })
@@ -47,12 +52,44 @@ defmodule Engweb.Repo.Seeds.Roads do
       end)
 
       road["figuras_atuais"] |> Enum.each(fn fig ->
+        {name, mem_type} = get_mem_type_and_name(fig, :current_images)
+
         Roads.create_current_images(%{
-          image: fig["imagem"],
+          image: %Plug.Upload{
+            content_type: mem_type,
+            filename: name <> "." <> mem_type,
+            path: fig["imagem"]
+          },
           road_id: road["numero"]
         })
       end)
     end)
+  end
+
+  defp get_mem_type_and_name(fig, :images) do
+    # Extract the path from the map
+    path = fig["imagem"]
+
+    # Use Regex to extract the parts
+    regex = ~r{MapaRuas-materialBase/imagem/(?<name>.+)\.(?<mem_type>[^.]+)}
+
+    case Regex.named_captures(regex, path) do
+      %{"name" => name, "mem_type" => mem_type} -> {name, mem_type}
+      _ -> {:error, "Invalid format"}
+    end
+  end
+
+  defp get_mem_type_and_name(fig, :current_images) do
+        # Extract the path from the map
+        path = fig["imagem"]
+
+        # Use Regex to extract the parts
+        regex = ~r{MapaRuas-materialBase/atual/(?<name>.+)\.(?<mem_type>[^.]+)}
+
+        case Regex.named_captures(regex, path) do
+          %{"name" => name, "mem_type" => mem_type} -> {name, mem_type}
+          _ -> {:error, "Invalid format"}
+        end
   end
 end
 

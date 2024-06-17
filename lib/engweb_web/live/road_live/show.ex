@@ -20,12 +20,16 @@ defmodule EngwebWeb.RoadLive.Show do
 
     comments_with_users = add_likes_dislikes(comments_with_users)
 
+    images = Enum.map(road.images, &get_image_url/1)
+
+    current_images = Enum.map(road.current_images, &get_image_url/1)
+
     socket =
       socket
       |> assign(:page_title, page_title(socket.assigns.live_action))
       |> assign(:road, road)
-      |> assign(:images, road.images)
-      |> assign(:current_images, road.current_images)
+      |> assign(:images, images)
+      |> assign(:current_images, current_images)
       |> assign(:max_image_uploads, Roads.max_image_uploads())
       |> assign(:max_current_image_uploads, Roads.max_current_image_uploads())
       |> assign(:houses, road.houses)
@@ -172,4 +176,7 @@ defmodule EngwebWeb.RoadLive.Show do
     Map.put(comment, :likes, Enum.count(likes))
     |> Map.put(:dislikes, Enum.count(dislikes))
   end
+
+  defp get_image_url(image),
+    do: {image, Engweb.Uploaders.ImageUploader.url({image.image, image})}
 end

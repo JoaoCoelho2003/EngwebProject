@@ -91,8 +91,6 @@ defmodule EngwebWeb.RoadLive.FormComponent do
      |> allow_upload(:image, accept: ~w(.png .jpg .jpeg), max_entries: Roads.max_image_uploads())
      |> allow_upload(:current_image, accept: ~w(.png .jpg .jpeg), max_entries: Roads.max_current_image_uploads())
      |> assign(:descriptions, %{})
-     |> assign(:uploaded_images, [])
-     |> assign(:uploaded_current_images, [])
      |> assign(assigns)
      |> assign(:error, %{})
      |> assign_form(changeset)
@@ -171,12 +169,6 @@ defmodule EngwebWeb.RoadLive.FormComponent do
     else
       case Map.put(road_params, "user_id", id) |> Roads.create_road() do
         {:ok, road} ->
-          # join images with descriptions and create_images
-
-          {:noreply, socket} = consume_uploaded_images(socket, :image)
-
-          {:noreply, socket} = consume_uploaded_images(socket, :current_image)
-
           create_images(socket, road, :image)
 
           create_current_images(socket, road, :current_image)
@@ -223,8 +215,6 @@ defmodule EngwebWeb.RoadLive.FormComponent do
 
   defp delete(socket, :delete_image) do
     image = Roads.get_image!(socket.assigns.id)
-    IO.inspect(image)
-    File.rm!(Path.join([:code.priv_dir(:engweb), "static", image.image]))
 
     case Roads.delete_image(image) do
       {:ok, _} ->
@@ -240,8 +230,6 @@ defmodule EngwebWeb.RoadLive.FormComponent do
 
   defp delete(socket, :delete_current_image) do
     current_image = Roads.get_current_image!(socket.assigns.id)
-
-    File.rm!(Path.join([:code.priv_dir(:engweb), "static", current_image.image]))
 
     case Roads.delete_current_image(current_image) do
       {:ok, _} ->
@@ -274,38 +262,40 @@ defmodule EngwebWeb.RoadLive.FormComponent do
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
 
-  defp consume_uploaded_images(socket, :image) do
-    uploaded_files =
-      consume_uploaded_entries(socket, :image, fn %{path: path}, entry ->
-        dest = Path.join([:code.priv_dir(:engweb), "static", "uploads", Path.basename(path)])
-
-        File.cp!(path, dest)
-        {:ok, {~p"/uploads/#{Path.basename(dest)}", socket.assigns.descriptions[entry.ref]}}
-      end)
-
-    {:noreply, update(socket, :uploaded_images, &(&1 ++ uploaded_files))}
-  end
-
-  defp consume_uploaded_images(socket, :current_image) do
-    uploaded_files =
-      consume_uploaded_entries(socket, :current_image, fn %{path: path}, _entry ->
-        dest = Path.join([:code.priv_dir(:engweb), "static", "uploads", Path.basename(path)])
-        File.cp!(path, dest)
-        {:ok, ~p"/uploads/#{Path.basename(dest)}"}
-      end)
-    {:noreply, update(socket, :uploaded_current_images, &(&1 ++ uploaded_files))}
-  end
-
   defp create_images(socket, road, :image) do
-    Enum.each(socket.assigns.uploaded_images, fn path ->
-      Roads.create_image(%{road_id: road.id, image: elem(path,0), legenda: elem(path,1)})
+    consume_uploaded_entries(socket, :image, fn %{path: path}, entry ->
+        Roads.create_image(%{
+          road_id: road.id,
+          legenda: socket.assigns.descriptions[entry.ref],
+          image: %Plug.Upload{
+            content_type: entry.client_type,
+            filename: entry.client_name,
+            path: path
+          }
+        }) |> case do
+          {:ok, _} -> {:ok, road}
+          {:error, _} -> {:ok, road}
+        end
     end)
+    {:ok, road}
   end
 
   defp create_current_images(socket, road, :current_image) do
-    Enum.each(socket.assigns.uploaded_current_images, fn path ->
-      Roads.create_current_images(%{road_id: road.id, image: path})
+    consume_uploaded_entries(socket, :current_image, fn %{path: path}, entry ->
+      Roads.create_current_images(%{
+          road_id: road.id,
+          image: %Plug.Upload{
+            content_type: entry.client_type,
+            filename: entry.client_name,
+            path: path
+          }
+        })
+        |> case do
+          {:ok, _} -> {:ok, road}
+          {:error, _} -> {:ok, road}
+        end
     end)
+    {:ok, road}
   end
 
   defp validate_images(socket) do

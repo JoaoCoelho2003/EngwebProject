@@ -13,7 +13,7 @@ def get_figura(figuras):
     for child in figuras:
         if child.tag == "imagem":
             grupos = re.search(r'\.\.\/imagem\/(.*)', child.attrib["path"])
-            imagem ="/images/imagem/" + grupos.group(1)
+            imagem ="MapaRuas-materialBase/imagem/" + grupos.group(1)
         elif child.tag == "legenda":
             legenda = child.text
 
@@ -111,7 +111,7 @@ def add_figuras_atuais(rua, numero):
     for fig in os.listdir("MapaRuas-materialBase/atual"):
         if re.match(r"{}-.*".format(numero), fig):
             rua["figuras_atuais"].append({
-                "imagem": "/images/imagem/" + fig,
+                "imagem": "MapaRuas-materialBase/atual/" + fig,
             })
 
 if __name__ == "__main__":

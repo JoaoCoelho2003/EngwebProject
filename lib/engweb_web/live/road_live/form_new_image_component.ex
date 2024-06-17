@@ -130,8 +130,6 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
   defp save_image(socket, :new_image) do
     case validate_image(socket, :new_image) do
       {:ok, socket} ->
-        {:noreply, socket} = consume_uploaded_images(socket, :new_image)
-
         create_images(socket, socket.assigns.road.id, :new_image)
 
         {:noreply,
@@ -146,8 +144,6 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
   defp save_image(socket, :new_current_image) do
     case validate_image(socket, :new_current_image) do
       {:ok, socket} ->
-        {:noreply, socket} = consume_uploaded_images(socket, :new_current_image)
-
         create_current_images(socket, socket.assigns.road.id, :new_current_image)
 
         {:noreply,
@@ -159,38 +155,40 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
       end
     end
 
-  defp consume_uploaded_images(socket, :new_image) do
-    uploaded_files =
-      consume_uploaded_entries(socket, :image, fn %{path: path}, entry ->
-        dest = Path.join([:code.priv_dir(:engweb), "static", "uploads", Path.basename(path)])
-
-        File.cp!(path, dest)
-        {:ok, {~p"/uploads/#{Path.basename(dest)}", socket.assigns.descriptions[entry.ref]}}
-      end)
-
-    {:noreply, update(socket, :uploaded_images, &(&1 ++ uploaded_files))}
-  end
-
-  defp consume_uploaded_images(socket, :new_current_image) do
-    uploaded_files =
-      consume_uploaded_entries(socket, :current_image, fn %{path: path}, _entry ->
-        dest = Path.join([:code.priv_dir(:engweb), "static", "uploads", Path.basename(path)])
-        File.cp!(path, dest)
-        {:ok, ~p"/uploads/#{Path.basename(dest)}"}
-      end)
-    {:noreply, update(socket, :uploaded_current_images, &(&1 ++ uploaded_files))}
-  end
-
   defp create_images(socket, road_id, :new_image) do
-    Enum.each(socket.assigns.uploaded_images, fn path ->
-      Roads.create_image(%{road_id: road_id, image: elem(path,0), legenda: elem(path,1)})
+    images = consume_uploaded_entries(socket, :image, fn %{path: path}, entry ->
+        Roads.create_image(%{
+          road_id: road_id,
+          legenda: socket.assigns.descriptions[entry.ref],
+          image: %Plug.Upload{
+            content_type: entry.client_type,
+            filename: entry.client_name,
+            path: path
+          }
+        }) |> case do
+          {:ok, image} -> {:ok, image}
+          {:error, image} -> {:ok, image}
+        end
     end)
+    {:ok, images}
   end
 
   defp create_current_images(socket, road_id, :new_current_image) do
-    Enum.each(socket.assigns.uploaded_current_images, fn path ->
-      Roads.create_current_images(%{road_id: road_id, image: path})
+    images = consume_uploaded_entries(socket, :current_image, fn %{path: path}, entry ->
+      Roads.create_current_images(%{
+          road_id: road_id,
+          image: %Plug.Upload{
+            content_type: entry.client_type,
+            filename: entry.client_name,
+            path: path
+          }
+        })
+        |> case do
+          {:ok, image} -> {:ok, image}
+          {:error, image} -> {:ok, image}
+        end
     end)
+    {:ok, images}
   end
 
   defp validate_image(socket, :new_image) do

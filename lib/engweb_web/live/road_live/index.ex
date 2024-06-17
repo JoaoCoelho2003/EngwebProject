@@ -11,13 +11,15 @@ defmodule EngwebWeb.RoadLive.Index do
   end
 
   defp load_road_data(road) do
-    images = road
-             |> Engweb.Repo.preload(:images)
-             |> Map.get(:images)
+    images =
+      road
+        |> Engweb.Repo.preload(:images)
+        |> Map.get(:images)
 
-    current_images = road
-                    |> Engweb.Repo.preload(:current_images)
-                    |> Map.get(:current_images)
+    current_images =
+      road
+        |> Engweb.Repo.preload(:current_images)
+        |> Map.get(:current_images)
 
     %{road | images: images, current_images: current_images}
   end
