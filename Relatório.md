@@ -53,27 +53,31 @@ Nesta página é possível observar as informações da conta, assim como as rua
 
 Se o utilizador decidir clicar no botão das _settings_ no _dropdown_ do botão de perfil, este é redirecionado para `/users/settings`, onde lhe é permitido alterar o seu e-mail e a sua palavra-passe, preenchendo os respetivos _fields_.
 
+## Adicionar rua
+
+Carregando no botão New Road presente na página principal (tendo uma sessão ativa), o _user_ é levado para a rota `/roads/new`, onde se depara com o formulário requirido para inserir as informações da rua a ser criada. Assumindo que o utilizador deseja seguir em frente, este pode usar o botão Save Road, para ser orientado para a próxima página, onde este terá que especificar as casas que deseja adicionar à rua.
+
+- ### Adicionar casas
+
+   Em seguimento do processo de post de uma rua nova, assim que o _user_ segue para a rota `/roads/#{road.id}/houses`, este depara-se com outro formulário, no qual pode inserir as informações referentes às casas da rua, adicionando e removendo casas como lhe convém.
+
 ## Página de rua
 
 A página de uma rua pode ser acessada a partir da página principal, e a sua rota correspondente é `/roads/#{road.id}`, sendo que road.id representa o número identificador da rua. Nesta página são exibidos o número da rua, o seu nome e uma descrição sobre a rua, assim como imagens atuais e antigas. Podemos também ler sobre a enfiteuta e o foro das diferentes casas, em adição a uma breve descrição de cada uma.
 
 No final da página encontra-se um _text field_ para que o utilizador possa deixar os seus comentários, e um botão que redireciona o _user_ para a página principal do site.
 
-## Adicionar rua
+- ### Adicionar imagem
 
-## Adicionar casas
+- ### Remover imagem
 
-## Adicionar imagem
+- ### Editar rua
 
-## Remover imagem
+- ### Remover rua
 
-## Editar rua
+- ### Editar casa
 
-## Remover rua
-
-## Editar casa
-
-## Remover casa
+- ### Remover casa
 
 
 
