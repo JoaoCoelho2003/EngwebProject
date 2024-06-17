@@ -44,6 +44,8 @@ defmodule EngwebWeb.Router do
       live "/:id/house/:house_id/delete", RoadLive.Show, :delete_house
       live "/:id/house/:house_id/edit", RoadLive.Show, :edit_house
       live "/:id/house/new", RoadLive.Show, :new_house
+      live "/:id/comment/:comment_id/edit", RoadLive.Show, :edit_comment
+
     end
 
     live_session :roads,
@@ -97,7 +99,7 @@ defmodule EngwebWeb.Router do
       on_mount: [{EngwebWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserLive.UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserLive.UserSettingsLive, :confirm_email
-      live "/users/profile", UserLive.UserProfileLive, :edit
+      live "/users/:id/profile", UserLive.UserProfileLive, :user_profile
     end
   end
 

@@ -7,13 +7,15 @@ defmodule Engweb.Roads.Comment do
     field :road_id, :id
     field :user_id, :id
 
+    has_many :reactions, Engweb.Roads.Reaction
+
     timestamps(type: :utc_datetime)
   end
 
   @doc false
   def changeset(comment, attrs) do
     comment
-    |> cast(attrs, [:comment])
-    |> validate_required([:comment])
+    |> cast(attrs, [:comment, :road_id, :user_id])
+    |> validate_required([:comment, :road_id, :user_id])
   end
 end

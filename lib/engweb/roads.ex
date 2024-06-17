@@ -6,7 +6,8 @@ defmodule Engweb.Roads do
   import Ecto.Query, warn: false
   alias Engweb.Repo
 
-  alias Engweb.Roads.{Road, Images, Houses, CurrentImages, Comment}
+  alias Engweb.Roads.{Road, Images, Houses, CurrentImages, Comment, Reaction}
+  alias Engweb.Accounts.User
 
   @max_image_uploads 2
   @max_current_image_uploads 2
@@ -59,6 +60,8 @@ defmodule Engweb.Roads do
   def get_road_by_num(num) do
     Repo.get_by(Road, num: num)
   end
+
+  def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
   Creates a road.
@@ -394,6 +397,10 @@ defmodule Engweb.Roads do
     Repo.get_by(Comment, id: id)
   end
 
+  def change_comment(%Comment{} = comment, attrs \\ %{}) do
+    Comment.changeset(comment, attrs)
+  end
+
   def delete_images_by_road(road_id) do
     Enum.each(list_images_by_road(road_id), fn image ->
       case File.rm(Path.join([:code.priv_dir(:engweb), "static", image.image])) do
@@ -422,5 +429,89 @@ defmodule Engweb.Roads do
 
   def delete_houses_by_road(road_id) do
     Repo.delete_all(from h in Houses, where: h.road_id == ^road_id)
+  end
+
+  def list_user_roads(user_id) do
+    Road
+    |> where(user_id: ^user_id)
+    |> Repo.all()
+  end
+
+  def list_user_comments(user_id) do
+    Comment
+    |> where(user_id: ^user_id)
+    |> Repo.all()
+  end
+
+  def list_user_comments_inserted(user_id) do
+    Comment
+    |> where(user_id: ^user_id)
+    |> order_by(desc: :inserted_at)
+    |> Repo.all()
+  end
+
+  def list_user_roads_inserted(user_id) do
+    Road
+    |> where(user_id: ^user_id)
+    |> order_by(desc: :inserted_at)
+    |> Repo.all()
+  end
+
+  @doc """
+  Returns reactions for a comment.
+
+  ## Examples
+
+      iex> get_comment_reactions(comment_id)
+      %{likes: 5, dislikes: 2}
+
+  """
+  def get_comment_reactions(comment_id) do
+    like_count = Repo.aggregate(from(r in Reaction, where: r.comment_id == ^comment_id and r.reaction_type == "like"), :count, :id)
+    dislike_count = Repo.aggregate(from(r in Reaction, where: r.comment_id == ^comment_id and r.reaction_type == "dislike"), :count, :id)
+    %{likes: like_count, dislikes: dislike_count}
+  end
+
+  @doc """
+  Creates a reaction for a comment.
+
+  ## Examples
+
+      iex> create_reaction(%{reaction_type: "like", comment_id: comment_id, user_id: user_id})
+      {:ok, %Reaction{}}
+
+  """
+  def create_reaction(attrs \\ %{}) do
+    %Reaction{}
+    |> Reaction.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a reaction for a comment.
+
+  ## Examples
+
+      iex> update_reaction(reaction, %{reaction_type: "dislike"})
+      {:ok, %Reaction{}}
+
+  """
+  def update_reaction(%Reaction{} = reaction, attrs) do
+    reaction
+    |> Reaction.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a reaction for a comment.
+
+  ## Examples
+
+      iex> delete_reaction(reaction)
+      {:ok, %Reaction{}}
+
+  """
+  def delete_reaction(%Reaction{} = reaction) do
+    Repo.delete(reaction)
   end
 end

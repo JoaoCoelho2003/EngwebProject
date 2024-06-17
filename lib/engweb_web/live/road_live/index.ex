@@ -25,7 +25,7 @@ defmodule EngwebWeb.RoadLive.Index do
   @impl true
   def handle_params(params, _url, socket) do
     roads = list_roads()
-    {:noreply, apply_action(stream(socket, :roads, roads), socket.assigns.live_action, params)}
+    {:noreply, apply_action(stream(socket, :roads, roads, reset: true), socket.assigns.live_action, params)}
   end
 
   defp apply_action(socket, :new, _params) do
@@ -46,7 +46,6 @@ defmodule EngwebWeb.RoadLive.Index do
 
   defp apply_action(socket, :houses, params) do
     road = Roads.get_road!(params["id"])
-
     socket
     |> assign(:page_title, "Houses")
     |> assign(:road, road)
@@ -55,20 +54,30 @@ defmodule EngwebWeb.RoadLive.Index do
   end
 
   @impl true
-  def handle_info({EngwebWeb.RoadLive.FormComponent, {:saved, road}}, socket) do
-    road = road |> load_road_data()
-    {:noreply, stream_insert(socket, :roads, road)}
+  def handle_info({EngwebWeb.RoadLive.FormComponent, {:saved, _road}}, socket) do
+    {:noreply, socket}
   end
 
+  def handle_info({:clear_flash, key}, socket) do
+    socket = clear_flash(socket, key)
+    roads = list_roads()
+    {:noreply, stream(socket, :roads, roads, reset: true)}
+  end
+
+  @impl true
   def handle_event("search", %{"query" => query}, socket) do
     roads = list_roads(query)
     {:noreply, stream(socket, :roads, roads, reset: true)}
   end
 
-  @impl true
   def handle_event("navigate_to_road", %{"id" => id}, socket) do
     road_url = "/roads/#{id}"
     {:noreply, redirect(socket, to: road_url)}
+  end
+
+  def handle_event("phx:clear-flash", %{"key" => _key}, socket) do
+    roads = list_roads()
+    {:noreply, stream(socket, :roads, roads, reset: true)}
   end
 
   defp list_roads(query \\ "") do
