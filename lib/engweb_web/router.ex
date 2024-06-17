@@ -49,9 +49,11 @@ defmodule EngwebWeb.Router do
     end
 
     live_session :roads,
-      on_mount: [{EngwebWeb.UserAuth, :mount_current_user}] do
-        live "/:id", RoadLive.Show, :show
+    on_mount: [{EngwebWeb.UserAuth, :mount_current_user}] do
+      live "/:id", RoadLive.Show, :show
     end
+
+    get "/:id/download", RoadController, :download_image
   end
 
   # Other scopes may use custom stacks.

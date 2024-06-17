@@ -72,11 +72,6 @@ defmodule EngwebWeb.RoadLive.Index do
     {:noreply, stream(socket, :roads, roads, reset: true)}
   end
 
-  def handle_event("navigate_to_road", %{"id" => id}, socket) do
-    road_url = "/roads/#{id}"
-    {:noreply, redirect(socket, to: road_url)}
-  end
-
   def handle_event("phx:clear-flash", %{"key" => _key}, socket) do
     roads = list_roads()
     {:noreply, stream(socket, :roads, roads, reset: true)}

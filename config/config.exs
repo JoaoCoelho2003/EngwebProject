@@ -31,6 +31,8 @@ config :engweb, EngwebWeb.Endpoint,
 # at the `config/runtime.exs`.
 config :engweb, Engweb.Mailer, adapter: Swoosh.Adapters.Local
 
+config :http_stream, adapter: HTTPStream.Adapter.HTTPoison
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",

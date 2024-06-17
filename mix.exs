@@ -60,7 +60,12 @@ defmodule Engweb.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
       {:waffle, "~> 1.1"},
-      {:waffle_ecto, "~> 0.0"}
+      {:waffle_ecto, "~> 0.0"},
+      {:http_stream, "~> 1.0.0", git: "https://github.com/coders51/http_stream"},
+      {:httpoison, "~> 1.8.0"},
+      {:castore, "~> 0.1.7"},
+      {:mint, "~> 1.4.0"},
+      {:zstream, "~> 0.6"}
     ]
   end
 
