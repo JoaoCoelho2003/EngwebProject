@@ -20,7 +20,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
             phx-submit="delete"
           >
           <:actions>
-            <.button phx-disable-with="Deleting..." class="bg bg-red-600 hover:bg-red-700">Delete <%=
+            <.button phx-disable-with="Deleting..." class="bg bg-red-600 hover:bg-red-700">Eliminar <%=
               case @action do
                 :delete -> "Road"
                 :delete_image -> "Image"
@@ -40,13 +40,13 @@ defmodule EngwebWeb.RoadLive.FormComponent do
           phx-submit="save"
           multipart
         >
-          <.input field={@form[:name]} type="text" label="Name" />
-          <.input field={@form[:description]} type="textarea" label="Description" />
+          <.input field={@form[:name]} type="text" label="Nome" />
+          <.input field={@form[:description]} type="textarea" label="Descrição" />
           <%= if @action == :new do %>
             <div class="flex flex-col">
-              <p class="mb-2">Images</p>
+              <p class="mb-2">Imagens</p>
               <%= for index <- 0..(@uploads.image.max_entries - 1) do %>
-                <p class="mb-2">Image <%= index + 1 %></p>
+                <p class="mb-2">Imagem <%= index + 1 %></p>
                 <.live_component
                   module={ImageUploader}
                   id={"uploader_#{index + 1}"}
@@ -65,7 +65,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
               <% end %>
             </div>
             <div>
-              <p class="mb-2">Current Images</p>
+              <p class="mb-2">Imagens Atuais</p>
               <.live_component module={CurrentImageUploader} id="uploader" uploads={@uploads} target={@myself} />
               </div>
           <% end %>
@@ -75,7 +75,7 @@ defmodule EngwebWeb.RoadLive.FormComponent do
             <% end %>
           </div>
           <:actions>
-            <.button phx-disable-with="Saving...">Save Road</.button>
+            <.button phx-disable-with="Saving...">Guardar Rua</.button>
           </:actions>
       </.simple_form>
       <% end %>

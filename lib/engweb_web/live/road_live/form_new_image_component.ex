@@ -41,7 +41,7 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
           </div>
         <% else %>
           <div class="flex flex-col">
-            <p class="mb-2">Current Image</p>
+            <p class="mb-2">Imagem Atual</p>
             <%= for index <- 0..(@uploads.current_image.max_entries - 1) do %>
               <.live_component
                 module={CurrentImageUploader}
@@ -66,7 +66,7 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
           <% end %>
         </div>
         <:actions>
-          <.button phx-disable-with="Saving...">Save Image</.button>
+          <.button phx-disable-with="Saving...">Guardar Imagem</.button>
         </:actions>
       </.simple_form>
     </div>
@@ -109,7 +109,7 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
 
   def handle_event("save", _, socket) do
     if (socket.assigns.current_user.id != socket.assigns.road.user_id) and (socket.assigns.current_user.role != "admin") do
-      {:noreply, socket |> put_flash(:error, "You are not allowed to create images for this road")}
+      {:noreply, socket |> put_flash(:error, "Não tens permissão para criar imagens para esta rua")}
     else
       save_image(socket, socket.assigns.action)
     end
@@ -134,7 +134,7 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
 
         {:noreply,
         socket
-          |> put_flash(:info, "Image created successfully")
+          |> put_flash(:info, "Imagem criada com sucesso")
           |> push_patch(to: socket.assigns.patch)}
 
       {:error, socket} -> {:noreply, socket}
@@ -148,7 +148,7 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
 
         {:noreply,
         socket
-          |> put_flash(:info, "Current Image created successfully")
+          |> put_flash(:info, "Imagem atual criada com sucesso")
           |> push_patch(to: socket.assigns.patch)}
 
         {:error, socket} -> {:noreply, socket}
@@ -198,14 +198,14 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
 
     errors =
       if length(socket.assigns.uploads.image.entries) == 0 do
-        Map.put(errors, "min_image", "You must provide one image")
+        Map.put(errors, "min_image", "Deves fornecer uma imagem")
       else
         Map.delete(errors, "min_image")
       end
 
     errors =
       if length(socket.assigns.uploads.image.entries) > socket.assigns.uploads.image.max_entries do
-        Map.put(errors, "max_image", "You can only upload up to #{socket.assigns.uploads.image.max_entries} images")
+        Map.put(errors, "max_image", "Só podes fazer upload de até #{socket.assigns.uploads.image.max_entries} imagens")
       else
         Map.delete(errors, "max_image")
       end
@@ -222,14 +222,14 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
 
     errors =
       if length(socket.assigns.uploads.current_image.entries) == 0 do
-        Map.put(errors, "min_current_image", "You must provide one image")
+        Map.put(errors, "min_current_image", "Deves fornecer uma imagem")
       else
         Map.delete(errors, "min_current_image")
       end
 
     errors =
       if length(socket.assigns.uploads.current_image.entries) > socket.assigns.uploads.current_image.max_entries do
-        Map.put(errors, "max_current_image", "You can only upload up to #{socket.assigns.uploads.current_image.max_entries} images")
+        Map.put(errors, "max_current_image", "Só podes fazer upload de até #{socket.assigns.uploads.current_image.max_entries} imagens")
       else
         Map.delete(errors, "max_current_image")
       end
@@ -244,7 +244,7 @@ defmodule EngwebWeb.RoadLive.FormNewImageComponent do
   defp validate_descriptions(socket) do
     errors =
       if length(socket.assigns.uploads.image.entries) != map_size(socket.assigns.descriptions) do
-        Map.put(socket.assigns.error, "description", "You must provide a description for each image")
+        Map.put(socket.assigns.error, "description", "Deves fornecer uma descrição para cada imagem")
       else
         Map.delete(socket.assigns.error, "description")
       end

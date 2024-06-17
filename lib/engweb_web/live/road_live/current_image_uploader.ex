@@ -29,16 +29,16 @@ defmodule EngwebWeb.RoadLive.CurrentImageUploader do
                 <div class="flex text-sm text-gray-600">
                   <label for="file-upload" class="relative cursor-pointer rounded-md font-medium text-orange-500 hover:text-red-800">
                     <a onclick={"document.getElementById('#{@uploads.current_image.ref}').click()"}>
-                      Upload a file
+                      Carregue um ficheiro
                     </a>
                   </label>
-                  <p class="pl-1">or drag and drop</p>
+                  <p class="pl-1">ou arraste e solte</p>
                 </div>
                 <p class="text-xs text-gray-500">
-                  PNG, JPG, GIF up to 8MB
+                  PNG, JPG, GIF até 8MB
                 </p>
                 <p class="text-xs text-gray-500">
-                  Max <%= @uploads.current_image.max_entries %> files
+                  Máximo <%= @uploads.current_image.max_entries %> ficheiros
                 </p>
               </div>
             </div>
@@ -69,7 +69,7 @@ defmodule EngwebWeb.RoadLive.CurrentImageUploader do
                   aria-label="cancel"
                   class="flex justify-center items-center mt-2 px-2 ml-2 rounded bg-black text-white hover:bg-zinc-700"
                 >
-                  Cancel
+                  Cancelar
                 </button>
                 </div>
               </figure>

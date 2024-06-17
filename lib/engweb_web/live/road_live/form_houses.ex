@@ -16,18 +16,18 @@ defmodule EngwebWeb.RoadLive.FormHouses do
           phx-target={@myself}
           class="mr-2"
         >
-          Add House
+          Adicionar Casa
         </.button>
       </div>
       <%= if @num_houses == -1 do %>
         <p>
-          No houses added yet
+          Ainda não foram adicionadas casas
         </p>
       <% else %>
         <%= for {form, index} <- Enum.with_index(@form_houses) do %>
           <hr class="mt-4"/>
           <div class="flex justify-between">
-            <p class="text-lg font-bold mt-2">House <%= index + 1 %></p>
+            <p class="text-lg font-bold mt-2">Casa <%= index + 1 %></p>
             <button
               phx-click="remove_house"
               phx-value-index={index}
@@ -37,7 +37,7 @@ defmodule EngwebWeb.RoadLive.FormHouses do
                 "text-sm font-semibold leading-6 text-white active:text-white/80"
               ]}
             >
-              Remove
+              Remover
             </button>
           </div>
           <.simple_form
@@ -50,7 +50,7 @@ defmodule EngwebWeb.RoadLive.FormHouses do
             <.input field={form[:num]} type="text" label="Num"/>
             <.input field={form[:enfiteuta]} type="text" label="Enfiteuta"/>
             <.input field={form[:foro]} type="text" label="Foro"/>
-            <.input field={form[:description]} type="textarea" label="Description"/>
+            <.input field={form[:description]} type="textarea" label="Descrição"/>
           </.simple_form>
         <% end %>
       <% end %>
@@ -65,7 +65,7 @@ defmodule EngwebWeb.RoadLive.FormHouses do
         class="mt-2"
         phx-disable-with="Saving..."
       >
-        Save Houses
+        Guardar Casas
       </.button>
     </div>
     """
@@ -90,7 +90,7 @@ defmodule EngwebWeb.RoadLive.FormHouses do
 
   def handle_event("save_houses", _unsigned_params, socket) do
     if (socket.assigns.current_user.id != socket.assigns.road.user_id) and (socket.assigns.current_user.role != "admin") do
-      {:noreply, socket |> put_flash(:error, "You are not authorized to perform this action")}
+      {:noreply, socket |> put_flash(:error, "Não estás autorizado a realizar esta ação")}
     else
       create_houses(socket)
     end
@@ -147,11 +147,11 @@ defmodule EngwebWeb.RoadLive.FormHouses do
 
         {:noreply,
         socket
-        |> put_flash(:info, "Houses created successfully")
+        |> put_flash(:info, "Casas criadas com sucesso")
         |> push_patch(to: socket.assigns.patch)}
 
       {:error, _} ->
-        {:noreply, socket |> assign(:error, "There are empty fields")}
+        {:noreply, socket |> assign(:error, "Existem campos vazios")}
     end
   end
 

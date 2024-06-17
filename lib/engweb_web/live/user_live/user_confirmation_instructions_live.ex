@@ -7,22 +7,22 @@ defmodule EngwebWeb.UserLive.UserConfirmationInstructionsLive do
     ~H"""
     <div class="mx-auto max-w-sm">
       <.header class="text-center">
-        No confirmation instructions received?
-        <:subtitle>We'll send a new confirmation link to your inbox</:subtitle>
+        Nenhuma instrução de confirmação foi recebida?
+        <:subtitle>Enviaremos um novo link de confirmação para o teu email</:subtitle>
       </.header>
 
       <.simple_form for={@form} id="resend_confirmation_form" phx-submit="send_instructions">
         <.input field={@form[:email]} type="email" placeholder="Email" required />
         <:actions>
           <.button phx-disable-with="Sending..." class="w-full">
-            Resend confirmation instructions
+            Reenviar instruções de confirmação
           </.button>
         </:actions>
       </.simple_form>
 
       <p class="text-center mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
+        <.link href={~p"/users/register"}>Registar</.link>
+        | <.link href={~p"/users/log_in"}>Iniciar Sessão</.link>
       </p>
     </div>
     """
@@ -41,7 +41,7 @@ defmodule EngwebWeb.UserLive.UserConfirmationInstructionsLive do
     end
 
     info =
-      "If your email is in our system and it has not been confirmed yet, you will receive an email with instructions shortly."
+      "Caso o teu e-mail esteja no nosso sistema e ainda não tenha sido confirmado, receberás em breve um e-mail com instruções."
 
     {:noreply,
      socket

@@ -20,12 +20,12 @@ defmodule EngwebWeb.RoadLive.FormNewHouse do
           <.input field={@form[:num]} type="text" label="Numero(s)"/>
           <.input field={@form[:enfiteuta]} type="text" label="Enfiteuta"/>
           <.input field={@form[:foro]} type="text" label="Foro"/>
-          <.input field={@form[:description]} type="textarea" label="Description"/>
+          <.input field={@form[:description]} type="textarea" label="Descrição"/>
           <:actions>
             <.button
               phx-disable-with="Saving..."
             >
-              Save
+              Guardar
             </.button>
           </:actions>
         </.simple_form>
@@ -48,7 +48,7 @@ defmodule EngwebWeb.RoadLive.FormNewHouse do
   def handle_event("save", %{"houses" => house_params}, socket) do
     IO.inspect(socket.assigns)
     if (socket.assigns.current_user.id != socket.assigns.road.user_id) and (socket.assigns.current_user.role != "admin") do
-      {:noreply, put_flash(socket, :error, "You are not authorized to perform this action")}
+      {:noreply, put_flash(socket, :error, "Não estás autorizado a realizar esta ação")}
     else
       save_house(socket, house_params, socket.assigns.action)
     end
@@ -59,7 +59,7 @@ defmodule EngwebWeb.RoadLive.FormNewHouse do
       {:ok, _house} ->
         {:noreply,
         socket
-          |> put_flash(:info, "House created successfully")
+          |> put_flash(:info, "Casa criada com sucesso")
           |> push_patch(to: socket.assigns.patch)}
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :form, to_form(changeset))}
@@ -71,7 +71,7 @@ defmodule EngwebWeb.RoadLive.FormNewHouse do
       {:ok, _house} ->
         {:noreply,
         socket
-          |> put_flash(:info, "House updated successfully")
+          |> put_flash(:info, "Casa atualizada com sucesso")
           |> push_patch(to: socket.assigns.patch)}
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :form, to_form(changeset))}
