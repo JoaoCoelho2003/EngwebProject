@@ -68,16 +68,28 @@ A página de uma rua pode ser acessada a partir da página principal, e a sua ro
 No final da página encontra-se um _text field_ para que o utilizador possa deixar os seus comentários, e um botão que redireciona o _user_ para a página principal do site.
 
 - ### Adicionar imagem
+  
+  A rota `/roads/#{road.id}/current_image/new` pode ser alcançada pelo pequeno botão de adicionar imagens na página de uma rua, desde que esta tenha sido criada pelo próprio utilizador. Aqui é possível fazer o _upload_ de uma nova imagem para a página.
+
+  Alternativamente, se o objetivo for adicionar uma imagem antiga da rua, a rota passa a ser `/roads/#{road.id}/image/new`, mas o conteúdo apresentado é igual.
 
 - ### Remover imagem
 
+  Para remover uma imagem, segue-se a mesma lógica que no processo anterior, mas desta vez o botão de remoção localiza-se em baixo da figura, e o _pop-up_ de confirmação do _delete_ corresponde às rotas `/roads/#{road.id}/current_image/#{image.id}/delete` e `/roads/#{road.id}/image/#{image.id}/delete`.
+
 - ### Editar rua
+
+  O botão de editar rua, ao qual apenas o dono da rua tem acesso, dirige o usuário para `/roads/#{road.id}/edit`, onde este pode escrever um novo nome e descrição para a rua, e guardar os novos dados no sistema.
 
 - ### Remover rua
 
+  Para fazer o _delete_ da rua, o botão a selecionar é o de eliminar rua, localizado à direita do botão de editar, e à semelhança desse, apenas o dono da rua o pode ver. Carregando no botão, o dono da rua é levado para `/roads/#{road.id}/delete`, onde pode confirmar a sua decisão e remover o registo do sistema.
+
 - ### Editar casa
+  O dono da rua pode também editar as casas que adicionou no processo de criação da rua. Isto é feito através do botão de editar casa, que o leva para `/roads/#{road.id}/house/#{house.id}/edit`. Nessa rota, acede-se a um formulário com vários _fields_ para alterar a informação textual da casa selecionada.
 
 - ### Remover casa
+  Como seria de esperar, também é possível remover uma casa, sendo o dono da rua em que esta se encontra, usando o botão de eliminação de casa, que altera a rota atual para `/roads/#{road.id}/house/#{house.id}/delete`. Aqui é feita a confirmação do processo de _delete_ do registo.
 
 
 
