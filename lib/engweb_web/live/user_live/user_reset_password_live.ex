@@ -6,7 +6,7 @@ defmodule EngwebWeb.UserLive.UserResetPasswordLive do
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
-      <.header class="text-center">Reset Password</.header>
+      <.header class="text-center">Redefinir senha</.header>
 
       <.simple_form
         for={@form}
@@ -26,13 +26,13 @@ defmodule EngwebWeb.UserLive.UserResetPasswordLive do
           required
         />
         <:actions>
-          <.button phx-disable-with="Resetting..." class="w-full">Reset Password</.button>
+          <.button phx-disable-with="Resetting..." class="w-full">Redefinir senha</.button>
         </:actions>
       </.simple_form>
 
       <p class="text-center text-sm mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
+        <.link href={~p"/users/register"}>Registar</.link>
+        | <.link href={~p"/users/log_in"}>Iniciar Sessão</.link>
       </p>
     </div>
     """
@@ -60,7 +60,7 @@ defmodule EngwebWeb.UserLive.UserResetPasswordLive do
       {:ok, _} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Password reset successfully.")
+         |> put_flash(:info, "Redefinição de senha foi concluída com sucesso.")
          |> redirect(to: ~p"/users/log_in")}
 
       {:error, changeset} ->
@@ -78,7 +78,7 @@ defmodule EngwebWeb.UserLive.UserResetPasswordLive do
       assign(socket, user: user, token: token)
     else
       socket
-      |> put_flash(:error, "Reset password link is invalid or it has expired.")
+      |> put_flash(:error, "O link de redefinição de senha é inválido ou expirou.")
       |> redirect(to: ~p"/")
     end
   end

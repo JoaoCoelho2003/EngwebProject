@@ -3,10 +3,10 @@
     <.header>
         <:actions>
           <.link patch={~p"/roads/#{@road.id}/edit"} phx-click={JS.push_focus()}>
-            <.button>Edit road</.button>
+            <.button>Editar Rua</.button>
           </.link>
           <.link patch={~p"/roads/#{@road.id}/delete"} phx-click={JS.push_focus()}>
-            <.button>Delete road</.button>
+            <.button>Eliminar Rua</.button>
           </.link>
         </:actions>
     </.header>
@@ -17,13 +17,13 @@
       </h1>
 
       <.list>
-        <:item title="Road Number">
+        <:item title="Número da Rua">
           <%= @road.id %>
         </:item>
-        <:item title="Name">
+        <:item title="Nome">
           <%= @road.name %>
         </:item>
-        <:item title="Description">
+        <:item title="Descrição">
           <%= @road.description %>
         </:item>
       </.list>
@@ -47,7 +47,9 @@
             </.link>
             <% end %>
         </div>
-        <%= if @current_images do %>
+        <%= if Enum.empty?(@current_images) do %>
+          <p>Não há imagens atuais disponíveis</p>
+        <% else %>
           <div class="container mx-auto px-5 py-2 lg:px-32 lg:pt-12">
             <div class="-m-1 flex flex-wrap md:-m-2 justify-center">
               <%= for {image, fig} <- @current_images do %>
@@ -55,8 +57,7 @@
                   <div class="w-full">
                     <img alt="gallery" class="block h-full w-full rounded-lg object-cover object-center"
                       src={fig} />
-                    <%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) do
-                      %>
+                    <%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) do %>
                       <.link patch={~p"/roads/#{@road.id}/current_image/#{image.id}/delete"} phx-click={JS.push_focus()}
                         class="flex justify-center mb-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -67,15 +68,13 @@
                           <line x1="15" y1="9" x2="9" y2="15" />
                         </svg>
                       </.link>
-                      <% end %>
+                    <% end %>
                   </div>
                 </div>
-                <% end %>
+              <% end %>
             </div>
           </div>
-          <% else %>
-            <p>Não há imagens atuais disponíveis</p>
-            <% end %>
+        <% end %>
 
               <div style="margin-top: 30px; margin-bottom: 40px;">
                 <h2 class="text-2xl md:text-3xl pl-2 my-2 border-l-4 text-black font-sans font-bold border-blue-600">
@@ -130,7 +129,7 @@
                     <% end %>
               </div>
 
-              <h2 class="text-2xl md:text-3xl pl-2 my-2 border-l-4 text-black font-sans font-bold border-blue-600">
+              <h2 class="text-2xl md:text-3xl pl-2 my-2 border-l-4 text-black font-sans font-bold border-blue-600 mt-20">
                 Casas
               </h2>
               <div
@@ -186,7 +185,7 @@
               </div>
 
               <div>
-                <h2 class="text-2xl font-bold mb-4">Comments</h2>
+                <h2 class="text-2xl font-bold mb-6 mt-14">Comentários</h2>
                 <div class="space-y-4">
                   <%= for comment <- @comments do %>
                     <div class="bg-white rounded-lg p-4">
@@ -246,7 +245,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                       d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
                                   </svg>
-                                  Edit
+                                  Editar
                                 </.link>  
                                 
                                 <a href="#" phx-click="delete_comment" phx-value-comment_id={comment.id}
@@ -257,7 +256,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                       d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
                                   </svg>
-                                  Delete
+                                  Eliminar
                                 </a>
                               </div>
                             </div>
@@ -274,21 +273,21 @@
                       <textarea name="comment" placeholder="Add a comment" required
                         class="border rounded-xl p-2 w-full min-h-12" onfocus="showButtons(this)"
                         onblur="hideButtons(this)">
-        </textarea>
+                      </textarea>
                       <div class="absolute right-2 bottom-2 hidden buttons space-x-2">
                         <button type="button" class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-md"
-                          onclick="cancelComment(this)">Cancel</button>
+                          onclick="cancelComment(this)">Cancelar</button>
                         <button type="submit"
-                          class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded-md">Submit</button>
+                          class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded-md">Submeter</button>
                       </div>
                     </div>
                   </form>
                   <% else %>
-                    <p class="mt-4">You need to log in to comment.</p>
+                    <p class="mt-4">Tens de ter sessão iniciada para comentar.</p>
                     <% end %>
               </div>
 
-              <.back navigate={~p"/"}>Return</.back>
+              <.back navigate={~p"/"}>Voltar</.back>
       </div>
     </div>
       <.modal :if={@live_action in [:edit, :delete, :delete_image, :delete_current_image, :delete_house]}

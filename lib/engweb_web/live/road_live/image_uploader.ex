@@ -30,13 +30,13 @@ defmodule EngwebWeb.RoadLive.ImageUploader do
                 <div class="flex text-sm text-gray-600">
                   <label for="file-upload" class="relative cursor-pointer rounded-md font-medium text-orange-500 hover:text-red-800">
                     <a onclick={"document.getElementById('#{@uploads.image.ref}').click()"}>
-                      Upload a file
+                      Carregue um ficheiro
                     </a>
                   </label>
-                  <p class="pl-1">or drag and drop</p>
+                  <p class="pl-1">ou arraste e solte </p>
                 </div>
                 <p class="text-xs text-gray-500">
-                  PNG, JPG, GIF up to 8MB
+                  PNG, JPG, GIF até 8MB
                 </p>
               </div>
             </div>
@@ -67,7 +67,7 @@ defmodule EngwebWeb.RoadLive.ImageUploader do
                   aria-label="cancel"
                   class="flex justify-center items-center mt-2 px-2 ml-2 rounded bg-black text-white hover:bg-zinc-700"
                 >
-                  Cancel
+                  Cancelar
                 </button>
                 </div>
               </figure>
@@ -75,7 +75,7 @@ defmodule EngwebWeb.RoadLive.ImageUploader do
             <input
               type="text"
               name={"description_#{@index}"}
-              placeholder={"Description for Image #{@index + 1}"}
+              placeholder={"Descrição para a Imagem #{@index + 1}"}
               value={@description}
               class="mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 border-zinc-300 focus:border-zinc-400 phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400"
               phx-change="validate-description"

@@ -8,7 +8,7 @@ defmodule EngwebWeb.RoadLive.FormEditComment do
     ~H"""
     <div>
       <.header>
-        <h2>Edit comment</h2>
+        <h2>Editar comentário</h2>
       </.header>
       <.simple_form
         for={@form}
@@ -19,7 +19,7 @@ defmodule EngwebWeb.RoadLive.FormEditComment do
       >
         <.input field={@form[:comment]} type="textarea" label="Comment"/>
         <:actions>
-          <.button phx-disable-with="Saving...">Save</.button>
+          <.button phx-disable-with="Saving...">Guardar</.button>
         </:actions>
       </.simple_form>
     </div>
@@ -50,7 +50,7 @@ defmodule EngwebWeb.RoadLive.FormEditComment do
 
   defp save_comment(socket, comment_params) do
     if socket.assigns.comment.user_id != socket.assigns.current_user.id do
-      {:noreply, socket |> put_flash(:error, "You are not allowed to edit this comment")}
+      {:noreply, socket |> put_flash(:error, "Não estás autorizado a editar este comentário")}
     else
       case Roads.update_comment(socket.assigns.comment, comment_params) do
         {:ok, comment} ->
@@ -58,7 +58,7 @@ defmodule EngwebWeb.RoadLive.FormEditComment do
 
           {:noreply,
           socket
-          |> put_flash(:info, "Comment updated successfully")
+          |> put_flash(:info, "Comentário atualizado com sucesso")
           |> push_patch(to: socket.assigns.patch)}
 
         {:error, %Ecto.Changeset{} = changeset} ->

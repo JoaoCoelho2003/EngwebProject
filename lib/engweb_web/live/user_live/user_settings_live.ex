@@ -7,8 +7,8 @@ defmodule EngwebWeb.UserLive.UserSettingsLive do
     ~H"""
     <div class="px-4 py-20 sm:px-6 lg:px-8">
       <.header class="text-center">
-        Account Settings
-        <:subtitle>Manage your account email address and password settings</:subtitle>
+        Definições da Conta
+        <:subtitle>Administre o endereço de e-mail e as configurações de senha da sua conta</:subtitle>
       </.header>
 
       <div class="space-y-12 divide-y">
@@ -25,12 +25,12 @@ defmodule EngwebWeb.UserLive.UserSettingsLive do
               name="current_password"
               id="current_password_for_email"
               type="password"
-              label="Current password"
+              label="Palavra-passe atual"
               value={@email_form_current_password}
               required
             />
             <:actions>
-              <.button phx-disable-with="Changing...">Change Email</.button>
+              <.button phx-disable-with="Changing...">Alterar Email</.button>
             </:actions>
           </.simple_form>
         </div>
@@ -50,23 +50,23 @@ defmodule EngwebWeb.UserLive.UserSettingsLive do
               id="hidden_user_email"
               value={@current_email}
             />
-            <.input field={@password_form[:password]} type="password" label="New password" required />
+            <.input field={@password_form[:password]} type="password" label="Nova palavra-passe" required />
             <.input
               field={@password_form[:password_confirmation]}
               type="password"
-              label="Confirm new password"
+              label="Confirmar nova palavra passe"
             />
             <.input
               field={@password_form[:current_password]}
               name="current_password"
               type="password"
-              label="Current password"
+              label="Palavra-passe Atual"
               id="current_password_for_password"
               value={@current_password}
               required
             />
             <:actions>
-              <.button phx-disable-with="Changing...">Change Password</.button>
+              <.button phx-disable-with="Changing...">Alterar Palavra-passe</.button>
             </:actions>
           </.simple_form>
         </div>
@@ -79,10 +79,10 @@ defmodule EngwebWeb.UserLive.UserSettingsLive do
     socket =
       case Accounts.update_user_email(socket.assigns.current_user, token) do
         :ok ->
-          put_flash(socket, :info, "Email changed successfully.")
+          put_flash(socket, :info, "Email alterado com sucesso.")
 
         :error ->
-          put_flash(socket, :error, "Email change link is invalid or it has expired.")
+          put_flash(socket, :error, "O link de alteração do e-mail é inválido ou expirou.")
       end
 
     {:ok, push_navigate(socket, to: ~p"/users/settings")}
@@ -129,7 +129,7 @@ defmodule EngwebWeb.UserLive.UserSettingsLive do
           &url(~p"/users/settings/confirm_email/#{&1}")
         )
 
-        info = "A link to confirm your email change has been sent to the new address."
+        info = "Um link para confirmar a alteração do seu e-mail foi enviado para o novo endereço."
         {:noreply, socket |> put_flash(:info, info) |> assign(email_form_current_password: nil)}
 
       {:error, changeset} ->
