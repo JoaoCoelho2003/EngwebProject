@@ -10,13 +10,13 @@ defmodule EngwebWeb.UserLive.UserRegistrationLive do
       <div class="absolute inset-0 bg-white opacity-60"></div>
       <div class="relative mx-auto max-w-sm bg-gray-200 p-6 rounded-md">
         <.header class="text-center">
-          Register for an account
+          Criar conta
           <:subtitle>
-            Already registered?
+            Já tem conta?
             <.link navigate={~p"/users/log_in"} class="font-semibold text-brand hover:underline">
-              Log in
+              Faça login
             </.link>
-            to your account now.
+            na sua conta agora.
           </:subtitle>
         </.header>
 
@@ -30,15 +30,15 @@ defmodule EngwebWeb.UserLive.UserRegistrationLive do
           method="post"
         >
           <.error :if={@check_errors}>
-            Oops, something went wrong! Please check the errors below.
+            Ops, algo deu errado! Verifique os erros abaixo.
           </.error>
 
           <.input field={@form[:email]} type="email" label="Email" required />
-          <.input field={@form[:password]} type="password" label="Password" required />
-          <.input field={@form[:name]} type="text" label="Name" required />
-          <.input field={@form[:filiation]} type="select" label="Filiation" multiple={false} prompt="Select a filiation" options={[{"student", "student"},{"teacher", "teacher"}]} value="student" required />
+          <.input field={@form[:password]} type="password" label="Palavra-passe" required />
+          <.input field={@form[:name]} type="text" label="Nome" required />
+          <.input field={@form[:filiation]} type="select" label="Filiação" multiple={false} prompt="Select a filiation" options={[{"student", "student"},{"teacher", "teacher"}]} value="student" required />
           <:actions>
-            <.button phx-disable-with="Creating account..." class="w-full">Create an account</.button>
+            <.button phx-disable-with="Creating account..." class="w-full">Crie uma conta</.button>
           </:actions>
         </.simple_form_login>
       </div>
