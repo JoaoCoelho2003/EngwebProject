@@ -158,6 +158,64 @@ Finalmente, falta a foto do _pop-up_ de edição de um comentário:
 Desenvolvemos um _script_ em Python, [data_migrator.py](/scripts/xmlToJson.py), que lê os diversos ficheiros XML fornecidos pelo professor, e junta toda a informação num único ficheiro JSON, que é usado para popular a base de dados da aplicação recorrendo ao _seed_ do Phoenix.
 Este script remove as _tags_ desnecessárias das descrições das ruas e casas (lugar e data), e converte as _tags_ das imagens para que seja mais fácil de as manipular no _front-end_ e adiciona a informação das imagens atuais, escrevendo o resultado no ficheiro JSON na pasta `priv/fake/roads.json`.
 
+# Instruções de Uso
+
+## Docker
+
+Caso queira usufruir do docker desenvolvido, basta correr o seguinte comando:
+
+```bash
+$ (sudo) docker compose up --build
+```
+
+Caso esteja a utilizar um dispositivo com o MacOS, é necessário substituir:
+
+```bash
+services:
+  db:
+    network_mode: "host"
+  web:
+    network_mode: "host"
+```
+
+Por:
+
+```bash
+services:
+  db:
+    ports:
+      - ${DB_PORT:-5555}:5432
+  web:
+    ports:
+      - ${PORT:-4000}:4000
+```
+
+## Mix
+
+Por outro lado, caso queira usar os comandos disponibilizados pelo mix:
+
+```bash
+$ mix setup
+$ mix phx.server
+```
+
+# Contas
+
+Existem 3 contas guardadas no sistema por _default_.
+ - admin@mail.pt (role: admin)
+ - joaocoelho@mail.pt
+ - joserodrigues@mail.pt
+ - duartearaujo@mail.pt
+ - passwords: password1234
+
+# Importar e Exportar
+
+Para importar e exportar os dados para a base de dados, basta correr os seguintes comandos:
+
+```bash
+$ bash import.sh
+$ bash export.sh
+```
 
 # Considerações Finais
 
