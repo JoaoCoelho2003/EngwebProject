@@ -11,7 +11,6 @@ services:
       POSTGRES_HOST: ${DB_HOST:-localhost}
     volumes:
       - /var/lib/postgresql/data
-    network_mode: "host"
   web:
     container_name: engweb_web
     env_file: .env.dev
@@ -27,4 +26,3 @@ services:
       - /app/_build
       - /app/deps
       - /app/priv/static/uploads
-    network_mode: "host"

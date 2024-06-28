@@ -162,32 +162,17 @@ Este script remove as _tags_ desnecessárias das descrições das ruas e casas (
 
 ## Docker
 
+Cria e inicia os containers da base de dados. Deve usar o conteúdo do fichero `linux.yml` se estiver a correr em Linux e `darwin.yml` se estiver a correr em macOS.
 Caso queira usufruir do docker desenvolvido, basta correr o seguinte comando:
 
 ```bash
-$ (sudo) docker compose up --build
+$ docker-compose -f docker-compose.yml -f {linux,darwin}.yml up
 ```
 
-Caso esteja a utilizar um dispositivo com o MacOS, é necessário substituir:
+Para apagar os containers criados basta executar o seguinte comando:
 
 ```bash
-services:
-  db:
-    network_mode: "host"
-  web:
-    network_mode: "host"
-```
-
-Por:
-
-```bash
-services:
-  db:
-    ports:
-      - ${DB_PORT:-5555}:5432
-  web:
-    ports:
-      - ${PORT:-4000}:4000
+$ docker compose down -v
 ```
 
 ## Mix
