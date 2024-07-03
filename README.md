@@ -166,7 +166,7 @@ Cria e inicia os containers da base de dados. Deve usar o conteúdo do fichero `
 Caso queira usufruir do docker desenvolvido, basta correr o seguinte comando:
 
 ```bash
-$ docker-compose -f docker-compose.yml -f {linux,darwin}.yml up
+$ docker-compose -f docker-compose.yml -f {linux,darwin,windows}.yml up
 ```
 
 Para apagar os containers criados basta executar o seguinte comando:
