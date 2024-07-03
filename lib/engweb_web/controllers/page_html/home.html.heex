@@ -1,0 +1,15 @@
+<.flash_group flash={@flash} />
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="grid justify-items-center grid-cols-4 gap-1 min-w-full min-h-full p-2" id="grid-container">
+    </div>
+
+    <script>
+        const container = document.getElementById('grid-container');
+        for (let i = 0; i < 40; i++) {
+            const div = document.createElement('div');
+            div.className = 'group border p-1 overflow-hidden';
+            div.innerHTML = '<img src="https://via.placeholder.com/350" alt="Placeholder Image" class="transform group-hover:scale-110 transition-transform duration-300">';
+            container.appendChild(div);
+        }
+    </script>
+</body>

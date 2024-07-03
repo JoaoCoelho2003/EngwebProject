@@ -1,0 +1,98 @@
+<div class="flex flex-row space-x-6 mx-auto border rounded-lg py-6 px-4 bg-gray-200">
+  <div class="flex-none pr-5 border-r-2 border-gray-500">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5.52 19c.64-2.2 1.84-3 3.22-3h6.52c1.38 0 2.58.8 3.22 3"/>
+      <circle cx="12" cy="10" r="3"/>
+      <circle cx="12" cy="12" r="10"/>
+    </svg>
+  </div>
+  <div class="flex-1">
+    <h1 class="text-2xl font-bold mb-4">Perfil (<%= @user.role %>)</h1>
+    <div class="mb-4">
+      <label class="block mb-2 font-semibold">Nome:</label>
+      <p class="border rounded border-gray-500 w-full py-2 px-3"><%= @user.name %></p>
+    </div>
+    <div class="mb-4">
+      <label class="block mb-2 font-semibold">Email:</label>
+      <p class="border rounded border-gray-500 w-full py-2 px-3"><%= @user.email %></p>
+    </div>
+    <div class="mb-4">
+      <label class="block mb-2 font-semibold">Filiação:</label>
+      <p class="border rounded border-gray-500 w-full py-2 px-3"><%= @user.filiation %></p>
+    </div>
+    <div class="mb-4">
+      <label class="block mb-2 opacity-50">Confirmado às <%= @user.confirmed_at %></label>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="flex space-x-4 border-b mb-4">
+      <a href={profile_url(@user.id, "roads")} class={"py-1 px-4 rounded-md " <> if(@active_tab == :roads, do: "bg-blue-600 text-white", else: "text-gray-600 hover:bg-gray-200 hover:text-black")}>
+        Ruas
+      </a>
+      <a href={profile_url(@user.id, "comments")} class={"py-1 px-4 rounded-md " <> if(@active_tab == :comments, do: "bg-blue-600 text-white", else: "text-gray-600 hover:bg-gray-200 hover:text-black")}>
+        Comentários
+      </a>
+    </div>
+
+    <!-- Tab Content -->
+    <div>
+      <%= if @active_tab == :roads do %>
+        <div class="space-y-6">
+          <%= if Enum.empty?(@roads) do %>
+            <p>Nenhuma atividade foi detetada</p>
+          <% else %>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-10">
+              <%= for road <- @roads do %>
+                <div class="bg-white rounded-md overflow-hidden cursor-pointer shadow-md" phx-click="navigate_to_road" phx-value-id={road.id}>
+                  <div class="relative group" style="padding-top: 80%;">
+                    <%= if Enum.any?(road.current_images) do %>
+                      <% current_image = hd(road.current_images) %>
+                      <div class="absolute top-0 left-0 w-full h-full overflow-hidden">
+                        <img src={Engweb.Uploaders.ImageUploader.url({current_image.image, current_image})} alt="Current Image" class="object-cover w-full h-full ransform hover:scale-110 transition duration-500 ease-in-out"/>
+                        <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white text-center p-2">
+                          <p class="text-lg font-bold"><%= road.name %></p>
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="grid grid-cols-2 gap-4">
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+
+      <%= if @active_tab == :comments do %>
+        <ul>
+          <%= if Enum.empty?(@comments) do %>
+            <li>Nenhuma atividade foi detetada</li>
+          <% else %>
+            <%= for comment <- @comments do %>
+              <li>
+                <div class="rounded-lg p-4 mt-4">
+                  <div class="text-gray-600 text-sm mb-2 cursor-pointer" phx-click="navigate_to_road" phx-value-id={comment.road_id}>
+                    Comentado na rua <%= comment.road_id %>
+                  </div>
+                  <p class="text-gray-800 font-bold">
+                    <%= @current_user.name %>
+                  </p>
+                  <div class="pl-4">
+                    <p class="text-gray-800">
+                      <%= comment.comment %>
+                    </p>
+                  </div>
+                  <div class="text-gray-600 text-sm mt-2">
+                    Comentado às <%= comment.inserted_at %>
+                  </div>
+                </div>
+              </li>
+            <% end %>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+  </div>
+</div>

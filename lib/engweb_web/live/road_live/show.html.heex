@@ -1,0 +1,400 @@
+<div class="px-2 py-8 sm:px-4 lg:px-6">
+  <%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) do %>
+    <.header>
+        <:actions>
+          <.link patch={~p"/roads/#{@road.id}/edit"} phx-click={JS.push_focus()}>
+            <.button>Editar Rua</.button>
+          </.link>
+          <.link patch={~p"/roads/#{@road.id}/delete"} phx-click={JS.push_focus()}>
+            <.button>Eliminar Rua</.button>
+          </.link>
+        </:actions>
+    </.header>
+    <% end %>
+
+      <h1 class="text-2xl md:text-3xl pl-2 my-2 border-l-4 text-black font-sans font-bold border-blue-600">
+        Informações da Rua
+      </h1>
+
+      <.list>
+        <:item title="Número da Rua">
+          <%= @road.id %>
+        </:item>
+        <:item title="Nome">
+          <%= @road.name %>
+        </:item>
+        <:item title="Descrição">
+          <%= @road.description %>
+        </:item>
+      </.list>
+
+      <div style=" margin-top: 30px; margin-bottom: 40px;">
+        <h2 class="text-2xl md:text-3xl pl-2 my-2 border-l-4 text-black font-sans font-bold border-blue-600">
+          Imagens Atuais
+        </h2>
+        <div class="items-center">
+          <%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) and
+            (Enum.count(@current_images) < @max_current_image_uploads) do %>
+            <.link patch={~p"/roads/#{@road.id}/current_image/new"} phx-click={JS.push_focus()}
+              class="flex justify-end">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-plus-square">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <line x1="12" y1="8" x2="12" y2="16" />
+                <line x1="8" y1="12" x2="16" y2="12" />
+              </svg>
+            </.link>
+            <% end %>
+        </div>
+        <%= if Enum.empty?(@current_images) do %>
+          <p>Não há imagens atuais disponíveis</p>
+        <% else %>
+          <div class="container mx-auto px-5 py-2 lg:px-32 lg:pt-12">
+            <div class="-m-1 flex flex-wrap md:-m-2 justify-center">
+              <%= for {image, fig} <- @current_images do %>
+                <div class="flex w-1/3 justify-center p-1 md:p-2">
+                  <div class="w-full">
+                    <img alt="gallery" class="block h-full w-full rounded-lg object-cover object-center"
+                      src={fig} />
+                    <%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) do %>
+                      <.link patch={~p"/roads/#{@road.id}/current_image/#{image.id}/delete"} phx-click={JS.push_focus()}
+                        class="flex justify-center mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                          stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                          class="feather feather-x-square">
+                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                          <line x1="9" y1="9" x2="15" y2="15" />
+                          <line x1="15" y1="9" x2="9" y2="15" />
+                        </svg>
+                      </.link>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+              <div style="margin-top: 30px; margin-bottom: 40px;">
+                <h2 class="text-2xl md:text-3xl pl-2 my-2 border-l-4 text-black font-sans font-bold border-blue-600">
+                  Imagens Antigas
+                </h2>
+                <div class="items-center">
+                  <%= if @current_user !=nil and (@current_user.id==@road.user_id or @current_user.role=="admin" ) and
+                    (Enum.count(@images) < @max_image_uploads) do %>
+                    <.link patch={~p"/roads/#{@road.id}/image/new"} phx-click={JS.push_focus()}
+                      class="flex justify-end">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-plus-square">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                        <line x1="12" y1="8" x2="12" y2="16" />
+                        <line x1="8" y1="12" x2="16" y2="12" />
+                      </svg>
+                    </.link>
+                    <% end %>
+                </div>
+                <%= if Enum.empty?(@images) do %>
+                  <p>Não há imagens antigas disponíveis</p>
+                  <% else %>
+                    <div class="container mx-auto px-5 py-2 lg:px-32 lg:pt-12">
+                      <div class="-m-1 flex flex-wrap md:-m-2 justify-center">
+                        <%= for {image, fig} <- @images do %>
+                          <div class="flex w-1/3 justify-center p-1 md:p-2">
+                            <div class="w-full">
+                              <img alt="gallery" class="block h-full w-full rounded-lg object-cover object-center"
+                                src={fig} />
+                              <p class="font-bold text-center my-2">
+                                <%= image.legenda %>
+                              </p>
+                              <%= if @current_user !=nil and (@current_user.id==@road.user_id or
+                                @current_user.role=="admin" ) do %>
+                                <.link patch={~p"/roads/#{@road.id}/image/#{image.id}/delete"}
+                                  phx-click={JS.push_focus()} class="flex justify-center mb-2">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="red" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-x-square">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                    <line x1="9" y1="9" x2="15" y2="15" />
+                                    <line x1="15" y1="9" x2="9" y2="15" />
+                                  </svg>
+                                </.link>
+                                <% end %>
+                            </div>
+                          </div>
+                          <% end %>
+                      </div>
+                    </div>
+                    <% end %>
+              </div>
+
+              <h2 class="text-2xl md:text-3xl pl-2 my-2 border-l-4 text-black font-sans font-bold border-blue-600 mt-20">
+                Casas
+              </h2>
+              <div
+                class="container relative flex flex-col justify-between h-full max-w-6xl px-10 mx-auto xl:px-0 mt-5 mb-20">
+                <%= if Enum.empty?(@houses) do %>
+                  <p style="text-align: center;">Não há casas disponíveis</p>
+                  <% else %>
+                    <div class="w-full">
+                      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                        <%= for {house, _index} <- Enum.with_index(@houses) do %>
+                            <div class="relative h-full ml-0 mr-0 sm:mr-10 mb-10">
+                              <span class="absolute top-0 left-0 w-full h-full mt-1 ml-1 bg-indigo-500 rounded-lg"></span>
+                              <div class="relative h-full p-5 bg-white border-2 rounded-lg #{border_class}">
+                                <div class="flex items-center -mt-1 justify-between">
+                                  <div class="flex justify-start">
+                                    <h3 class="my-2 ml-3 text-lg font-bold text-gray-800">Casa <%= house.num %></h3>
+                                  </div>
+                                  <%= if @current_user != nil and (@current_user.id == @road.user_id or @current_user.role == "admin") do %>
+                                    <div class="flex justify-end gap-x-2 ml-auto">
+                                      <.link patch={~p"/roads/#{@road.id}/house/#{house.id}/edit"} phx-click={JS.push_focus()}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                        </svg>
+                                      </.link>
+                                      <.link patch={~p"/roads/#{@road.id}/house/#{house.id}/delete"} phx-click={JS.push_focus()}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                          stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                          class="feather feather-x-square">
+                                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                          <line x1="9" y1="9" x2="15" y2="15" />
+                                          <line x1="15" y1="9" x2="9" y2="15" />
+                                        </svg>
+                                      </.link>
+                                    </div>
+                                  <% end %>
+                                </div>                                
+                                <hr class="my-4 border-indigo-500">
+                                <p class="mb-2 text-gray-600"><strong>Enfiteuta:</strong>
+                                  <%= house.enfiteuta %>
+                                </p>
+                                <p class="mb-2 text-gray-600"><strong>Foro:</strong>
+                                  <%= house.foro %>
+                                </p>
+                                <p class="mb-2 text-gray-600"><strong>Descrição:</strong>
+                                  <%= house.description %>
+                                </p>
+                              </div>
+                            </div>
+                            <% end %>
+                      </div>
+                    </div>
+                    <% end %>
+              </div>
+
+              <div>
+                <h2 class="text-2xl font-bold mb-6 mt-14">Comentários</h2>
+                <div class="space-y-4">
+                  <%= for comment <- @comments do %>
+                    <div class="bg-white rounded-lg p-4">
+                      <.link patch={~p"/users/#{comment.user_id}/profile"}>
+                        <p class="text-gray-800 font-bold">
+                          <%= comment.user_name %>
+                        </p>
+                      </.link>
+                      <div class="pl-4">
+                        <p class="text-gray-800">
+                          <%= comment.comment %>
+                        </p>
+                      </div>
+                      <div class="flex items-center justify-between mt-2">
+                        <div class="flex space-x-2 text-sm text-gray-600">
+                          <a href="#" phx-click="vote_comment" phx-value-comment_id={comment.id} phx-value-vote="like">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24"
+                              stroke="#000000" stroke-width="1.2">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M7 11c.889-.086 1.416-.543 2.156-1.057a22.323 22.323 0 0 0 3.958-5.084 1.6 1.6 0 0 1 .582-.628 1.549 1.549 0 0 1 1.466-.087c.205.095.388.233.537.406a1.64 1.64 0 0 1 .384 1.279l-1.388 4.114M7 11H4v6.5A1.5 1.5 0 0 0 5.5 19v0A1.5 1.5 0 0 0 7 17.5V11Zm6.5-1h4.915c.286 0 .372.014.626.15.254.135.472.332.637.572a1.874 1.874 0 0 1 .215 1.673l-2.098 6.4C17.538 19.52 17.368 20 16.12 20c-2.303 0-4.79-.943-6.67-1.475" />
+                            </svg>
+                          </a>
+                          <span>
+                            <%= Map.get(comment, :likes) %>
+                          </span>
+                          <a href="#" phx-click="vote_comment" phx-value-comment_id={comment.id}
+                            phx-value-vote="dislike">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24"
+                              stroke="#000000" stroke-width="1.2">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17 13c-.889.086-1.416.543-2.156 1.057a22.322 22.322 0 0 0-3.958 5.084 1.6 1.6 0 0 1-.582.628 1.549 1.549 0 0 1-1.466.087 1.587 1.587 0 0 1-.537-.406 1.666 1.666 0 0 1-.384-1.279l1.389-4.114M17 13h3V6.5A1.5 1.5 0 0 0 18.5 5v0A1.5 1.5 0 0 0 17 6.5V13Zm-6.5 1H5.585c-.286 0-.372-.014-.626-.15a1.797 1.797 0 0 1-.637-.572 1.873 1.873 0 0 1-.215-1.673l2.098-6.4C6.462 4.48 6.632 4 7.88 4c2.302 0 4.79.943 6.67 1.475" />
+                            </svg>
+                          </a>
+                          <span>
+                            <%= Map.get(comment, :dislikes) %>
+                          </span>
+                        </div>
+                        <%= if @current_user && (@current_user.id==comment.user_id || @current_user.role=="admin" ) do %>
+                          <% id = "comment-#{comment.id}" %>
+                          <div class="relative inline-block text-left" phx-click={JS.toggle(to: "##{id}", in: "block", out: "hidden")} phx-click-away={JS.hide(to: "##{id}")}>
+                            <button id="options-button" class="flex items-center focus:outline-none">
+                              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                viewBox="0 0 24 24" stroke="#000000" stroke-width="3">
+                                <path stroke-linecap="round" d="M6 12h.01m6 0h.01m5.99 0h.01" />
+                              </svg>
+                            </button>
+                            <div id={id} class="origin-top-right top-full absolute right-0 z-10 mt-2 hidden w-56 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+                              <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                <.link patch={~p"/roads/#{@road.id}/comment/#{comment.id}/edit"}
+                                  class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                    viewBox="0 0 24 24" stroke="#000000" stroke-width="1.2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
+                                  </svg>
+                                  Editar
+                                </.link>  
+                                
+                                <a href="#" phx-click="delete_comment" phx-value-comment_id={comment.id}
+                                  class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                    viewBox="0 0 24 24" stroke="#000000" stroke-width="1.2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                  </svg>
+                                  Eliminar
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                          <% end %>
+                        </div>
+                      </div>
+                    <% end %>
+                </div>
+
+                <%= if @current_user do %>
+                  <form phx-submit="add_comment" class="mt-4">
+                    <div class="relative">
+                      <textarea name="comment" placeholder="Add a comment" required
+                        class="border rounded-xl p-2 w-full min-h-12" onfocus="showButtons(this)"
+                        onblur="hideButtons(this)">
+                      </textarea>
+                      <div class="absolute right-2 bottom-2 hidden buttons space-x-2">
+                        <button type="button" class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-md"
+                          onclick="cancelComment(this)">Cancelar</button>
+                        <button type="submit"
+                          class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded-md">Submeter</button>
+                      </div>
+                    </div>
+                  </form>
+                  <% else %>
+                    <p class="mt-4">Tens de ter sessão iniciada para comentar.</p>
+                    <% end %>
+              </div>
+
+              <.back navigate={~p"/"}>Voltar</.back>
+      </div>
+    </div>
+      <.modal :if={@live_action in [:edit, :delete, :delete_image, :delete_current_image, :delete_house]}
+        id="road-modal" show on_cancel={JS.patch(~p"/roads/#{@road.id}")}>
+        <.live_component module={EngwebWeb.RoadLive.FormComponent} id={ case @live_action do :delete_current_image ->
+          @current_image
+          :delete_house -> @house
+          :delete_image -> @image
+          _ -> @road.id
+          end
+          }
+          title={@page_title}
+          action={@live_action}
+          road={@road}
+          current_user={@current_user}
+          patch={
+          if @live_action == :delete do
+          ~p"/"
+          else
+          ~p"/roads/#{@road.id}"
+          end
+          }
+          />
+      </.modal>
+
+      <.modal :if={@live_action in [:new_image, :new_current_image]} id="road-modal" show
+        on_cancel={JS.patch(~p"/roads/#{@road.id}")}>
+        <.live_component module={EngwebWeb.RoadLive.FormNewImageComponent} id={@road.id} title={@page_title}
+          action={@live_action} road={@road} current_user={@current_user} patch={~p"/roads/#{@road.id}"} />
+      </.modal>
+
+      <.modal :if={@live_action in [:new_house, :edit_house]} id="house-modal" show on_cancel={JS.patch(~p"/roads/#{@road.id}")}>
+        <.live_component
+          module={EngwebWeb.RoadLive.FormNewHouse}
+          id={@road.id}
+          title={@page_title}
+          action={@live_action}
+          house={@house}
+          road={@road}
+          current_user={@current_user}
+          patch={~p"/roads/#{@road.id}"}
+          />
+      </.modal>
+
+      <.modal id="comment-modal" :if={@live_action==:edit_comment} show on_cancel={JS.patch(~p"/roads/#{@road.id}")}>
+        <.live_component module={EngwebWeb.RoadLive.FormEditComment} id={@road.id} title={@page_title}
+          action={@live_action} road={@road} comment={@comment} current_user={@current_user}
+          patch={~p"/roads/#{@road.id}"} />
+      </.modal>
+
+<script>
+  function showButtons(textarea) {
+    const buttons = textarea.nextElementSibling;
+    buttons.classList.remove('hidden');
+  }
+
+  function hideButtons(textarea) {
+    setTimeout(() => {
+      const buttons = textarea.nextElementSibling;
+      if (!buttons.querySelector(':hover')) {
+        buttons.classList.add('hidden');
+      }
+    }, 50);
+  }
+
+  function cancelComment(button) {
+    const textarea = button.closest('form').querySelector('textarea');
+    textarea.value = '';
+    const buttons = button.parentElement;
+    buttons.classList.add('hidden');
+  }
+
+  function cleanTextarea(textarea) {
+    textarea.value = textarea.value.trim();
+  }
+
+  function cleanTextareaBeforeSubmit(form) {
+    const textarea = form.querySelector('textarea[name="comment"]');
+    textarea.value = textarea.value.trim();
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const textareas = document.querySelectorAll("textarea[name='comment']");
+    textareas.forEach(textarea => {
+      textarea.value = textarea.value.trim();
+      textarea.addEventListener('focus', () => cleanTextarea(textarea));
+    });
+
+    const forms = document.querySelectorAll('form[phx-submit="add_comment"]');
+    forms.forEach(form => {
+      form.addEventListener('submit', () => cleanTextareaBeforeSubmit(form));
+    });
+  });
+
+  let Hooks = {}
+  Hooks.YourLiveView = {
+    mounted() {
+      let liveSocket = this.liveSocket
+      this.el.addEventListener("click", function (event) {
+        let target = event.target.closest("[phx-click='vote_comment']")
+        if (!target) return
+
+        let commentId = target.getAttribute("phx-value-comment_id")
+        let voteType = target.getAttribute("phx-value-vote")
+
+        liveSocket.pushEvent("vote_comment", { comment_id: commentId, vote: voteType })
+      })
+    }
+  }
+</script>
