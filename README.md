@@ -186,7 +186,7 @@ $ mix phx.server
 
 # Contas
 
-Existem 3 contas guardadas no sistema por _default_.
+Existem 4 contas guardadas no sistema por _default_.
  - admin@mail.pt (role: admin)
  - joaocoelho@mail.pt
  - joserodrigues@mail.pt
