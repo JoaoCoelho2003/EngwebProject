@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
       POSTGRES_HOST: ${DB_HOST:-localhost}
     volumes:
-      - /var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
   web:
     container_name: engweb_web
     env_file: .env.dev
@@ -24,3 +24,6 @@ services:
       - /app/_build
       - /app/deps
       - /app/priv/static/uploads
+
+volumes:
+  db_data:
